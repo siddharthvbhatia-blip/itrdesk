@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://siddharthvbhatia-blip.github.io/itrdesk/</loc>
-  </url>
-  <url>
-    <loc>https://siddharthvbhatia-blip.github.io/itrdesk/checklist.html</loc>
-  </url>
-  <url>
-    <loc>https://siddharthvbhatia-blip.github.io/itrdesk/privacy.html</loc>
-  </url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/</loc></url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/checklist.html</loc></url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/privacy.html</loc></url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/itr-filing-indore.html</loc></url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/salary-itr-filing.html</loc></url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/capital-gain-itr-filing.html</loc></url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/fno-trading-itr-filing.html</loc></url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/business-profession-itr.html</loc></url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/nri-itr-filing.html</loc></url>
+  <url><loc>https://siddharthvbhatia-blip.github.io/itrdesk/ais-26as-mismatch.html</loc></url>
 </urlset>
