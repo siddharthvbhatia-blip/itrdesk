@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://siddharthvbhatia-blip.github.io/itrdesk/sitemap.xml
