@@ -5,6 +5,10 @@ if (navToggle && nav) {
     const isOpen = nav.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', String(isOpen));
   });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
 }
 
 const phone = '917879857126';
@@ -23,7 +27,8 @@ if (form) {
     e.preventDefault();
     const data = new FormData(form);
     const details = data.getAll('details').join(', ') || 'Not specified';
-    const msg = `Hi, I want ITR filing guidance.\n\nName: ${data.get('name') || ''}\nMobile: ${data.get('phone') || ''}\nEmail: ${data.get('email') || ''}\nCity: ${data.get('city') || ''}\nCase: ${data.get('caseType') || ''}\nDetails: ${details}\nNote: ${data.get('note') || ''}\n\nPlease share the checklist and next steps.`;
+    const sourcePage = `${document.title}\n${window.location.href.split('#')[0]}`;
+    const msg = `Hi, I want ITR filing guidance.\n\nName: ${data.get('name') || ''}\nMobile: ${data.get('phone') || ''}\nEmail: ${data.get('email') || ''}\nCity: ${data.get('city') || ''}\nCase: ${data.get('caseType') || ''}\nDetails: ${details}\nNote: ${data.get('note') || ''}\n\nSource page: ${sourcePage}\n\nPlease share the checklist and next steps.`;
     window.open(waUrl(msg), '_blank');
   });
 }
@@ -38,6 +43,26 @@ if (copyBtn) {
     } catch(e) { alert('Copy failed. Please copy from address bar.'); }
   });
 }
+
+document.querySelectorAll('[data-share]').forEach(button => {
+  button.addEventListener('click', async () => {
+    const originalText = button.textContent;
+    const url = window.location.href.split('#')[0];
+    const text = button.getAttribute('data-share-text') || 'A practical income-tax resource from ITR Desk by CA Siddharth Bhatia.';
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: document.title, text, url });
+        return;
+      }
+      await navigator.clipboard.writeText(`${text}\n${url}`);
+      button.textContent = 'Link copied to share';
+    } catch (error) {
+      if (error && error.name === 'AbortError') return;
+      button.textContent = 'Copy the address-bar link';
+    }
+    setTimeout(() => { button.textContent = originalText; }, 2200);
+  });
+});
 
 /* Load the site-wide public-content protection layer. */
 if (!document.querySelector('script[data-itrdesk-protection]')) {

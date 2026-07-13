@@ -1,0 +1,67 @@
+ITR DESK — FREE, LOW-MAINTENANCE DISCOVERY CHECKLIST
+Updated: 14 July 2026
+
+IMPORTANT REALITY
+No website, consultant or free tool can guarantee the first Google position or make a
+site appear for every person searching for ITR filing. Search engines choose results.
+This package improves eligibility, relevance, trust and sharing; it does not buy or
+guarantee rankings.
+
+DO THESE ONCE AFTER UPLOADING THE WEBSITE
+
+1. GOOGLE SEARCH CONSOLE (about 10 minutes)
+   a. Open your existing ITR Desk property.
+   b. Go to Sitemaps.
+   c. Submit: sitemap.xml
+   d. Use URL inspection and request indexing for these five URLs only:
+      https://siddharthvbhatia-blip.github.io/itrdesk/
+      https://siddharthvbhatia-blip.github.io/itrdesk/calculator.html
+      https://siddharthvbhatia-blip.github.io/itrdesk/itr-filing-indore.html
+      https://siddharthvbhatia-blip.github.io/itrdesk/which-itr-form-ay-2026-27.html
+      https://siddharthvbhatia-blip.github.io/itrdesk/old-vs-new-tax-regime-ay-2026-27.html
+   Do not repeatedly request indexing. The sitemap will expose the remaining pages.
+
+2. GOOGLE BUSINESS PROFILE (about 10 minutes)
+   a. Use the existing verified professional profile; do not create duplicates.
+   b. Website:
+      https://siddharthvbhatia-blip.github.io/itrdesk/?utm_source=google&utm_medium=organic&utm_campaign=business_profile
+   c. Keep the name exactly the same as the real-world professional name/profile.
+   d. Use only accurate categories already applicable to the practice.
+   e. Add factual service descriptions: salary ITR, capital-gain ITR, F&O/trading ITR,
+      business/profession ITR, NRI ITR and AIS/Form 26AS reconciliation.
+   f. Do not add promotional claims, comparative language, guarantees or a public fee
+      rate card. Do not offer incentives for reviews.
+
+3. BING WEBMASTER TOOLS (about 5 minutes)
+   a. Sign in and choose Import from Google Search Console.
+   b. Confirm the same sitemap.xml.
+
+4. ONE FACTUAL SHARE (about 2 minutes)
+   Open the home page on your phone and press “Share ITR Desk”. Put it on your own
+   WhatsApp Status or send it only to people who asked for ITR information. The site
+   has share buttons on the main guides, so visitors can pass useful pages onward.
+
+READY-TO-SHARE TEXT
+“AY 2026-27 income-tax calculator, ITR form-selection guide and document checklists:
+https://siddharthvbhatia-blip.github.io/itrdesk/
+General tax awareness only. Case-specific work is subject to documents and
+professional acceptance.”
+
+FIVE-MINUTE MONTHLY CHECK
+- In Search Console, check Pages and Performance once.
+- Fix a page only if Search Console reports a specific error.
+- Update tax-year content when the law/forms change. Do not publish mass-produced
+  city pages, copied articles or keyword-stuffed text.
+
+ICAI-SAFE PUBLICITY BOUNDARIES USED IN THIS PACKAGE
+- Factual identity, location, membership number, services and contact route.
+- Educational content and user-initiated enquiry.
+- No testimonials, rankings, “best/cheapest/expert” claims, guarantees or comparisons.
+- No public ITR professional-fee rate card in search metadata or marketing copy.
+- No custom CA firm logo/monogram.
+- No purchased backlinks, fake reviews, bulk unsolicited messages or misleading pages.
+
+KEEP PRIVATE
+Razorpay secret keys, Vercel environment variables, PAN/Aadhaar, passwords, OTPs,
+taxpayer records and engagement-specific fee discussions must never be committed to
+the public GitHub Pages repository.

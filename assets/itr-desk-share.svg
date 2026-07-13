@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="ITR Desk by CA Siddharth Bhatia">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbf7ef"/><stop offset="1" stop-color="#efd9ba"/></linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1040" cy="92" r="220" fill="#0f6b5d" opacity=".10"/>
+  <circle cx="1100" cy="520" r="180" fill="#b9823c" opacity=".12"/>
+  <rect x="82" y="76" width="1036" height="478" rx="42" fill="#fff" stroke="#e9e1d5" stroke-width="3"/>
+  <text x="142" y="190" font-family="Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="7" fill="#b9823c">AY 2026–27</text>
+  <text x="142" y="310" font-family="Arial, sans-serif" font-size="92" font-weight="800" fill="#10231f">ITR Desk</text>
+  <text x="142" y="382" font-family="Arial, sans-serif" font-size="37" font-weight="600" fill="#0f6b5d">Tax calculator · Checklists · ITR guidance</text>
+  <text x="142" y="462" font-family="Arial, sans-serif" font-size="30" fill="#64736d">by CA Siddharth Bhatia · Indore + Online India</text>
+  <rect x="142" y="493" width="230" height="10" rx="5" fill="#0f6b5d"/>
+</svg>
