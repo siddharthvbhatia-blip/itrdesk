@@ -12,9 +12,12 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://siddharthvbhatia-blip.github.io/itrdesk/calculator.html" />
   <meta property="og:locale" content="en_IN" />
+  <meta name="itrdesk-payment-api" content="https://itrdesk-payment-backend.vercel.app" />
   <link rel="stylesheet" href="assets/styles.css" />
+  <style>.paid-retry{width:100%;margin-top:10px}</style>
   <script defer src="assets/script.js"></script>
   <script defer src="assets/calculator.js"></script>
+  <script defer src="assets/payment.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Comprehensive Income Tax Calculator AY 2026-27","url":"https://siddharthvbhatia-blip.github.io/itrdesk/calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"creator":{"@type":"Person","name":"CA Siddharth Bhatia"}}</script>
 </head>
 <body>
@@ -149,6 +152,38 @@
     <div class="calc-scope"><h3>Professional-use boundary</h3><p>The calculator covers the principal AY 2026-27 individual/HUF slab and special-rate categories, basic-exemption adjustment, agricultural-income integration, rebate restrictions, surcharge caps, AMT comparison and payment credits.</p><p>Amounts entered for special-rate income must already reflect correct classification, exemptions, cost, grandfathering and permitted loss set-off. DTAA eligibility, foreign-currency conversion, unlisted-security valuation, deemed income, exact surcharge marginal relief in mixed-income edge cases and return-utility validations require case-specific review.</p><a class="btn secondary" href="https://wa.me/917879857126?text=Hi%2C%20I%20used%20the%20comprehensive%20AY%202026-27%20tax%20calculator%20and%20would%20like%20a%20professional%20review." target="_blank" rel="noopener">Ask for professional review</a></div>
   </aside>
 </div></section>
+
+<section id="paid-computation" class="section paid-computation-section"><div class="container paid-computation-grid">
+  <div class="paid-offer">
+    <p class="eyebrow">Professional computation copy</p><h2>Download a structured PDF and editable Word computation.</h2>
+    <p>The report follows the professional structure of a tax computation: taxpayer particulars, head-wise income, deductions, normal and special-rate tax, old/new regime comparison, reliefs, taxes paid and payable/refund.</p>
+    <div class="price-card"><span>One-time computation fee</span><strong>₹1,000</strong><small>One verified payment unlocks both PDF and Word for the same computation for 24 hours.</small></div>
+    <ul class="paid-feature-list"><li>PDF and editable DOCX formats</li><li>Payment-verified private download</li><li>Payment reference printed on the report</li><li>No Aadhaar or bank account requested</li></ul>
+    <div class="paid-boundary"><strong>Computation only</strong><p>The ₹1,000 payment does not include preparation or filing of the ITR, verification of documents, tax audit, certification, notice response or representation.</p></div>
+  </div>
+  <form id="paidReportForm" class="paid-report-form" novalidate>
+    <h3>Details for the computation</h3><p>First calculate the tax above, then complete the particulars below.</p>
+    <div class="calc-grid two">
+      <label>Name of assessee *<input id="reportName" autocomplete="name" maxlength="100" required /></label>
+      <label>PAN *<input id="reportPan" maxlength="10" autocapitalize="characters" placeholder="ABCDE1234F" required /></label>
+      <label>Father's name<input id="reportFatherName" maxlength="100" /></label>
+      <label>Date of birth<input id="reportDob" type="date" /></label>
+      <label>Gender<select id="reportGender"><option value="">Not specified</option><option>Male</option><option>Female</option><option>Transgender</option></select></label>
+      <label>Mobile number *<input id="reportMobile" inputmode="tel" autocomplete="tel" maxlength="15" placeholder="9876543210" required /></label>
+      <label>Email address *<input id="reportEmail" type="email" autocomplete="email" maxlength="150" required /></label>
+      <label>Nature of business / profession<input id="reportBusiness" maxlength="250" /></label>
+    </div>
+    <label>Address<input id="reportAddress" maxlength="350" autocomplete="street-address" /></label>
+    <label class="paid-consent"><input id="reportConsent" type="checkbox" /> <span>I confirm that the figures and particulars entered are mine/authorised, and I accept the <a href="terms.html" target="_blank">terms</a>, <a href="refund-policy.html" target="_blank">refund policy</a> and <a href="privacy.html" target="_blank">privacy policy</a>.</span></label>
+    <div id="paymentStatus" class="payment-status" role="status" aria-live="polite"></div>
+    <button id="payForComputation" type="submit" class="btn primary paid-button">Pay ₹1,000 and unlock PDF + Word</button>
+    <button id="retryPaymentVerification" type="button" class="btn ghost paid-retry" hidden>Verify completed payment again</button>
+    <div id="paidDownloads" class="paid-downloads" hidden><p><strong>Payment verified.</strong> Your documents are unlocked for this computation.</p><button id="downloadPaidPdf" type="button" class="btn primary">Download PDF</button><button id="downloadPaidDocx" type="button" class="btn ghost">Download Word (.docx)</button></div>
+    <p class="micro-note">A paid computation is an automated estimate based on customer-entered figures. It is not an ITR acknowledgement, filing confirmation, audit report or certificate.</p>
+  </form>
+</div></section>
+
+<section class="section itr-filing-cta"><div class="container cta-band"><div><p class="eyebrow">Need the complete return filed?</p><h2>Get your ITR reviewed and filed by CA Siddharth Bhatia.</h2><p>Share your income profile and documents on WhatsApp. Scope, eligibility, filing form, professional acceptance and fee will be confirmed after review.</p></div><a class="btn secondary" href="https://wa.me/917879857126?text=Hi%20CA%20Siddharth%20Bhatia%2C%20I%20used%20the%20ITR%20Desk%20calculator%20and%20want%20to%20get%20my%20income-tax%20return%20reviewed%20and%20filed.%20Please%20share%20the%20document%20checklist%20and%20professional%20fee." target="_blank" rel="noopener">File my ITR with you</a></div></section>
 
 <section class="section muted"><div class="container"><div class="section-heading"><p class="eyebrow">Calculation discipline</p><h2>What must be verified before filing</h2><p>A comprehensive calculator is only as reliable as the income classification and net taxable amounts entered into it.</p></div><div class="cards-grid"><article class="info-card"><span class="card-number">01</span><h3>Capital-gain schedules</h3><p>Verify holding period, dates, STT, grandfathering, cost, indexation comparison and section 54-series exemptions.</p></article><article class="info-card"><span class="card-number">02</span><h3>Loss set-off</h3><p>Apply current-year and brought-forward loss restrictions before entering net special-rate amounts.</p></article><article class="info-card"><span class="card-number">03</span><h3>Return utility</h3><p>Reconcile the estimate with AIS, Form 26AS, tax challans and the applicable ITR utility before filing.</p></article></div></div></section>
 </main>
