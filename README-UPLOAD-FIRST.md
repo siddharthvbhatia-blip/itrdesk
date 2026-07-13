@@ -8,6 +8,7 @@ This folder contains the upgraded website. You only need to upload all files and
 3. Click **Add file → Upload files**.
 4. Drag and drop **all files and folders** from the extracted folder:
    - index.html
+   - calculator.html
    - checklist.html
    - privacy.html
    - all new SEO pages
@@ -30,6 +31,7 @@ This folder contains the upgraded website. You only need to upload all files and
 - Quick ITR type selector
 - Floating WhatsApp enquiry button
 - Improved enquiry form
+- AY 2026-27 old vs new regime income-tax calculator
 - FAQ section
 - Document checklist section
 - SEO pages for Indore, salary, capital gains, F&O, business/profession, NRI and AIS mismatch

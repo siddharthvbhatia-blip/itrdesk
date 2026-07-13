@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Income Tax Calculator AY 2026-27 | Old vs New Regime | ITR Desk</title>
+  <meta name="description" content="Free income tax calculator for FY 2025-26 and AY 2026-27. Compare estimated tax under the new and old regimes with deductions, rebate, surcharge and cess." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://siddharthvbhatia-blip.github.io/itrdesk/calculator.html" />
+  <meta property="og:title" content="Income Tax Calculator AY 2026-27 | ITR Desk" />
+  <meta property="og:description" content="Compare estimated tax under the old and new tax regimes for FY 2025-26." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://siddharthvbhatia-blip.github.io/itrdesk/calculator.html" />
+  <meta property="og:locale" content="en_IN" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script defer src="assets/script.js"></script>
+  <script defer src="assets/calculator.js"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Income Tax Calculator AY 2026-27","url":"https://siddharthvbhatia-blip.github.io/itrdesk/calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"creator":{"@type":"Person","name":"CA Siddharth Bhatia"}}
+  </script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="container nav-wrap">
+  <a class="brand" href="index.html" aria-label="ITR Desk home"><span class="brand-title">ITR Desk</span><span class="brand-subtitle">by CA Siddharth Bhatia</span></a>
+  <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+  <nav id="site-nav" class="site-nav" aria-label="Primary navigation"><a href="index.html#services">Services</a><a href="calculator.html" aria-current="page">Tax Calculator</a><a href="checklist.html">Checklist</a><a href="index.html#case-selector">Choose ITR Type</a><a href="index.html#faq">FAQ</a><a href="index.html#enquiry">Enquiry</a><a href="privacy.html">Privacy</a></nav>
+</div></header>
+
+<main id="main">
+<section class="page-hero calculator-hero"><div class="container"><p class="eyebrow">FY 2025-26 • AY 2026-27</p><h1>Income tax calculator: old vs new regime.</h1><p>Enter normal slab-rate income and eligible old-regime deductions. The calculator applies the applicable slabs, standard deduction, section 87A rebate, marginal relief, surcharge and 4% cess.</p><div class="pill-row"><span class="pill">Calculation stays on your device</span><span class="pill">No sign-up</span><span class="pill">Instant comparison</span></div></div></section>
+
+<section class="section calculator-section"><div class="container calculator-layout">
+  <form id="taxCalculator" class="tax-form" novalidate>
+    <div class="calc-heading"><span>1</span><div><h2>Taxpayer details</h2><p>Age affects old-regime slabs for resident individuals.</p></div></div>
+    <div class="calc-grid two">
+      <label>Residential status<select id="residentialStatus"><option value="resident">Resident individual</option><option value="nonresident">Non-resident individual</option></select></label>
+      <label>Age on 31 March 2026<select id="taxpayerAge"><option value="below60">Below 60 years</option><option value="60to79">60 to 79 years</option><option value="80plus">80 years or above</option></select></label>
+    </div>
+
+    <div class="calc-heading"><span>2</span><div><h2>Annual income</h2><p>Enter amounts for the full financial year.</p></div></div>
+    <div class="calc-grid two">
+      <label>Salary / taxable pension (₹)<input id="salaryIncome" class="money-input" inputmode="decimal" value="0" /><small>Standard deduction is applied automatically.</small></label>
+      <label>House-property income or loss (₹)<input id="houseIncome" class="money-input" inputmode="decimal" value="0" /><small>Enter the computed figure after section 24 deductions; use minus for loss. Cross-head set-off restrictions are applied.</small></label>
+      <label>Business / profession income (₹)<input id="businessIncome" class="money-input" inputmode="decimal" value="0" /></label>
+      <label>Other normal-rate income (₹)<input id="otherIncome" class="money-input" inputmode="decimal" value="0" /><small>For example, bank interest. Do not include special-rate income.</small></label>
+    </div>
+
+    <details class="calc-details" open><summary>Old-regime deductions</summary><p>Enter only amounts that are legally eligible in your case. These entries reduce only the old-regime estimate.</p>
+      <div class="calc-grid two">
+        <label>Section 80C (₹)<input id="deduction80C" class="money-input" inputmode="decimal" value="0" /><small>Automatically restricted to ₹1,50,000.</small></label>
+        <label>Section 80D (₹)<input id="deduction80D" class="money-input" inputmode="decimal" value="0" /></label>
+        <label>Section 80CCD(1B) – NPS (₹)<input id="deductionNPS" class="money-input" inputmode="decimal" value="0" /><small>Automatically restricted to ₹50,000.</small></label>
+        <label>Other Chapter VI-A deductions (₹)<input id="otherDeductions" class="money-input" inputmode="decimal" value="0" /></label>
+      </div>
+    </details>
+
+    <div id="calcError" class="calc-error" role="alert" hidden></div>
+    <div class="actions-row calc-actions"><button type="submit" class="btn primary">Calculate and compare</button><button type="button" id="resetCalculator" class="btn ghost">Reset</button></div>
+    <p class="micro-note">Your figures are processed only in this browser and are not transmitted or stored by this website.</p>
+  </form>
+
+  <aside class="calc-results" aria-live="polite">
+    <div class="result-summary"><p class="eyebrow">Estimated comparison</p><h2 id="bestRegime">Enter your income</h2><p id="estimatedSaving">Your comparison will appear here.</p>
+      <div class="regime-cards"><div><span>New regime</span><strong id="newTotalTax">₹0</strong><small>Default regime</small></div><div><span>Old regime</span><strong id="oldTotalTax">₹0</strong><small>Based on entered deductions</small></div></div>
+    </div>
+    <div class="result-breakdown"><h3>Calculation breakdown</h3><div class="table-scroll"><table><thead><tr><th>Particulars</th><th>New</th><th>Old</th></tr></thead><tbody>
+      <tr><td>Gross total income</td><td id="newGross">₹0</td><td id="oldGross">₹0</td></tr>
+      <tr><td>Deductions</td><td id="newDeductions">₹0</td><td id="oldDeductions">₹0</td></tr>
+      <tr><td>Taxable income</td><td id="newTaxable">₹0</td><td id="oldTaxable">₹0</td></tr>
+      <tr><td>Tax before rebate</td><td id="newBeforeRebate">₹0</td><td id="oldBeforeRebate">₹0</td></tr>
+      <tr><td>Section 87A rebate</td><td id="newRebate">₹0</td><td id="oldRebate">₹0</td></tr>
+      <tr><td>Surcharge</td><td id="newSurcharge">₹0</td><td id="oldSurcharge">₹0</td></tr>
+      <tr><td>Health &amp; education cess</td><td id="newCess">₹0</td><td id="oldCess">₹0</td></tr>
+    </tbody></table></div></div>
+    <div class="calc-scope"><h3>Important scope</h3><p>This calculator covers an individual’s normal slab-rate income. It does not compute special-rate tax on capital gains, lottery, online gaming, virtual digital assets, unexplained income, agricultural-income rate integration, AMT, relief under sections 89/90/91, or interest and late fee.</p><p>Business or professional taxpayers should also verify regime-selection and switching rules before acting.</p><a id="calculatorWhatsapp" class="btn secondary" href="https://wa.me/917879857126?text=Hi%2C%20I%20used%20the%20AY%202026-27%20tax%20calculator%20and%20would%20like%20a%20professional%20review." target="_blank" rel="noopener">Ask for professional review</a></div>
+  </aside>
+</div></section>
+
+<section class="section muted"><div class="container"><div class="section-heading"><p class="eyebrow">Before you rely on the result</p><h2>Why the final tax may differ</h2><p>Actual tax depends on classification of income, eligibility of deductions, set-off rules, special tax rates, residential status and information available in AIS, Form 26AS and other records.</p></div><div class="cards-grid"><article class="info-card"><span class="card-number">01</span><h3>Capital gains</h3><p>Listed shares, mutual funds, property and other assets may be taxed at special rates and require separate calculations.</p></article><article class="info-card"><span class="card-number">02</span><h3>Regime eligibility</h3><p>Taxpayers with business or professional income have additional conditions and switching restrictions.</p></article><article class="info-card"><span class="card-number">03</span><h3>Deductions and losses</h3><p>Limits, evidence and set-off restrictions must be checked before a deduction or loss is used.</p></article></div></div></section>
+</main>
+
+<footer class="site-footer"><div class="container footer-grid"><div><h2>ITR Desk</h2><p>CA-reviewed ITR filing guidance for salary, capital gains, F&amp;O, business/profession, NRI and AIS/26AS mismatch cases.</p><p><strong>Contact:</strong> +91 7879857126<br><strong>Email:</strong> siddharth.v.bhatia@gmail.com</p></div><div><h3>Useful pages</h3><ul><li><a href="calculator.html">Income tax calculator</a></li><li><a href="checklist.html">ITR checklist</a></li><li><a href="itr-filing-indore.html">ITR filing in Indore</a></li><li><a href="capital-gain-itr-filing.html">Capital gain ITR</a></li></ul></div><div><h3>Professional note</h3><p>The calculator and content are for general tax awareness. Professional assistance is subject to document review, applicable law, client confirmation and professional acceptance. No guarantee is made regarding refund or tax saving.</p></div></div><div class="container footer-bottom">© 2026 ITR Desk by CA Siddharth Bhatia. Indicative calculation should not be treated as a final tax computation or professional opinion.</div></footer>
+<a class="wa-float" href="https://wa.me/917879857126?text=Hi%2C%20I%20used%20the%20AY%202026-27%20tax%20calculator%20and%20need%20ITR%20guidance." target="_blank" rel="noopener">WhatsApp ITR Enquiry</a>
+</body></html>
