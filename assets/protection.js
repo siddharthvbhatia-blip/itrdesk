@@ -9,8 +9,6 @@
   style.textContent = `
     body{-webkit-user-select:none;user-select:none}
     input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text}
-    .capture-watermark{position:fixed;inset:-30vh -30vw;z-index:9997;display:grid;grid-template-columns:repeat(4,minmax(300px,1fr));grid-auto-rows:150px;align-items:center;justify-items:center;gap:12px;transform:rotate(-23deg);pointer-events:none;overflow:hidden;color:rgba(15,107,93,.075);font:900 13px/1.25 Inter,Arial,sans-serif;letter-spacing:.08em;text-align:center;text-transform:uppercase;white-space:nowrap}
-    .capture-watermark span{display:block;padding:8px 14px;border:1px solid rgba(15,107,93,.055);border-radius:999px}
     .capture-shield{position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;padding:24px;background:#0d1d19;color:#fff;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .08s linear,visibility 0s linear .08s;text-align:center}
     .capture-shield.active{opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
     .capture-shield div{max-width:520px;padding:32px;border:1px solid rgba(255,255,255,.18);border-radius:24px;background:rgba(255,255,255,.06)}
@@ -18,34 +16,10 @@
     .capture-concealed{overflow:hidden}
     .capture-notice{position:fixed;left:50%;bottom:24px;z-index:2147483647;max-width:min(560px,calc(100% - 28px));padding:11px 16px;border-radius:999px;background:#10231f;color:#fff;box-shadow:0 12px 36px rgba(0,0,0,.28);font:800 .88rem/1.4 Inter,Arial,sans-serif;text-align:center;opacity:0;visibility:hidden;transform:translate(-50%,12px);transition:.18s ease;pointer-events:none}
     .capture-notice.visible{opacity:1;visibility:visible;transform:translate(-50%,0)}
-    @media(max-width:640px){.capture-watermark{grid-template-columns:repeat(3,minmax(230px,1fr));grid-auto-rows:125px;font-size:11px}.capture-notice{bottom:82px;border-radius:16px}}
+    @media(max-width:640px){.capture-notice{bottom:82px;border-radius:16px}}
     @media print{body>*{display:none!important}body::before{content:"Printing is disabled. © ITR Desk by CA Siddharth Bhatia.";display:block!important;padding:48px;font:700 18px/1.5 Arial,sans-serif;color:#111}}
   `;
   document.head.appendChild(style);
-
-  let reference = '';
-  try {
-    reference = sessionStorage.getItem('itrdesk-protection-ref') || '';
-    if (!reference) {
-      const bytes = new Uint8Array(4);
-      if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(bytes);
-      reference = Array.from(bytes, value => value.toString(16).padStart(2, '0')).join('').toUpperCase();
-      if (!reference || reference === '00000000') reference = Math.random().toString(36).slice(2, 10).toUpperCase();
-      sessionStorage.setItem('itrdesk-protection-ref', reference);
-    }
-  } catch (error) {
-    reference = Math.random().toString(36).slice(2, 10).toUpperCase();
-  }
-
-  const watermark = document.createElement('div');
-  watermark.className = 'capture-watermark';
-  watermark.setAttribute('aria-hidden', 'true');
-  const watermarkText = `ITR DESK • PROTECTED • ${location.hostname} • REF ${reference}`;
-  for (let index = 0; index < 28; index += 1) {
-    const mark = document.createElement('span');
-    mark.textContent = watermarkText;
-    watermark.appendChild(mark);
-  }
 
   const shield = document.createElement('div');
   shield.className = 'capture-shield';
@@ -57,7 +31,7 @@
   notice.setAttribute('role', 'status');
   notice.setAttribute('aria-live', 'polite');
 
-  document.body.append(watermark, shield, notice);
+  document.body.append(shield, notice);
 
   let noticeTimer;
   let revealTimer;
@@ -111,7 +85,7 @@
 
     if (event.key === 'PrintScreen') {
       conceal();
-      notify('Screenshot capture is discouraged. Protected watermarks remain visible.');
+      notify('Screenshot capture is discouraged on this protected page.');
       setTimeout(reveal, 1800);
       return;
     }
