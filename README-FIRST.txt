@@ -29,3 +29,13 @@ Required live checks:
 
 The INR 1,000 fee covers the automated computation copy only. ITR preparation,
 review and filing remain a separate professional engagement and fee.
+
+CONTENT-PROTECTION NOTE
+
+The shared assets add visible session watermarks, print blocking, copying and
+selection deterrence, shortcut deterrence, and a privacy curtain when the page
+loses focus. These measures apply to every site page that loads
+assets/script.js. No public webpage can reliably prevent an operating-system
+screenshot, screen recording, browser extension, camera photo, or a technically
+skilled visitor from copying content. The watermark is the durable deterrent
+and attribution layer.

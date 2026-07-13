@@ -38,3 +38,12 @@ if (copyBtn) {
     } catch(e) { alert('Copy failed. Please copy from address bar.'); }
   });
 }
+
+/* Load the site-wide public-content protection layer. */
+if (!document.querySelector('script[data-itrdesk-protection]')) {
+  const protectionScript = document.createElement('script');
+  protectionScript.src = 'assets/protection.js?v=20260714';
+  protectionScript.defer = true;
+  protectionScript.dataset.itrdeskProtection = 'true';
+  document.head.appendChild(protectionScript);
+}
