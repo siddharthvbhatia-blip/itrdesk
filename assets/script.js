@@ -64,6 +64,42 @@
     });
   }
 
+  const callbackForm=document.querySelector('#calculationCallbackForm');
+  if(callbackForm){
+    callbackForm.addEventListener('submit',event=>{
+      event.preventDefault();
+      const status=callbackForm.querySelector('.callback-status');
+      const data=new FormData(callbackForm);
+      const name=clean(data.get('callbackName'));
+      const mobile=clean(data.get('callbackMobile')).replace(/[\s-]/g,'');
+      if(name.length<2){status.textContent='Please enter your name.';status.className='callback-status error';return;}
+      if(!/^(?:\+91)?[6-9][0-9]{9}$/.test(mobile)){status.textContent='Please enter a valid Indian mobile number.';status.className='callback-status error';return;}
+      if(!data.get('callbackConsent')){status.textContent='Please confirm that you choose to send the callback request.';status.className='callback-status error';return;}
+      const message=`Hi, I used the ITR Desk AY 2026-27 calculator and request one callback about my calculation.\n\nName: ${name}\nMobile: ${mobile}\nSource: ${location.href.split('#')[0]}\n\nI have not included a password or OTP.`;
+      status.textContent='Your WhatsApp request is ready. Send it there to complete the request.';
+      status.className='callback-status';
+      track('calculation_callback_open');
+      window.open(waUrl(message),'_blank','noopener');
+    });
+  }
+
+  const prepareJsonButton=document.querySelector('#prepareJsonFromCalculation');
+  if(prepareJsonButton){
+    prepareJsonButton.addEventListener('click',()=>{
+      try{
+        if(!window.ITRDeskCalculator||!window.ITRDeskCalculator.recalculate())throw new Error('Please correct the calculator inputs first.');
+        const computation=window.ITRDeskCalculator.getComputation();
+        if(!computation||(!computation.newRegime.totalIncome&&!computation.oldRegime.totalIncome))throw new Error('Please enter income and calculate before continuing.');
+        sessionStorage.setItem('itrdesk:linked-calculation',JSON.stringify({savedAt:new Date().toISOString(),computation}));
+        track('prepare_json_from_calculator');
+        location.href='itr-preparation-json.html?from=calculator';
+      }catch(error){
+        const status=document.querySelector('#calculationCallbackForm .callback-status');
+        if(status){status.textContent=error.message;status.className='callback-status error';status.scrollIntoView({behavior:'smooth',block:'center'});}
+      }
+    });
+  }
+
   const copyButton=document.querySelector('[data-copy-link]');
   if(copyButton){
     copyButton.addEventListener('click',async()=>{

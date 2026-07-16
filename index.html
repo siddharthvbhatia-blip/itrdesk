@@ -76,6 +76,7 @@
     <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
       <a href="calculator.html">Tax Calculator</a>
+      <a href="itr-preparation-json.html">ITR Prep JSON</a>
       <a href="#form-finder">ITR Form Finder</a>
       <a href="tax-tools.html">Tax Tools</a>
       <a href="checklist.html">Checklist</a>
@@ -105,6 +106,7 @@
         <h2>What do you need today?</h2>
         <div class="quick-links">
           <a href="calculator.html"><strong>Compare tax regimes</strong><span>Detailed normal- and special-rate tax calculator</span></a>
+          <a href="itr-preparation-json.html"><strong>Prepare an ITR review draft</strong><span>Structured JSON preparation file—without sharing your portal password</span></a>
           <a href="#form-finder"><strong>Check a likely ITR form</strong><span>Private, no-login questionnaire</span></a>
           <a href="tax-tools.html"><strong>Use focused tax tools</strong><span>HRA, advance tax and late-fee checks</span></a>
         </div>
@@ -193,6 +195,7 @@
         <a class="seo-card tool-card" href="tax-tools.html#hra"><span class="tag">Old regime</span><h3>HRA exemption estimator</h3><p>Apply the statutory least-of-three calculation, including metro selection.</p><strong>Open HRA tool →</strong></a>
         <a class="seo-card tool-card" href="tax-tools.html#advance-tax"><span class="tag">Cash flow</span><h3>Advance-tax planner</h3><p>See cumulative instalments and the resident-senior-citizen exception.</p><strong>Open planner →</strong></a>
         <a class="seo-card tool-card" href="tax-tools.html#late-fee"><span class="tag">Section 234F</span><h3>Late-filing fee checker</h3><p>Check the statutory fee separately from interest and other consequences.</p><strong>Open fee checker →</strong></a>
+        <a class="seo-card tool-card" href="itr-preparation-json.html"><span class="tag">Professional-review draft</span><h3>ITR preparation JSON</h3><p>Organise identity, income heads, taxes and document checks into a structured draft for review. Portal credentials are never requested.</p><strong>Open preparation flow →</strong></a>
       </div>
       <div class="actions-row section-actions"><a class="btn secondary" href="tax-tools.html">View all focused tools</a><a class="btn ghost" href="calculator.html">Open comprehensive calculator</a></div>
     </div>
@@ -224,8 +227,8 @@
 
   <section class="section muted safety-section">
     <div class="container two-col align-start">
-      <div><p class="eyebrow">Privacy by clear choice</p><h2>What stays in your browser—and what does not.</h2><p>The free calculator, form finder and focused tools work locally. If you deliberately continue to a secure computation, the report details are sent to the document service and Razorpay handles the payment.</p><a class="text-link" href="privacy.html">Read the full privacy flow →</a></div>
-      <div class="safety-grid"><article><strong>Free tools</strong><span>No PAN or login required; calculations stay on the device.</span></article><article><strong>Secure computation</strong><span>Identity and report data are sent only after you open that separate flow.</span></article><article><strong>Payments</strong><span>Card, UPI and bank credentials are handled by Razorpay, not this website.</span></article><article><strong>ITR enquiry</strong><span>Share only basic facts first; never send OTPs or passwords.</span></article></div>
+      <div><p class="eyebrow">Privacy by clear choice</p><h2>What stays in your browser—and what does not.</h2><p>The free calculator, form finder and focused tools work locally. A paid computation or preparation draft is sent only after you deliberately open that separate flow and continue.</p><a class="text-link" href="privacy.html">Read the full privacy flow →</a></div>
+      <div class="safety-grid"><article><strong>Free tools</strong><span>No PAN or login required; calculations stay on the device.</span></article><article><strong>Paid documents</strong><span>Identity and draft data are sent only after you open the relevant secure flow.</span></article><article><strong>Payments</strong><span>Card, UPI and bank credentials are handled by Razorpay, not this website.</span></article><article><strong>Portal safety</strong><span>ITR Desk never asks for your income-tax password or OTP.</span></article></div>
     </div>
   </section>
 
@@ -251,9 +254,10 @@
   </section>
 
   <section class="section author-section">
-    <div class="container two-col">
-      <div><p class="eyebrow">Professional identification</p><h2>CA Siddharth Bhatia</h2><p>Chartered Accountant, ICAI Membership No. 438248, based in Indore. ITR Desk provides factual tax-awareness resources and a route for users who independently choose to request professional review.</p><div class="actions-row"><a class="btn secondary" href="about-ca-siddharth-bhatia.html">View factual profile</a><button class="btn ghost" data-share data-share-text="Free AY 2026-27 tax tools and document guidance from ITR Desk by CA Siddharth Bhatia." data-track="share_site">Share this resource</button></div></div>
-      <div class="docs-panel"><h3>Website boundaries</h3><ul class="check-list"><li>No guarantee of refund, tax saving or processing outcome</li><li>No public testimonials or comparative claims</li><li>No password or OTP collection</li><li>Professional work is subject to records, law and acceptance</li></ul></div>
+    <div class="container professional-card">
+      <figure class="professional-portrait"><img src="assets/ca-siddharth-bhatia.jpeg" alt="CA Siddharth Bhatia" width="1080" height="1084" loading="lazy" /><figcaption>CA Siddharth Bhatia<br /><span>ICAI M. No. 438248</span></figcaption></figure>
+      <div class="professional-copy"><p class="eyebrow">Professional identification</p><h2>CA Siddharth Bhatia</h2><p class="profile-lead">Chartered Accountant based in Indore, working across Income Tax, GST, project finance, MCA-related services, physical-to-demat share conversion, trust registration and audits, subject to the facts, applicable law and professional acceptance.</p><p class="career-note"><strong>Former Senior Financial Analyst at Accenture.</strong> The experience combines structured financial analysis with professional tax and compliance review.</p><div class="contact-chips"><a href="tel:+917879857126">+91 7879857126</a><a href="mailto:siddharth.v.bhatia@gmail.com">siddharth.v.bhatia@gmail.com</a></div><div class="actions-row"><a class="btn secondary" href="about-ca-siddharth-bhatia.html">View professional profile</a><button class="btn ghost" data-share data-share-text="Free AY 2026-27 tax tools and document guidance from ITR Desk by CA Siddharth Bhatia." data-track="share_site">Share this resource</button></div></div>
+      <div class="docs-panel"><h3>Website boundaries</h3><ul class="check-list"><li>No guarantee of refund, tax saving or processing outcome</li><li>No public testimonials or comparative claims</li><li>No income-tax password or OTP collection</li><li>Professional work is subject to records, law and acceptance</li></ul></div>
     </div>
   </section>
 
@@ -264,6 +268,7 @@
       <details><summary>Is Form 16 enough?</summary><p>Not always. AIS, Form 26AS, bank interest, capital gains, deductions, taxes paid and regime choice should also be checked.</p></details>
       <details><summary>Is a refund guaranteed?</summary><p>No. It depends on applicable law, complete facts, taxes paid, return processing and any adjustment by the Income Tax Department.</p></details>
       <details><summary>Should I share my income-tax password?</summary><p>No. Never send portal passwords, OTPs, card PINs or banking passwords. Identity and document steps should be discussed only after you choose to make an enquiry.</p></details>
+      <details><summary>Is the ITR preparation JSON ready to upload on the portal?</summary><p>No. It is a structured professional-review draft. Filing JSON must be generated or validated through the current official Income Tax Department utility after complete reconciliation and review.</p></details>
       <details><summary>Can online enquiries be handled outside Indore?</summary><p>Yes, subject to identity, documents, scope, applicable law, conflict checks and professional acceptance.</p></details>
     </div></div>
   </section>
@@ -296,8 +301,8 @@
 
 <footer class="site-footer">
   <div class="container footer-grid">
-    <div><h2>ITR Desk</h2><p>AY 2026-27 income-tax tools, document checklists and factual ITR guidance by CA Siddharth Bhatia.</p><p><strong>Mobile:</strong> +91 7879857126<br /><strong>Email:</strong> siddharth.v.bhatia@gmail.com</p></div>
-    <div><h3>Free resources</h3><ul><li><a href="calculator.html">Comprehensive tax calculator</a></li><li><a href="#form-finder">ITR form finder</a></li><li><a href="tax-tools.html">Focused tax tools</a></li><li><a href="checklist.html">Document checklist</a></li><li><a href="sample-computation.html">Fictional sample computation</a></li></ul></div>
+    <div><h2>ITR Desk</h2><p>AY 2026-27 income-tax tools, document checklists and factual ITR guidance by CA Siddharth Bhatia.</p><p><strong>Mobile:</strong> <a href="tel:+917879857126">+91 7879857126</a><br /><strong>Email:</strong> <a href="mailto:siddharth.v.bhatia@gmail.com">siddharth.v.bhatia@gmail.com</a></p></div>
+    <div><h3>Resources</h3><ul><li><a href="calculator.html">Comprehensive tax calculator</a></li><li><a href="itr-preparation-json.html">ITR preparation JSON</a></li><li><a href="#form-finder">ITR form finder</a></li><li><a href="tax-tools.html">Focused tax tools</a></li><li><a href="checklist.html">Document checklist</a></li><li><a href="sample-computation.html">Fictional sample computation</a></li></ul></div>
     <div><h3>Professional note</h3><p>Information is for general tax awareness. Professional assistance is subject to document review, applicable law, conflict checks, user confirmation and professional acceptance.</p></div>
   </div>
   <div class="container footer-bottom">© 2026 ITR Desk by CA Siddharth Bhatia. No guarantee is made regarding refund, tax saving, processing time or absence of notice. <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refund-policy.html">Refunds</a> · <a href="contact.html">Contact</a></div>

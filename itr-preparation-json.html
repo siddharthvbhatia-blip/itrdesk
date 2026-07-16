@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ITR Preparation JSON for Professional Review AY 2026-27 | ITR Desk</title>
+  <meta name="description" content="Organise AY 2026-27 income, taxes and document checks into a paid structured JSON preparation draft for professional review—without sharing an income-tax password or OTP." />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="CA Siddharth Bhatia" />
+  <link rel="canonical" href="https://siddharthvbhatia-blip.github.io/itrdesk/itr-preparation-json.html" />
+  <meta property="og:title" content="ITR Preparation JSON for Professional Review | ITR Desk" />
+  <meta property="og:description" content="A structured AY 2026-27 preparation draft. Your income-tax password and OTP are never requested." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://siddharthvbhatia-blip.github.io/itrdesk/itr-preparation-json.html" />
+  <meta property="og:image" content="https://siddharthvbhatia-blip.github.io/itrdesk/assets/itr-desk-share.png" />
+  <meta name="itrdesk-payment-api" content="https://itrdesk-payment-backend.vercel.app" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script defer src="assets/script.js"></script>
+  <script defer src="assets/itr-preparation.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ITR Preparation JSON for Professional Review AY 2026-27","url":"https://siddharthvbhatia-blip.github.io/itrdesk/itr-preparation-json.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","creator":{"@type":"Person","name":"CA Siddharth Bhatia"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="container nav-wrap">
+  <a class="brand" href="index.html" aria-label="ITR Desk home"><span class="brand-title">ITR Desk</span><span class="brand-subtitle">by CA Siddharth Bhatia</span></a>
+  <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+  <nav id="site-nav" class="site-nav" aria-label="Primary navigation"><a href="index.html">Home</a><a href="calculator.html">Tax Calculator</a><a href="itr-preparation-json.html" aria-current="page">ITR Prep JSON</a><a href="checklist.html">Checklist</a><a href="about-ca-siddharth-bhatia.html">About</a><a href="contact.html">Contact</a></nav>
+</div></header>
+
+<main id="main">
+  <section class="page-hero"><div class="container json-hero-grid">
+    <div><p class="eyebrow">AY 2026-27 • Structured preparation flow</p><h1>Prepare an ITR review draft—without sharing your portal password.</h1><p>Organise identity details, income heads, tax credits, document checks and risk flags into a structured JSON file for professional review by CA Siddharth Bhatia.</p><div class="pill-row"><span class="pill">No password or OTP</span><span class="pill">Local document selection</span><span class="pill">Separate payment verification</span></div></div>
+    <aside class="security-card"><h2>Your login stays with you</h2><p>ITR Desk will not ask for or store your Income Tax Department user ID, password, Aadhaar OTP, bank OTP or e-verification code.</p><a class="official-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener">Open the official e-Filing portal ↗</a></aside>
+  </div></section>
+
+  <section class="section"><div class="container json-workflow">
+    <aside class="json-side">
+      <div class="sidebar-card"><p class="eyebrow">Safe workflow</p><h2>Use official records first</h2><ol class="workflow-steps"><li>Log in only on incometax.gov.in.</li><li>Download AIS/TIS, Form 26AS and available pre-filled data yourself.</li><li>Reconcile the totals and complete this preparation form.</li><li>Pay separately to unlock the structured review-draft JSON.</li><li>Have the draft professionally reviewed before any filing.</li></ol></div>
+      <div class="sidebar-card"><h3>Official guidance</h3><p><a href="https://www.incometax.gov.in/iec/foportal/ais-faq" target="_blank" rel="noopener">How to view AIS ↗</a><br /><a href="https://www.incometax.gov.in/iec/foportal/help/offline-utility" target="_blank" rel="noopener">Official ITR offline utility ↗</a><br /><a href="https://www.incometax.gov.in/iec/foportal/help/e-filing-itr1-form-sahaj-faq" target="_blank" rel="noopener">Official filing checks ↗</a></p><p class="micro-note">The official utility—not this website—creates the filing JSON intended for upload.</p></div>
+      <div class="json-disclaimer"><strong>Important distinction</strong>This service generates an ITR preparation and professional-review draft. It is not the Income Tax Department’s official filing JSON, an acknowledgement, a pre-filled JSON, an upload-ready return or proof of filing.</div>
+    </aside>
+
+    <form id="itrJsonForm" class="json-form" novalidate>
+      <section class="json-panel"><h2>1. Taxpayer and contact details</h2><p>Your mobile number is required for payment support and a consent-based callback about this request.</p>
+        <div class="json-grid"><label>Name of assessee *<input id="jsonName" autocomplete="name" maxlength="100" required /></label><label>PAN *<input id="jsonPan" maxlength="10" autocapitalize="characters" placeholder="ABCDE1234F" required /></label><label>Date of birth<input id="jsonDob" type="date" /></label><label>Mobile number *<input id="jsonMobile" inputmode="tel" autocomplete="tel" maxlength="15" placeholder="9876543210" required /></label><label>Email address *<input id="jsonEmail" type="email" autocomplete="email" maxlength="150" required /></label><label>City<input id="jsonCity" autocomplete="address-level2" maxlength="80" /></label></div>
+      </section>
+
+      <section class="json-panel"><h2>2. Return profile</h2><p>This is a starting profile, not final ITR-form selection.</p>
+        <div class="json-grid three"><label>Assessment year<select id="jsonAssessmentYear"><option value="2026-27">AY 2026-27</option></select></label><label>Return stage<select id="jsonReturnStage"><option value="original">Original</option><option value="belated">Belated</option><option value="revised">Revised</option><option value="updated">Updated / other—review required</option></select></label><label>Residential status<select id="jsonResidentialStatus"><option value="resident">Resident</option><option value="rnor">Resident but not ordinarily resident</option><option value="nonresident">Non-resident</option></select></label><label>Starting ITR indication<select id="jsonItrForm"><option value="undetermined">Not determined</option><option value="ITR-1">ITR-1</option><option value="ITR-2">ITR-2</option><option value="ITR-3">ITR-3</option><option value="ITR-4">ITR-4</option></select></label><label>Tax regime for review<select id="jsonRegime"><option value="compare">Compare / not final</option><option value="new">New regime</option><option value="old">Old regime</option></select></label><label>Refund bank accounts to verify<input id="jsonBankAccountCount" type="number" min="0" max="25" step="1" value="1" /></label></div>
+      </section>
+
+      <section class="json-panel"><h2>3. Official records and working papers</h2><p>Select the records you have reviewed. Optional file selection below is local: the browser records filenames only and does not upload the file contents.</p>
+        <div class="json-checks"><label><input type="checkbox" name="sourceDocument" value="AIS" /> Annual Information Statement (AIS)</label><label><input type="checkbox" name="sourceDocument" value="TIS" /> Taxpayer Information Summary (TIS)</label><label><input type="checkbox" name="sourceDocument" value="Form 26AS" /> Form 26AS</label><label><input type="checkbox" name="sourceDocument" value="Form 16 / 16A" /> Form 16 / Form 16A</label><label><input type="checkbox" name="sourceDocument" value="Bank interest records" /> Bank interest records</label><label><input type="checkbox" name="sourceDocument" value="Capital-gain statements" /> Capital-gain statements</label><label><input type="checkbox" name="sourceDocument" value="Business books / financials" /> Business books / financials</label><label><input type="checkbox" name="sourceDocument" value="Tax challans" /> Advance / self-assessment tax challans</label></div>
+        <div class="local-file-box"><label>Optional local record selection<input id="jsonLocalFiles" type="file" accept=".json,.csv,.pdf,.xlsx,.xls" multiple /></label><p class="json-official-note">File contents do not leave this page. Sensitive source documents are not included in the paid draft.</p><ul id="jsonFileList" class="file-list"><li>No local files selected.</li></ul></div>
+      </section>
+
+      <section class="json-panel"><h2>4. Income-head summary</h2><p>Enter reconciled annual amounts. Negative house-property or business figures can be entered where appropriate; final set-off requires review.</p>
+        <div id="linkedCalculation" class="linked-calculation">No calculator snapshot is linked. You can enter reconciled figures manually or return to the <a href="calculator.html">tax calculator</a>.</div>
+        <div class="json-grid"><label>Salary / taxable pension (₹)<input id="jsonSalary" class="money-input" inputmode="decimal" value="0" /></label><label>House-property income / loss (₹)<input id="jsonHouseProperty" class="money-input" inputmode="decimal" value="0" /></label><label>Business / profession income / loss (₹)<input id="jsonBusiness" class="money-input" inputmode="decimal" value="0" /></label><label>Short-term capital gains (₹)<input id="jsonStcg" class="money-input" inputmode="decimal" value="0" /></label><label>Long-term capital gains (₹)<input id="jsonLtcg" class="money-input" inputmode="decimal" value="0" /></label><label>Other-source income (₹)<input id="jsonOtherSources" class="money-input" inputmode="decimal" value="0" /></label><label>Exempt income (₹)<input id="jsonExemptIncome" class="money-input" inputmode="decimal" value="0" /></label><label>Agricultural income (₹)<input id="jsonAgriculturalIncome" class="money-input" inputmode="decimal" value="0" /></label></div>
+      </section>
+
+      <section class="json-panel"><h2>5. Deductions, taxes and reliefs</h2><p>Enter totals only after checking eligibility and supporting records.</p>
+        <div class="json-grid"><label>Old-regime deductions claimed (₹)<input id="jsonOldDeductions" class="money-input" inputmode="decimal" value="0" /></label><label>New/common deductions claimed (₹)<input id="jsonNewDeductions" class="money-input" inputmode="decimal" value="0" /></label><label>TDS / TCS (₹)<input id="jsonTdsTcs" class="money-input" inputmode="decimal" value="0" /></label><label>Advance tax (₹)<input id="jsonAdvanceTax" class="money-input" inputmode="decimal" value="0" /></label><label>Self-assessment tax (₹)<input id="jsonSelfAssessmentTax" class="money-input" inputmode="decimal" value="0" /></label><label>Foreign-tax relief claimed (₹)<input id="jsonForeignTaxRelief" class="money-input" inputmode="decimal" value="0" /></label></div>
+      </section>
+
+      <section class="json-panel"><h2>6. Review flags</h2><p>Select every condition that may require a schedule, different ITR form or additional verification.</p>
+        <div class="json-checks"><label><input type="checkbox" name="reviewFlag" value="Capital gains" /> Capital gains</label><label><input type="checkbox" name="reviewFlag" value="F&O / intraday" /> F&amp;O / intraday</label><label><input type="checkbox" name="reviewFlag" value="Virtual digital assets" /> Virtual digital assets</label><label><input type="checkbox" name="reviewFlag" value="Brought-forward losses" /> Brought-forward losses</label><label><input type="checkbox" name="reviewFlag" value="Foreign assets or income" /> Foreign assets / signing authority / foreign income</label><label><input type="checkbox" name="reviewFlag" value="Director / unlisted shares" /> Company director / unlisted shares</label><label><input type="checkbox" name="reviewFlag" value="Multiple house properties" /> Multiple house properties</label><label><input type="checkbox" name="reviewFlag" value="Audit applicability" /> Audit applicability to be checked</label><label><input type="checkbox" name="reviewFlag" value="NRI / RNOR" /> NRI / RNOR matters</label><label><input type="checkbox" name="reviewFlag" value="AIS / 26AS mismatch" /> AIS / 26AS mismatch</label></div>
+        <label style="margin-top:16px">Notes for professional review<textarea id="jsonReviewNotes" maxlength="1500" placeholder="Example: Two employers; equity and mutual-fund gains; AIS interest differs from bank certificate."></textarea></label>
+      </section>
+
+      <section class="json-panel"><h2>7. Callback and paid JSON draft</h2><p>Nothing is sent when you type. A WhatsApp callback request is sent only if you choose that button. The draft is unlocked only after server-verified payment.</p>
+        <label class="json-consent"><input id="jsonCallbackConsent" type="checkbox" /> I choose to let CA Siddharth Bhatia use my name and mobile number for one callback about this preparation request.</label>
+        <button id="requestJsonCallback" class="btn ghost" type="button">Prepare WhatsApp callback request</button>
+        <div id="jsonCallbackStatus" class="callback-status" role="status" aria-live="polite"></div>
+
+        <details class="checkout-disclosure" style="margin-top:20px"><summary><span><strong>Download the structured preparation JSON</strong><small>The separate fee appears after you choose this option</small></span><span class="summary-action">Continue</span></summary>
+          <div class="json-paywall"><div class="price-line"><span><strong>Separate access fee</strong><br /><small>This is additional to any computation payment.</small></span><strong>₹1,000</strong></div>
+            <label class="json-consent"><input id="jsonTermsConsent" type="checkbox" /> I confirm that the information is mine/authorised, understand this is a professional-review draft—not an official filing JSON—and accept the <a href="terms.html" target="_blank">terms</a>, <a href="refund-policy.html" target="_blank">refund policy</a> and <a href="privacy.html" target="_blank">privacy policy</a>.</label>
+            <div id="jsonPaymentStatus" class="payment-status" role="status" aria-live="polite"></div>
+            <button id="payForJsonDraft" type="submit" class="btn primary paid-button">Pay securely and unlock JSON</button>
+            <button id="retryJsonVerification" type="button" class="btn ghost paid-retry" hidden>Verify completed payment again</button>
+            <div id="jsonDownloads" class="json-downloads" hidden><p><strong>Payment verified.</strong> Your structured preparation draft is unlocked for the exact data submitted.</p><button id="downloadJsonDraft" type="button" class="btn primary">Download preparation JSON</button></div>
+          </div>
+        </details>
+        <p class="micro-note">The preparation fee does not include professional review, return filing, audit, certification, notice response or representation. Those require a separately accepted scope.</p>
+      </section>
+
+      <div class="json-disclaimer"><strong>Do not file solely from this automated draft.</strong> Technology and customer-entered data can contain omissions, classification errors or outdated assumptions. Use the current official Income Tax Department utility and obtain professional review before filing. This notice does not exclude any responsibility that cannot lawfully be excluded.</div>
+    </form>
+  </div></section>
+
+  <section class="section muted"><div class="container cta-band"><div><p class="eyebrow">Need the complete professional scope?</p><h2>Request ITR review and filing assistance.</h2><p>Share only broad facts first. Documents, form, timelines, engagement scope and applicable professional fee are confirmed privately after review.</p></div><a class="btn secondary" href="index.html#enquiry">Request checklist and scope</a></div></section>
+</main>
+
+<footer class="site-footer"><div class="container footer-grid"><div><h2>ITR Desk</h2><p>Structured tax tools and factual filing guidance by CA Siddharth Bhatia.</p><p><strong>Mobile:</strong> <a href="tel:+917879857126">+91 7879857126</a><br /><strong>Email:</strong> <a href="mailto:siddharth.v.bhatia@gmail.com">siddharth.v.bhatia@gmail.com</a></p></div><div><h3>Useful pages</h3><ul><li><a href="calculator.html">Tax calculator</a></li><li><a href="checklist.html">Document checklist</a></li><li><a href="about-ca-siddharth-bhatia.html">About CA Siddharth Bhatia</a></li></ul></div><div><h3>Safety</h3><p>Never enter or send an income-tax password, OTP, card PIN, UPI PIN or banking password to ITR Desk.</p></div></div><div class="container footer-bottom">© 2026 ITR Desk by CA Siddharth Bhatia. <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refund-policy.html">Refunds</a> · <a href="contact.html">Contact</a></div></footer>
+<nav class="mobile-dock" aria-label="Mobile quick actions"><a href="calculator.html"><span>₹</span>Tax</a><a href="itr-preparation-json.html"><span>{ }</span>JSON</a><a href="checklist.html"><span>✓</span>Checklist</a><a href="index.html#enquiry"><span>↗</span>Enquiry</a></nav>
+<a class="wa-float" href="https://wa.me/917879857126?text=Hi%2C%20I%20reviewed%20the%20ITR%20preparation%20JSON%20page%20and%20would%20like%20the%20appropriate%20next%20steps." target="_blank" rel="noopener">WhatsApp enquiry</a>
+</body>
+</html>
