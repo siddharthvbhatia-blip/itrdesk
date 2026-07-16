@@ -1,0 +1,75 @@
+/* About-page portrait refinement: compact passport-style circular image */
+.profile-hero-grid{
+  grid-template-columns:160px minmax(0,1fr);
+  gap:clamp(26px,4vw,50px);
+}
+
+.profile-hero-photo{
+  width:160px;
+  height:160px;
+  aspect-ratio:1;
+  margin:0;
+  justify-self:center;
+  overflow:hidden;
+  border:4px solid #fff;
+  border-radius:50%;
+  background:#e8e5eb;
+  box-shadow:0 16px 38px rgba(16,35,31,.17),0 0 0 1px rgba(185,130,60,.2);
+}
+
+.profile-hero-photo img{
+  display:block;
+  width:100%;
+  height:100%;
+  aspect-ratio:1;
+  object-fit:cover;
+  object-position:center 5%;
+}
+
+.sidebar-portrait{
+  width:108px;
+  height:108px;
+  aspect-ratio:1;
+  margin:0 auto 20px;
+  border:3px solid #fff;
+  border-radius:50%;
+  object-fit:cover;
+  object-position:center 5%;
+  box-shadow:0 10px 26px rgba(16,35,31,.14),0 0 0 1px rgba(185,130,60,.16);
+}
+
+@media(max-width:760px){
+  .profile-hero-grid{
+    grid-template-columns:1fr;
+    justify-items:center;
+    text-align:center;
+  }
+
+  .profile-hero-photo{
+    width:140px;
+    height:140px;
+    max-width:140px;
+  }
+
+  .profile-hero-grid .contact-chips,
+  .profile-hero-grid .actions-row{
+    justify-content:center;
+    align-items:center;
+  }
+
+  .profile-hero-grid .contact-chips{
+    flex-direction:row;
+  }
+}
+
+@media(max-width:480px){
+  .profile-hero-photo{
+    width:128px;
+    height:128px;
+    max-width:128px;
+  }
+
+  .profile-hero-grid .contact-chips{
+    flex-direction:column;
+  }
+}
