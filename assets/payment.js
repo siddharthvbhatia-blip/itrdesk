@@ -6,7 +6,7 @@
   const API_BASE=String(apiMeta&&apiMeta.content||'').replace(/\/$/,'');
   const configured=/^https:\/\/[A-Za-z0-9.-]+$/.test(API_BASE)&&API_BASE!=='https://PAYMENT_API_BASE'&&API_BASE!=='PAYMENT_API_BASE';
   const payButton=$('payForComputation'),retryButton=$('retryPaymentVerification'),status=$('paymentStatus'),downloads=$('paidDownloads');
-  let paidSession=null,pendingPayment=null,razorpayPromise=null;
+  let paidSession=null,pendingPayment=null,legacyReport=null,razorpayPromise=null;
 
   function setStatus(message,type){status.textContent=message||'';status.className='payment-status'+(type?' '+type:'')}
   function clean(value){return String(value||'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim()}
@@ -24,61 +24,49 @@
     if(!$('reportConsent').checked)throw new Error('Please accept the terms, refund policy and privacy policy.');
     return {schema:'itrdesk-report-v1',identity,computation};
   }
-  async function api(path,body,blob){
-    const response=await fetch(API_BASE+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(blob&&response.ok)return response;
-    const data=await response.json().catch(()=>({error:'Unexpected server response.'}));
-    if(!response.ok)throw new Error(data.error||'The request could not be completed.');
-    return data;
-  }
-  function loadRazorpay(){
-    if(window.Razorpay)return Promise.resolve();
-    if(razorpayPromise)return razorpayPromise;
-    razorpayPromise=new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://checkout.razorpay.com/v1/checkout.js';script.async=true;script.onload=resolve;script.onerror=()=>reject(new Error('Secure payment window could not be loaded. Check your internet connection.'));document.head.appendChild(script)});
-    return razorpayPromise;
-  }
+  async function api(path,body,blob){const response=await fetch(API_BASE+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(blob&&response.ok)return response;const data=await response.json().catch(()=>({error:'Unexpected server response.'}));if(!response.ok)throw new Error(data.error||'The request could not be completed.');return data}
+  function loadRazorpay(){if(window.Razorpay)return Promise.resolve();if(razorpayPromise)return razorpayPromise;razorpayPromise=new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://checkout.razorpay.com/v1/checkout.js';script.async=true;script.onload=resolve;script.onerror=()=>reject(new Error('Secure payment window could not be loaded. Check your internet connection.'));document.head.appendChild(script)});return razorpayPromise}
   function resetPayButton(){if(!configured||paidSession)return;payButton.disabled=false;payButton.textContent='Continue to secure checkout'}
-  function savePending(response,report){pendingPayment={response,report};sessionStorage.setItem('itrdeskPendingPayment',JSON.stringify(pendingPayment));retryButton.hidden=false}
-  function clearPending(){pendingPayment=null;sessionStorage.removeItem('itrdeskPendingPayment');retryButton.hidden=true}
-  function savePaidSession(session){paidSession=session;sessionStorage.setItem('itrdeskPaidReportAuth',JSON.stringify(session));clearPending();payButton.disabled=true;payButton.textContent='Payment verified';downloads.hidden=false;setStatus('Payment verified. PDF and Word downloads are unlocked for this exact computation for 24 hours.','success');downloads.scrollIntoView({behavior:'smooth',block:'center'})}
+  function savePending(response,report){pendingPayment={response,report};retryButton.hidden=false}
+  function clearPending(){pendingPayment=null;retryButton.hidden=true;try{sessionStorage.removeItem('itrdeskPendingPayment')}catch(_){}}
+  function savePaidSession(session){
+    paidSession={token:session.token,expiresAt:session.expiresAt};legacyReport=null;
+    try{sessionStorage.setItem('itrdeskPaidReportAuth',JSON.stringify(paidSession))}catch(_){}
+    clearPending();payButton.disabled=true;payButton.textContent='Payment verified';downloads.hidden=false;
+    setStatus('Payment verified. Only an encrypted download authorisation—not your PAN, address or report data—is retained in this browser session for up to 24 hours.','success');
+    downloads.scrollIntoView({behavior:'smooth',block:'center'});
+  }
   function restoreSession(){
-    try{const stored=JSON.parse(sessionStorage.getItem('itrdeskPaidReportAuth')||'null');if(stored&&stored.token&&stored.report&&new Date(stored.expiresAt)>new Date()){paidSession=stored;payButton.disabled=true;payButton.textContent='Payment verified';downloads.hidden=false;setStatus('A verified paid computation is available in this browser session until '+new Date(stored.expiresAt).toLocaleString('en-IN')+'.','success')}}catch(_){sessionStorage.removeItem('itrdeskPaidReportAuth')}
-    if(!paidSession&&configured){try{const pending=JSON.parse(sessionStorage.getItem('itrdeskPendingPayment')||'null');if(pending&&pending.response&&pending.report){pendingPayment=pending;retryButton.hidden=false;setStatus('A completed payment is waiting for server verification. Select “Verify completed payment again”.')}}catch(_){sessionStorage.removeItem('itrdeskPendingPayment')}}
+    try{
+      const stored=JSON.parse(sessionStorage.getItem('itrdeskPaidReportAuth')||'null');
+      if(stored&&stored.token&&new Date(stored.expiresAt)>new Date()){
+        paidSession={token:stored.token,expiresAt:stored.expiresAt};
+        if(!String(stored.token).startsWith('v2.')&&stored.report)legacyReport=stored.report;
+        payButton.disabled=true;payButton.textContent='Payment verified';downloads.hidden=false;
+        setStatus('A verified paid computation is available in this browser session until '+new Date(stored.expiresAt).toLocaleString('en-IN')+'.','success');
+      }else sessionStorage.removeItem('itrdeskPaidReportAuth');
+      sessionStorage.removeItem('itrdeskPendingPayment');
+    }catch(_){try{sessionStorage.removeItem('itrdeskPaidReportAuth');sessionStorage.removeItem('itrdeskPendingPayment')}catch(__){}}
   }
-  async function verifyPayment(response,report){
-    savePending(response,report);
-    setStatus('Payment received. Verifying it securely before releasing the documents...');
-    const verified=await api('/api/verify-payment',{...response,report});
-    if(!verified.verified||!verified.token)throw new Error('Payment could not be verified. No document was released.');
-    savePaidSession({token:verified.token,expiresAt:verified.expiresAt,report});
-  }
+  async function verifyPayment(response,report){savePending(response,report);setStatus('Payment received. Verifying it securely before releasing the documents...');const verified=await api('/api/verify-payment',{...response,report});if(!verified.verified||!verified.token)throw new Error('Payment could not be verified. No document was released.');savePaidSession({token:verified.token,expiresAt:verified.expiresAt})}
+
   form.addEventListener('submit',async event=>{
-    event.preventDefault();
-    if(!configured){setStatus('The secure computation checkout has not been activated yet. Free tax calculation remains available.','error');return}
+    event.preventDefault();if(!configured){setStatus('The secure computation checkout has not been activated yet. Free tax calculation remains available.','error');return}
     let report;
     try{
       report=reportData();payButton.disabled=true;payButton.textContent='Creating secure checkout...';setStatus('Preparing the secure payment order. Razorpay will display the amount before authorisation...');
       const [order]=await Promise.all([api('/api/create-order',{report}),loadRazorpay()]);
-      const checkout=new Razorpay({key:order.keyId,amount:order.amount,currency:order.currency,name:'ITR Desk',description:'AY 2026-27 PDF + Word computation',order_id:order.orderId,prefill:{name:report.identity.name,email:report.identity.email,contact:report.identity.mobile},notes:{service:'Paid tax computation'},theme:{color:'#0f6b5d'},handler:async response=>{try{await verifyPayment(response,report)}catch(error){setStatus(error.message+' If your account was debited, use “Verify completed payment again”.','error');resetPayButton()}},modal:{confirm_close:true,ondismiss:()=>{if(!paidSession)setStatus('Payment window closed. No document has been unlocked.');resetPayButton()}}});
-      checkout.on('payment.failed',response=>setStatus('Payment failed: '+clean(response&&response.error&&response.error.description||'Please try again.'),'error'));
-      payButton.textContent='Payment window open…';checkout.open();
+      const checkout=new Razorpay({key:order.keyId,amount:order.amount,currency:order.currency,name:'ITR Desk',description:'AY 2026-27 PDF + Word computation',order_id:order.orderId,prefill:{name:report.identity.name,email:report.identity.email,contact:report.identity.mobile},notes:{service:'Paid tax computation'},theme:{color:'#0f6b5d'},handler:async response=>{try{await verifyPayment(response,report)}catch(error){setStatus(error.message+' If your account was debited, use “Verify completed payment again” before refreshing this page.','error');resetPayButton()}},modal:{confirm_close:true,ondismiss:()=>{if(!paidSession)setStatus('Payment window closed. No document has been unlocked.');resetPayButton()}}});
+      checkout.on('payment.failed',response=>setStatus('Payment failed: '+clean(response&&response.error&&response.error.description||'Please try again.'),'error'));payButton.textContent='Payment window open…';checkout.open();
     }catch(error){setStatus(error.message,'error');resetPayButton()}
   });
-
-  retryButton.addEventListener('click',async()=>{
-    if(!configured||!pendingPayment)return;
-    const original=retryButton.textContent;
-    try{retryButton.disabled=true;retryButton.textContent='Verifying…';await verifyPayment(pendingPayment.response,pendingPayment.report)}catch(error){setStatus(error.message,'error')}finally{retryButton.disabled=false;retryButton.textContent=original}
-  });
-
+  retryButton.addEventListener('click',async()=>{if(!configured||!pendingPayment)return;const original=retryButton.textContent;try{retryButton.disabled=true;retryButton.textContent='Verifying…';await verifyPayment(pendingPayment.response,pendingPayment.report)}catch(error){setStatus(error.message,'error')}finally{retryButton.disabled=false;retryButton.textContent=original}});
   async function download(format){
     if(!paidSession){setStatus('Complete and verify the computation payment first.','error');return}
-    const button=format==='pdf'?$('downloadPaidPdf'):$('downloadPaidDocx');
-    const original=button.textContent;
-    try{button.disabled=true;button.textContent='Preparing...';setStatus('Generating your '+(format==='pdf'?'PDF':'Word')+' computation securely...');const response=await api('/api/download',{format,token:paidSession.token,report:paidSession.report},true);const blob=await response.blob();const disposition=response.headers.get('Content-Disposition')||'';const match=disposition.match(/filename="([^"]+)"/);const filename=match?match[1]:'ITR-Computation-AY-2026-27.'+(format==='pdf'?'pdf':'docx');const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);setStatus('Download prepared successfully.','success')}catch(error){setStatus(error.message,'error')}finally{button.disabled=false;button.textContent=original}
+    const button=format==='pdf'?$('downloadPaidPdf'):$('downloadPaidDocx'),original=button.textContent;
+    try{button.disabled=true;button.textContent='Preparing...';setStatus('Generating your '+(format==='pdf'?'PDF':'Word')+' computation securely...');const body={format,token:paidSession.token};if(legacyReport)body.report=legacyReport;const response=await api('/api/download',body,true);const blob=await response.blob();const disposition=response.headers.get('Content-Disposition')||'',match=disposition.match(/filename="([^"]+)"/),filename=match?match[1]:'ITR-Computation-AY-2026-27.'+(format==='pdf'?'pdf':'docx');const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);setStatus('Download prepared successfully.','success')}catch(error){setStatus(error.message,'error')}finally{button.disabled=false;button.textContent=original}
   }
-  $('downloadPaidPdf').addEventListener('click',()=>download('pdf'));
-  $('downloadPaidDocx').addEventListener('click',()=>download('docx'));
+  $('downloadPaidPdf').addEventListener('click',()=>download('pdf'));$('downloadPaidDocx').addEventListener('click',()=>download('docx'));
   if(!configured){payButton.disabled=true;payButton.textContent='Secure checkout activation pending';setStatus('Secure online payment is being activated. Free tax calculation remains available.')}
   restoreSession();
 })();
