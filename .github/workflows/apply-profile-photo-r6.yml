@@ -1,0 +1,47 @@
+name: Apply profile photo multilayer fix
+
+on:
+  push:
+    branches: [agent/profile-photo-multilayer-fix-r6]
+    paths:
+      - scripts/apply-profile-multilayer-fix.py
+      - .github/workflows/apply-profile-photo-r6.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: python -m pip install --disable-pip-version-check pillow
+      - name: Apply multilayer photo fix
+        run: python scripts/apply-profile-multilayer-fix.py
+      - name: Decode both local profile assets
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          for name in ['assets/ca-siddharth-bhatia-profile-v3.jpg','assets/ca-siddharth-bhatia-profile.png']:
+              image=Image.open(name)
+              image.load()
+              assert image.size[0] >= 192 and image.size[1] >= 192, (name,image.size)
+              print(name,image.format,image.size)
+          PY
+      - run: npm run check
+      - run: npm test
+      - name: Commit tested fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm scripts/apply-profile-multilayer-fix.py .github/workflows/apply-profile-photo-r6.yml
+          git add index.html about-ca-siddharth-bhatia.html assets/profile-photo.css assets/script.js package.json test/profile-photo-assets.js .github/workflows/live-profile-photo-smoke.yml
+          git commit -m "Use multilayer profile photo fallbacks and live decode checks"
+          git push
