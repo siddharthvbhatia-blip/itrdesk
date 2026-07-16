@@ -1,0 +1,10 @@
+{
+  "name": "itrdesk-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node test/run-tests.js",
+    "check": "node --check assets/script.js && node --check assets/calculator.js && node --check assets/payment.js && node --check assets/itr-preparation.js && node --check assets/document-import.js"
+  },
+  "engines": { "node": ">=20" }
+}
