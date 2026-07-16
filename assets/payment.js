@@ -37,7 +37,7 @@
     razorpayPromise=new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://checkout.razorpay.com/v1/checkout.js';script.async=true;script.onload=resolve;script.onerror=()=>reject(new Error('Secure payment window could not be loaded. Check your internet connection.'));document.head.appendChild(script)});
     return razorpayPromise;
   }
-  function resetPayButton(){if(!configured||paidSession)return;payButton.disabled=false;payButton.textContent='Pay ₹1,000 and unlock PDF + Word'}
+  function resetPayButton(){if(!configured||paidSession)return;payButton.disabled=false;payButton.textContent='Continue to secure checkout'}
   function savePending(response,report){pendingPayment={response,report};sessionStorage.setItem('itrdeskPendingPayment',JSON.stringify(pendingPayment));retryButton.hidden=false}
   function clearPending(){pendingPayment=null;sessionStorage.removeItem('itrdeskPendingPayment');retryButton.hidden=true}
   function savePaidSession(session){paidSession=session;sessionStorage.setItem('itrdeskPaidReportAuth',JSON.stringify(session));clearPending();payButton.disabled=true;payButton.textContent='Payment verified';downloads.hidden=false;setStatus('Payment verified. PDF and Word downloads are unlocked for this exact computation for 24 hours.','success');downloads.scrollIntoView({behavior:'smooth',block:'center'})}
@@ -54,10 +54,10 @@
   }
   form.addEventListener('submit',async event=>{
     event.preventDefault();
-    if(!configured){setStatus('The ₹1,000 payment gateway has not been activated yet. Please contact ITR Desk on WhatsApp.','error');return}
+    if(!configured){setStatus('The secure computation checkout has not been activated yet. Free tax calculation remains available.','error');return}
     let report;
     try{
-      report=reportData();payButton.disabled=true;payButton.textContent='Creating secure payment...';setStatus('Preparing a secure ₹1,000 payment order...');
+      report=reportData();payButton.disabled=true;payButton.textContent='Creating secure checkout...';setStatus('Preparing the secure payment order. Razorpay will display the amount before authorisation...');
       const [order]=await Promise.all([api('/api/create-order',{report}),loadRazorpay()]);
       const checkout=new Razorpay({key:order.keyId,amount:order.amount,currency:order.currency,name:'ITR Desk',description:'AY 2026-27 PDF + Word computation',order_id:order.orderId,prefill:{name:report.identity.name,email:report.identity.email,contact:report.identity.mobile},notes:{service:'Paid tax computation'},theme:{color:'#0f6b5d'},handler:async response=>{try{await verifyPayment(response,report)}catch(error){setStatus(error.message+' If your account was debited, use “Verify completed payment again”.','error');resetPayButton()}},modal:{confirm_close:true,ondismiss:()=>{if(!paidSession)setStatus('Payment window closed. No document has been unlocked.');resetPayButton()}}});
       checkout.on('payment.failed',response=>setStatus('Payment failed: '+clean(response&&response.error&&response.error.description||'Please try again.'),'error'));
@@ -72,13 +72,13 @@
   });
 
   async function download(format){
-    if(!paidSession){setStatus('Complete and verify the ₹1,000 payment first.','error');return}
+    if(!paidSession){setStatus('Complete and verify the computation payment first.','error');return}
     const button=format==='pdf'?$('downloadPaidPdf'):$('downloadPaidDocx');
     const original=button.textContent;
     try{button.disabled=true;button.textContent='Preparing...';setStatus('Generating your '+(format==='pdf'?'PDF':'Word')+' computation securely...');const response=await api('/api/download',{format,token:paidSession.token,report:paidSession.report},true);const blob=await response.blob();const disposition=response.headers.get('Content-Disposition')||'';const match=disposition.match(/filename="([^"]+)"/);const filename=match?match[1]:'ITR-Computation-AY-2026-27.'+(format==='pdf'?'pdf':'docx');const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);setStatus('Download prepared successfully.','success')}catch(error){setStatus(error.message,'error')}finally{button.disabled=false;button.textContent=original}
   }
   $('downloadPaidPdf').addEventListener('click',()=>download('pdf'));
   $('downloadPaidDocx').addEventListener('click',()=>download('docx'));
-  if(!configured){payButton.disabled=true;payButton.textContent='₹1,000 payment activation pending';setStatus('Secure online payment is being activated. Free tax calculation remains available. For an immediate paid computation or ITR filing, contact ITR Desk on WhatsApp.')}
+  if(!configured){payButton.disabled=true;payButton.textContent='Secure checkout activation pending';setStatus('Secure online payment is being activated. Free tax calculation remains available.')}
   restoreSession();
 })();
