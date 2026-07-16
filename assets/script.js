@@ -242,3 +242,35 @@
 
   if(typeof module!=='undefined')module.exports={classifyItrProfile};
 })();
+
+
+/* KNOWN GOOD PROFILE PHOTO FALLBACK START */
+(() => {
+  const initialiseKnownGoodProfilePhotos = () => {
+    document.querySelectorAll('img[data-profile-photo]').forEach((image) => {
+      if (image.dataset.knownGoodProfileReady === 'true') return;
+      image.dataset.knownGoodProfileReady = 'true';
+      const remote = image.dataset.remoteFallback;
+      let fallbackUsed = false;
+      const useFallback = () => {
+        if (!remote || fallbackUsed) return;
+        fallbackUsed = true;
+        image.src = remote;
+      };
+      image.addEventListener('error', useFallback);
+      image.addEventListener('load', () => {
+        if (image.naturalWidth < 100 || image.naturalHeight < 100) useFallback();
+        else image.dataset.profilePhotoLoaded = 'true';
+      });
+      window.setTimeout(() => {
+        if (!image.complete || image.naturalWidth < 100 || image.naturalHeight < 100) useFallback();
+      }, 1600);
+    });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialiseKnownGoodProfilePhotos);
+  } else {
+    initialiseKnownGoodProfilePhotos();
+  }
+})();
+/* KNOWN GOOD PROFILE PHOTO FALLBACK END */
