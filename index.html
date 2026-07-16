@@ -74,16 +74,7 @@
   <div class="container nav-wrap">
     <a class="brand" href="index.html" aria-label="ITR Desk home"><span class="brand-title">ITR Desk</span><span class="brand-subtitle">by CA Siddharth Bhatia</span></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
-    <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
-      <a href="calculator.html">Tax Calculator</a>
-      <a href="itr-preparation-json.html">ITR Review Draft</a>
-      <a href="#form-finder">ITR Form Finder</a>
-      <a href="tax-tools.html">Tax Tools</a>
-      <a href="checklist.html">Checklist</a>
-      <a href="#guides">Guides</a>
-      <a href="about-ca-siddharth-bhatia.html">About</a>
-      <a href="#enquiry">Enquiry</a>
-    </nav>
+    <nav id="site-nav" class="site-nav" aria-label="Primary navigation"><a href="index.html" aria-current="page">Home</a><a href="calculator.html">Tax Calculator</a><a href="itr-preparation-json.html">ITR Review Draft</a><a href="#guides">Guides</a><a href="about-ca-siddharth-bhatia.html">About</a><a href="contact.html">Contact</a></nav>
   </div>
 </header>
 
@@ -94,23 +85,13 @@
         <p class="eyebrow">AY 2026-27 • Indore + Online India</p>
         <h1>Understand your tax position before you file.</h1>
         <p class="hero-text">Use free income-tax tools, identify a likely ITR form and prepare the right documents. Professional review is available only when you choose to make an enquiry.</p>
-        <div class="hero-actions">
-          <a class="btn primary" href="calculator.html" data-track="hero_calculator">Calculate tax</a>
-          <a class="btn secondary" href="#form-finder" data-track="hero_form_finder">Find my ITR form</a>
-          <a class="btn ghost" href="checklist.html" data-track="hero_checklist">Document checklist</a>
-        </div>
+        <div class="hero-actions"><a class="btn primary" href="calculator.html" data-track="hero_calculator">Check my tax</a><a class="btn secondary" href="#enquiry" data-track="hero_enquiry">Request professional assistance</a></div>
         <p class="micro-note">Free tools provide indicative results. Final treatment depends on complete facts, records and the applicable Income Tax Department utility.</p>
       </div>
       <aside class="hero-card decision-card" aria-label="Choose your starting point">
-        <span class="status-chip">Start in under a minute</span>
-        <h2>What do you need today?</h2>
-        <div class="quick-links">
-          <a href="calculator.html"><strong>Compare tax regimes</strong><span>Import Form 16, AIS, TIS or Form 26AS locally, then review normal- and special-rate tax</span></a>
-          <a href="itr-preparation-json.html"><strong>Prepare an ITR review draft</strong><span>Review document-derived proposals and organise a JSON preparation file—without sharing portal credentials</span></a>
-          <a href="#form-finder"><strong>Check a likely ITR form</strong><span>Private, no-login questionnaire</span></a>
-          <a href="tax-tools.html"><strong>Use focused tax tools</strong><span>HRA, advance tax and late-fee checks</span></a>
-        </div>
-      </aside>
+        <span class="status-chip">Simple, guided starting points</span>
+        <h2>Choose one starting point</h2>
+        <div class="quick-links"><a href="calculator.html"><strong>Calculate and compare tax</strong><span>Estimate the old and new regime position with special-rate income.</span></a><a href="itr-preparation-json.html"><strong>Prepare an ITR review draft</strong><span>Organise confirmed figures for professional review; this is not a portal-upload JSON.</span></a><a href="checklist.html"><strong>Get the right document checklist</strong><span>Prepare records before requesting professional assistance.</span></a></div></aside>
     </div>
   </section>
 
@@ -253,7 +234,7 @@
       <details><summary>Is Form 16 enough?</summary><p>Not always. AIS, Form 26AS, bank interest, capital gains, deductions, taxes paid and regime choice should also be checked.</p></details>
       <details><summary>Is a refund guaranteed?</summary><p>No. It depends on applicable law, complete facts, taxes paid, return processing and any adjustment by the Income Tax Department.</p></details>
       <details><summary>Should I share my income-tax password?</summary><p>No. Never send portal passwords, OTPs, card PINs or banking passwords. Identity and document steps should be discussed only after you choose to make an enquiry.</p></details>
-      <details><summary>Is the ITR preparation JSON ready to upload on the portal?</summary><p>No. It is a structured professional-review draft. Filing JSON must be generated or validated through the current official Income Tax Department utility after complete reconciliation and review.</p></details>
+      <details><summary>Is the ITR review draft ready to upload on the portal?</summary><p>No. It is a structured professional-review draft. Filing JSON must be generated or validated through the current official Income Tax Department utility after complete reconciliation and review.</p></details>
       <details><summary>Can online enquiries be handled outside Indore?</summary><p>Yes, subject to identity, documents, scope, applicable law, conflict checks and professional acceptance.</p></details>
     </div></div>
   </section>
@@ -269,7 +250,7 @@
         <label>Broad case type<select name="caseType" required><option value="">Select one</option><option>Salary / Form 16</option><option>Salary + Capital Gains</option><option>F&amp;O / Intraday / Trading</option><option>Business / Profession</option><option>NRI / Foreign Income</option><option>AIS / 26AS mismatch</option><option>Not sure</option></select></label>
         <fieldset><legend>Broad conditions</legend><label class="checkbox"><input type="checkbox" name="details" value="Capital gains" /> Capital gains</label><label class="checkbox"><input type="checkbox" name="details" value="F&O or intraday" /> F&amp;O / intraday</label><label class="checkbox"><input type="checkbox" name="details" value="Business or profession" /> Business / profession</label><label class="checkbox"><input type="checkbox" name="details" value="NRI or foreign income" /> NRI / foreign income</label><label class="checkbox"><input type="checkbox" name="details" value="AIS or 26AS mismatch" /> AIS / 26AS mismatch</label></fieldset>
         <label>Short note (optional)<textarea name="note" rows="3" maxlength="500" placeholder="Example: Form 16 received; capital-gain statement available."></textarea></label>
-        <label class="checkbox consent"><input type="checkbox" name="consent" required /> I choose to send these basic details on WhatsApp for a checklist and scope discussion. I understand this alone does not create a professional engagement.</label>
+        <label class="checkbox consent"><input type="checkbox" name="consent" required /> I choose to submit these basic details securely for a checklist and scope discussion. I understand this alone does not create a professional engagement.</label>
         <button class="btn primary" type="submit" data-track="enquiry_submit">Submit secure enquiry</button>
       </form>
     </div>
@@ -293,7 +274,7 @@
   <div class="container footer-bottom">© 2026 ITR Desk by CA Siddharth Bhatia. No guarantee is made regarding refund, tax saving, processing time or absence of notice. <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refund-policy.html">Refunds</a> · <a href="contact.html">Contact</a></div>
 </footer>
 
-<nav class="mobile-dock" aria-label="Mobile quick actions"><a href="calculator.html"><span>₹</span>Tax</a><a href="#form-finder"><span>?</span>ITR form</a><a href="checklist.html"><span>✓</span>Checklist</a><a href="#enquiry"><span>↗</span>Enquiry</a></nav>
+<nav class="mobile-dock" aria-label="Mobile quick actions"><a href="calculator.html"><span>₹</span>Tax</a><a href="itr-preparation-json.html"><span>✓</span>Review</a><a href="checklist.html"><span>☑</span>Checklist</a><a href="contact.html"><span>↗</span>Contact</a></nav>
 <a class="wa-float" href="https://wa.me/917879857126?text=Hi%2C%20I%20reviewed%20an%20ITR%20Desk%20resource%20and%20would%20like%20the%20relevant%20document%20checklist." target="_blank" rel="noopener" data-track="whatsapp_float">WhatsApp enquiry</a>
 </body>
 </html>
