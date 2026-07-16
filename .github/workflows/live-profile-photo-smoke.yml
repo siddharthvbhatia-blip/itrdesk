@@ -11,6 +11,16 @@ on:
       - assets/script.js
       - test/profile-photo-known-good.js
       - .github/workflows/live-profile-photo-smoke.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - index.html
+      - about-ca-siddharth-bhatia.html
+      - assets/ca-siddharth-bhatia.jpeg
+      - assets/profile-photo.css
+      - assets/script.js
+      - test/profile-photo-known-good.js
+      - .github/workflows/live-profile-photo-smoke.yml
   workflow_dispatch:
   schedule:
     - cron: '17 3 * * *'
