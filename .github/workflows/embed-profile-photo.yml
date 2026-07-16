@@ -1,0 +1,51 @@
+name: Embed profile photo permanently
+
+on:
+  push:
+    branches: [agent/permanent-profile-photo-fix]
+    paths:
+      - scripts/embed-profile-photo.py
+      - .github/workflows/embed-profile-photo.yml
+
+permissions:
+  contents: write
+
+jobs:
+  embed-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Embed verified profile photo
+        run: python scripts/embed-profile-photo.py
+      - name: Sanity-check embedded portraits
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64, re
+          for name, minimum in [('index.html', 1), ('about-ca-siddharth-bhatia.html', 2)]:
+              text = Path(name).read_text(encoding='utf-8')
+              matches = re.findall(r'src="data:image/jpeg;base64,([^\"]+)"', text)
+              assert len(matches) >= minimum, (name, len(matches))
+              for encoded in matches:
+                  raw = base64.b64decode(encoded, validate=True)
+                  assert raw.startswith(b'\xff\xd8\xff') and len(raw) > 5000
+              assert 'src="assets/ca-siddharth-bhatia-profile' not in text
+          print('PASS embedded profile photo HTML sanity checks')
+          PY
+      - run: npm run check
+      - run: npm test
+      - name: Commit permanent fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm scripts/embed-profile-photo.py .github/workflows/embed-profile-photo.yml
+          git add index.html about-ca-siddharth-bhatia.html
+          git commit -m "Embed profile photo to prevent broken image links"
+          git push
