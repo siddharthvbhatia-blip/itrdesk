@@ -1,8 +1,8 @@
 name: Apply known-good profile photo restoration
 
 on:
-  push:
-    branches: [agent/restore-known-good-photo-r9]
+  pull_request:
+    branches: [main]
     paths:
       - scripts/restore-known-good-profile-photo.py
       - scripts/remove-obsolete-inline-photo-tests.py
