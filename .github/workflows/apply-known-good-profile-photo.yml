@@ -7,26 +7,24 @@ on:
       - scripts/restore-known-good-profile-photo.py
       - scripts/remove-obsolete-inline-photo-tests.py
       - .github/workflows/apply-known-good-profile-photo.yml
-  pull_request:
-    branches: [main]
-    paths:
-      - scripts/restore-known-good-profile-photo.py
-      - scripts/remove-obsolete-inline-photo-tests.py
-      - .github/workflows/apply-known-good-profile-photo.yml
 
 permissions:
   contents: write
+
+concurrency:
+  group: known-good-profile-photo-r9
+  cancel-in-progress: true
 
 jobs:
   restore-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
+      TARGET_BRANCH: agent/restore-known-good-photo-r9
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: agent/restore-known-good-photo-r9
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -57,9 +55,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -f scripts/restore-known-good-profile-photo.py scripts/remove-obsolete-inline-photo-tests.py .github/workflows/apply-known-good-profile-photo.yml
           git add -A
-          if git diff --cached --quiet; then
-            echo "No changes remained to commit"
-          else
-            git commit -m "Restore browser-proven profile photo with fallback checks"
-            git push origin HEAD:$TARGET_BRANCH
-          fi
+          git commit -m "Restore browser-proven profile photo with fallback checks"
+          git push origin HEAD:agent/restore-known-good-photo-r9
