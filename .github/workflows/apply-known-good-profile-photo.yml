@@ -49,11 +49,10 @@ jobs:
           PY
       - run: npm run check
       - run: npm test
-      - name: Commit tested restoration
+      - name: Commit only tested website files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -f scripts/restore-known-good-profile-photo.py scripts/remove-obsolete-inline-photo-tests.py .github/workflows/apply-known-good-profile-photo.yml
-          git add -A
+          git add index.html about-ca-siddharth-bhatia.html assets/profile-photo.css assets/script.js package.json test/run-tests.js test/profile-photo-known-good.js
           git commit -m "Restore browser-proven profile photo with fallback checks"
           git push origin HEAD:agent/restore-known-good-photo-r9
