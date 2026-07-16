@@ -73,3 +73,25 @@
     flex-direction:column;
   }
 }
+
+
+/* KNOWN GOOD PROFILE PHOTO START */
+.profile-hero-photo,
+.professional-portrait{
+  overflow:hidden!important;
+  background:#eef0f4 url("https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia.jpeg") center 17%/cover no-repeat!important;
+}
+.profile-hero-photo img[data-profile-photo],
+.professional-portrait img[data-profile-photo],
+.sidebar-portrait[data-profile-photo]{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  opacity:1!important;
+  visibility:visible!important;
+  object-fit:cover!important;
+  object-position:center 17%!important;
+  background:#eef0f4 url("https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia.jpeg") center 17%/cover no-repeat!important;
+}
+/* KNOWN GOOD PROFILE PHOTO END */

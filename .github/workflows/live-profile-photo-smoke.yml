@@ -6,16 +6,10 @@ on:
     paths:
       - index.html
       - about-ca-siddharth-bhatia.html
+      - assets/ca-siddharth-bhatia.jpeg
       - assets/profile-photo.css
-      - test/run-tests.js
-      - .github/workflows/live-profile-photo-smoke.yml
-  pull_request:
-    branches: [main]
-    paths:
-      - index.html
-      - about-ca-siddharth-bhatia.html
-      - assets/profile-photo.css
-      - test/run-tests.js
+      - assets/script.js
+      - test/profile-photo-known-good.js
       - .github/workflows/live-profile-photo-smoke.yml
   workflow_dispatch:
   schedule:
@@ -27,55 +21,54 @@ permissions:
 jobs:
   verify-live-site:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 20
     steps:
-      - name: Wait for GitHub Pages and verify published portrait bytes
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pillow
+      - name: Verify published JPEG and page references
         env:
           BUILD_SHA: ${{ github.sha }}
         run: |
           python - <<'PY'
-          import base64
+          from io import BytesIO
           import os
-          import re
           import time
           import urllib.request
+          from PIL import Image, ImageStat
 
           base = 'https://siddharthvbhatia-blip.github.io/itrdesk/'
-          targets = [
-              ('index.html', 1),
-              ('about-ca-siddharth-bhatia.html', 2),
-          ]
           build = os.environ.get('BUILD_SHA', 'manual')
-          last_error = None
-
+          last = None
           for attempt in range(1, 31):
               try:
-                  for page, minimum in targets:
-                      url = f'{base}{page}?profile-smoke={build}-{attempt}'
-                      request = urllib.request.Request(url, headers={
-                          'User-Agent': 'ITR-Desk-live-smoke-test/1.0',
-                          'Cache-Control': 'no-cache',
-                      })
-                      with urllib.request.urlopen(request, timeout=20) as response:
-                          if response.status != 200:
-                              raise AssertionError(f'{page} returned HTTP {response.status}')
-                          html = response.read().decode('utf-8')
-                      matches = re.findall(r'src="data:image/jpeg;base64,([^\"]+)"', html)
-                      if len(matches) < minimum:
-                          raise AssertionError(f'{page} has {len(matches)} embedded portrait(s), expected at least {minimum}')
-                      for encoded in matches:
-                          raw = base64.b64decode(encoded, validate=True)
-                          if not raw.startswith(b'\xff\xd8\xff') or len(raw) <= 5000:
-                              raise AssertionError(f'{page} contains an invalid embedded JPEG portrait')
-                      if 'src="assets/ca-siddharth-bhatia-profile' in html:
-                          raise AssertionError(f'{page} still depends on a separately served profile image')
-                  print('PASS live GitHub Pages profile photo smoke test')
+                  request = urllib.request.Request(
+                      f'{base}assets/ca-siddharth-bhatia.jpeg?smoke={build}-{attempt}',
+                      headers={'User-Agent':'ITR-Desk-photo-smoke/5.0','Cache-Control':'no-cache'},
+                  )
+                  raw = urllib.request.urlopen(request, timeout=20).read()
+                  image = Image.open(BytesIO(raw)).convert('RGB')
+                  image.load()
+                  assert image.width >= 300 and image.height >= 300, image.size
+                  assert max(ImageStat.Stat(image).var) > 100, 'Published JPEG appears blank'
+
+                  for page, minimum in [('index.html',1),('about-ca-siddharth-bhatia.html',2)]:
+                      request = urllib.request.Request(
+                          f'{base}{page}?smoke={build}-{attempt}',
+                          headers={'User-Agent':'ITR-Desk-photo-smoke/5.0','Cache-Control':'no-cache'},
+                      )
+                      html = urllib.request.urlopen(request, timeout=20).read().decode('utf-8')
+                      assert html.count('data-profile-photo') >= minimum
+                      assert 'assets/ca-siddharth-bhatia.jpeg?v=20260717-r9' in html
+                      assert 'data-remote-fallback="https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia.jpeg"' in html
+                      assert 'src="data:image/jpeg;base64,' not in html
+                  print('PASS live known-good profile photo smoke test')
                   raise SystemExit(0)
-              except Exception as error:
-                  last_error = error
-                  print(f'Attempt {attempt}/30 not ready: {error}')
+              except Exception as exc:
+                  last = exc
+                  print(f'Attempt {attempt}/30 not ready: {exc}')
                   if attempt < 30:
                       time.sleep(30)
-
-          raise SystemExit(f'Live profile photo smoke test failed after retries: {last_error}')
+          raise SystemExit(f'Live profile photo smoke test failed: {last}')
           PY
