@@ -1,6 +1,8 @@
 'use strict';
 
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 
 class FakeElement {
   constructor(value = '0') {
@@ -75,4 +77,20 @@ result = reset({ customCapitalRate: 101 });
 assert.equal(result.valid, false);
 assert.match(element('calcError').textContent, /between 0% and 100%/);
 
+function assertEmbeddedProfilePhoto(filename, minimumCount) {
+  const html = fs.readFileSync(path.join(__dirname, '..', filename), 'utf8');
+  const matches = [...html.matchAll(/src="data:image\/jpeg;base64,([^\"]+)"/g)];
+  assert.ok(matches.length >= minimumCount, `${filename} must contain ${minimumCount} embedded profile photo(s)`);
+  for (const match of matches) {
+    const bytes = Buffer.from(match[1], 'base64');
+    assert.ok(bytes.length > 5000, `${filename} profile photo is unexpectedly small`);
+    assert.equal(bytes.subarray(0, 3).toString('hex'), 'ffd8ff', `${filename} profile photo is not a valid JPEG`);
+  }
+  assert.ok(!html.includes('src="assets/ca-siddharth-bhatia-profile'), `${filename} must not depend on a separately served profile image`);
+}
+
+assertEmbeddedProfilePhoto('index.html', 1);
+assertEmbeddedProfilePhoto('about-ca-siddharth-bhatia.html', 2);
+
 console.log('PASS browser calculator AY 2026-27 boundary and validation tests');
+console.log('PASS embedded profile photo availability and JPEG integrity tests');
