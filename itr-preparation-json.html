@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="assets/styles.css" />
   <script defer src="assets/script.js"></script>
   <script defer src="assets/itr-preparation.js"></script>
+  <script defer src="assets/document-import.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ITR Preparation JSON for Professional Review AY 2026-27","url":"https://siddharthvbhatia-blip.github.io/itrdesk/itr-preparation-json.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","creator":{"@type":"Person","name":"CA Siddharth Bhatia"}}</script>
 </head>
 <body>
@@ -29,13 +30,13 @@
 
 <main id="main">
   <section class="page-hero"><div class="container json-hero-grid">
-    <div><p class="eyebrow">AY 2026-27 • Structured preparation flow</p><h1>Prepare an ITR review draft—without sharing your portal password.</h1><p>Organise identity details, income heads, tax credits, document checks and risk flags into a structured JSON file for professional review by CA Siddharth Bhatia.</p><div class="pill-row"><span class="pill">No password or OTP</span><span class="pill">Local document selection</span><span class="pill">Separate payment verification</span></div></div>
+    <div><p class="eyebrow">AY 2026-27 • Structured preparation flow</p><h1>Prepare an ITR review draft—without sharing your portal password.</h1><p>Organise identity details, income heads, tax credits, document checks and risk flags into a structured JSON file for professional review by CA Siddharth Bhatia.</p><div class="pill-row"><span class="pill">No password or OTP</span><span class="pill">Local document extraction</span><span class="pill">Separate payment verification</span></div></div>
     <aside class="security-card"><h2>Your login stays with you</h2><p>ITR Desk will not ask for or store your Income Tax Department user ID, password, Aadhaar OTP, bank OTP or e-verification code.</p><a class="official-link" href="https://www.incometax.gov.in/iec/foportal/" target="_blank" rel="noopener">Open the official e-Filing portal ↗</a></aside>
   </div></section>
 
   <section class="section"><div class="container json-workflow">
     <aside class="json-side">
-      <div class="sidebar-card"><p class="eyebrow">Safe workflow</p><h2>Use official records first</h2><ol class="workflow-steps"><li>Log in only on incometax.gov.in.</li><li>Download AIS/TIS, Form 26AS and available pre-filled data yourself.</li><li>Reconcile the totals and complete this preparation form.</li><li>Pay separately to unlock the structured review-draft JSON.</li><li>Have the draft professionally reviewed before any filing.</li></ol></div>
+      <div class="sidebar-card"><p class="eyebrow">Safe workflow</p><h2>Use official records first</h2><ol class="workflow-steps"><li>Log in only on incometax.gov.in.</li><li>Download AIS/TIS, Form 26AS and available pre-filled data yourself.</li><li>Review every locally extracted proposal and reconcile differences.</li><li>Pay separately to unlock the structured review-draft JSON.</li><li>Have the draft professionally reviewed before any filing.</li></ol></div>
       <div class="sidebar-card"><h3>Official guidance</h3><p><a href="https://www.incometax.gov.in/iec/foportal/ais-faq" target="_blank" rel="noopener">How to view AIS ↗</a><br /><a href="https://www.incometax.gov.in/iec/foportal/help/offline-utility" target="_blank" rel="noopener">Official ITR offline utility ↗</a><br /><a href="https://www.incometax.gov.in/iec/foportal/help/e-filing-itr1-form-sahaj-faq" target="_blank" rel="noopener">Official filing checks ↗</a></p><p class="micro-note">The official utility—not this website—creates the filing JSON intended for upload.</p></div>
       <div class="json-disclaimer"><strong>Important distinction</strong>This service generates an ITR preparation and professional-review draft. It is not the Income Tax Department’s official filing JSON, an acknowledgement, a pre-filled JSON, an upload-ready return or proof of filing.</div>
     </aside>
@@ -49,9 +50,26 @@
         <div class="json-grid three"><label>Assessment year<select id="jsonAssessmentYear"><option value="2026-27">AY 2026-27</option></select></label><label>Return stage<select id="jsonReturnStage"><option value="original">Original</option><option value="belated">Belated</option><option value="revised">Revised</option><option value="updated">Updated / other—review required</option></select></label><label>Residential status<select id="jsonResidentialStatus"><option value="resident">Resident</option><option value="rnor">Resident but not ordinarily resident</option><option value="nonresident">Non-resident</option></select></label><label>Starting ITR indication<select id="jsonItrForm"><option value="undetermined">Not determined</option><option value="ITR-1">ITR-1</option><option value="ITR-2">ITR-2</option><option value="ITR-3">ITR-3</option><option value="ITR-4">ITR-4</option></select></label><label>Tax regime for review<select id="jsonRegime"><option value="compare">Compare / not final</option><option value="new">New regime</option><option value="old">Old regime</option></select></label><label>Refund bank accounts to verify<input id="jsonBankAccountCount" type="number" min="0" max="25" step="1" value="1" /></label></div>
       </section>
 
-      <section class="json-panel"><h2>3. Official records and working papers</h2><p>Select the records you have reviewed. Optional file selection below is local: the browser records filenames only and does not upload the file contents.</p>
+      <section class="json-panel"><h2>3. Official records and working papers</h2><p>Select the records you have reviewed. You may also read supported records locally, review proposed figures and apply only the values you confirm.</p>
         <div class="json-checks"><label><input type="checkbox" name="sourceDocument" value="AIS" /> Annual Information Statement (AIS)</label><label><input type="checkbox" name="sourceDocument" value="TIS" /> Taxpayer Information Summary (TIS)</label><label><input type="checkbox" name="sourceDocument" value="Form 26AS" /> Form 26AS</label><label><input type="checkbox" name="sourceDocument" value="Form 16 / 16A" /> Form 16 / Form 16A</label><label><input type="checkbox" name="sourceDocument" value="Bank interest records" /> Bank interest records</label><label><input type="checkbox" name="sourceDocument" value="Capital-gain statements" /> Capital-gain statements</label><label><input type="checkbox" name="sourceDocument" value="Business books / financials" /> Business books / financials</label><label><input type="checkbox" name="sourceDocument" value="Tax challans" /> Advance / self-assessment tax challans</label></div>
-        <div class="local-file-box"><label>Optional local record selection<input id="jsonLocalFiles" type="file" accept=".json,.csv,.pdf,.xlsx,.xls" multiple /></label><p class="json-official-note">File contents do not leave this page. Sensitive source documents are not included in the paid draft.</p><ul id="jsonFileList" class="file-list"><li>No local files selected.</li></ul></div>
+        <div class="document-importer compact" data-document-importer data-import-target="json">
+          <div class="import-intro"><div><p class="eyebrow">Optional local extraction</p><h3>Import, reconcile and confirm</h3><p>Supported searchable PDFs and official JSON/CSV files are read inside this browser. Only confirmed summary values can be applied to the draft.</p></div><div class="local-processing-badge"><strong>Local processing</strong><span>Source-file contents are not sent to the website or payment backend.</span></div></div>
+          <div class="import-boundary"><strong>Deliberate safeguard</strong><p>Sale values, gross receipts and rent receipts are flagged but not automatically treated as taxable gains, profits or house-property income.</p></div>
+          <label class="import-file-control">Choose Form 16, AIS, TIS or Form 26AS records
+            <input id="jsonLocalFiles" data-import-files type="file" accept=".pdf,.json,.csv,.txt" multiple />
+            <small>Up to 8 records, 12 MB each and 40 MB combined. Image-only scans are not sent to external OCR.</small>
+          </label>
+          <label class="import-password-control">Optional PDF opening password
+            <input data-import-password type="password" autocomplete="off" maxlength="80" />
+            <small>Used temporarily on this device only. Never enter your e-Filing portal password or an OTP.</small>
+          </label>
+          <div class="import-status" data-import-status role="status" aria-live="polite"></div>
+          <ul id="jsonFileList" class="import-file-list" data-import-file-list><li>No records selected.</li></ul>
+          <div class="import-alerts" data-import-alerts hidden></div>
+          <div class="import-review" data-import-review hidden><h3>Review every proposed value</h3><p>Untick duplicates or unsupported amounts. Edit a value only after checking the source record.</p><div class="import-table-wrap"><table class="import-table"><thead><tr><th>Use</th><th>Proposed field</th><th>Confirmed value</th><th>Source</th><th>Confidence</th></tr></thead><tbody data-import-rows></tbody></table></div></div>
+          <div class="import-actions"><button class="btn primary" data-import-apply type="button" disabled>Apply confirmed values to draft</button><button class="btn ghost" data-import-clear type="button">Clear records</button></div>
+          <p class="json-official-note">Raw documents are not included in the paid draft. Filenames and the confirmed summary may be retained in this browser session for continuity.</p>
+        </div>
       </section>
 
       <section class="json-panel"><h2>4. Income-head summary</h2><p>Enter reconciled annual amounts. Negative house-property or business figures can be entered where appropriate; final set-off requires review.</p>

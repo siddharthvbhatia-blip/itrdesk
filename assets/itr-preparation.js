@@ -146,6 +146,10 @@
     if(!localFileNames.length){const li=document.createElement('li');li.textContent='No local files selected.';list.appendChild(li);return;}
     localFileNames.forEach(name=>{const li=document.createElement('li');li.textContent=name;list.appendChild(li)});
   });
+  window.addEventListener('itrdesk:source-files',event=>{
+    const names=event&&event.detail&&Array.isArray(event.detail.names)?event.detail.names:[];
+    localFileNames=names.slice(0,20).map(name=>clean(name,180));
+  });
 
   $('requestJsonCallback').addEventListener('click',()=>{
     try{

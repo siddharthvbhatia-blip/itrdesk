@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="assets/styles.css" />
   <script defer src="assets/script.js"></script>
   <script defer src="assets/calculator.js"></script>
+  <script defer src="assets/document-import.js"></script>
   <script defer src="assets/payment.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Comprehensive Income Tax Calculator AY 2026-27","url":"https://siddharthvbhatia-blip.github.io/itrdesk/calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"creator":{"@type":"Person","name":"CA Siddharth Bhatia"}}</script>
 </head>
@@ -31,6 +32,33 @@
 
 <main id="main">
 <section class="page-hero calculator-hero"><div class="container"><p class="eyebrow">FY 2025-26 • AY 2026-27</p><h1>Comprehensive income tax calculator.</h1><p>Estimate normal slab tax, capital-gain tax and other special-rate tax; compare old and new regimes; and calculate the final payable or refund after reliefs, interest, fees and prepaid taxes.</p><div class="pill-row"><span class="pill">Individual + HUF</span><span class="pill">Normal + special rates</span><span class="pill">Private on-device calculation</span></div></div></section>
+
+<section class="section document-import-section"><div class="container">
+  <details class="document-import-disclosure">
+    <summary><span><strong>Import Form 16, AIS, TIS or Form 26AS</strong><small>Optional local extraction with a review step—your records stay on this device</small></span><span class="summary-action">Choose records</span></summary>
+    <div class="document-importer" data-document-importer data-import-target="calculator">
+      <div class="import-intro"><div><p class="eyebrow">Private document assistant</p><h2>Extract proposed figures, then confirm them.</h2><p>The browser can read searchable PDF and official JSON/CSV records locally. It shows proposed values and source differences before anything enters the calculator.</p></div><div class="local-processing-badge"><strong>Local processing</strong><span>No selected document is uploaded to ITR Desk.</span></div></div>
+      <div class="import-boundary"><strong>What it will not guess</strong><p>AIS sale consideration is not capital gain; turnover is not business profit; rent is not taxable house-property income. Those items are flagged for working-paper review instead of being inserted blindly.</p></div>
+      <label class="import-file-control">Select up to 8 records
+        <input id="calculatorSourceFiles" data-import-files type="file" accept=".pdf,.json,.csv,.txt" multiple />
+        <small>Maximum 12 MB each and 40 MB combined. Scanned image-only PDFs need a searchable or official machine-readable download.</small>
+      </label>
+      <label class="import-password-control">Optional PDF opening password
+        <input data-import-password type="password" autocomplete="off" maxlength="80" />
+        <small>Used only in this browser while opening the selected PDF. Do not enter your Income Tax e-Filing login password or any OTP.</small>
+      </label>
+      <div class="import-status" data-import-status role="status" aria-live="polite"></div>
+      <ul class="import-file-list" data-import-file-list><li>No records selected.</li></ul>
+      <div class="import-alerts" data-import-alerts hidden></div>
+      <div class="import-review" data-import-review hidden>
+        <h3>Review every proposed value</h3><p>Untick anything that is duplicated, incorrectly classified or unsupported. You can edit a proposed amount before applying it.</p>
+        <div class="import-table-wrap"><table class="import-table"><thead><tr><th>Use</th><th>Proposed field</th><th>Confirmed value</th><th>Source</th><th>Confidence</th></tr></thead><tbody data-import-rows></tbody></table></div>
+      </div>
+      <div class="import-actions"><button class="btn primary" data-import-apply type="button" disabled>Apply confirmed values</button><button class="btn ghost" data-import-clear type="button">Clear records</button><a class="btn secondary" data-import-continue href="itr-preparation-json.html" hidden>Continue to ITR review draft</a></div>
+      <p class="micro-note">Document extraction is an assistive transcription and reconciliation step, not verification, professional review, or preparation of an official filing JSON.</p>
+    </div>
+  </details>
+</div></section>
 
 <section class="section calculator-section"><div class="container calculator-layout advanced-layout">
   <form id="taxCalculator" class="tax-form advanced-tax-form" novalidate>
