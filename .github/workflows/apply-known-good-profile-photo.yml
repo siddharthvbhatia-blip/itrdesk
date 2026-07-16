@@ -55,7 +55,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm scripts/restore-known-good-profile-photo.py scripts/remove-obsolete-inline-photo-tests.py .github/workflows/apply-known-good-profile-photo.yml
-          git add index.html about-ca-siddharth-bhatia.html assets/profile-photo.css assets/script.js package.json test/run-tests.js test/profile-photo-known-good.js .github/workflows/live-profile-photo-smoke.yml
-          git commit -m "Restore browser-proven profile photo with fallback checks"
-          git push origin HEAD:$TARGET_BRANCH
+          rm -f scripts/restore-known-good-profile-photo.py scripts/remove-obsolete-inline-photo-tests.py .github/workflows/apply-known-good-profile-photo.yml
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes remained to commit"
+          else
+            git commit -m "Restore browser-proven profile photo with fallback checks"
+            git push origin HEAD:$TARGET_BRANCH
+          fi
