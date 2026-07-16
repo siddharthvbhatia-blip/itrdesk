@@ -1,0 +1,35 @@
+name: Restore profile photo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/restore-profile-photo.py
+      - .github/workflows/restore-profile-photo.yml
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore image asset and references
+        run: python scripts/restore-profile-photo.py
+      - name: Commit restored profile photo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm scripts/restore-profile-photo.py .github/workflows/restore-profile-photo.yml
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes required"
+          else
+            git commit -m "Restore visible profile photo across website"
+            git push
+          fi
