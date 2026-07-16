@@ -1,0 +1,65 @@
+name: Apply external SVG profile photo fix
+
+on:
+  push:
+    branches: [agent/profile-photo-external-svg-r8]
+    paths:
+      - assets/profile-photo-r8.svg
+      - scripts/apply-external-svg-profile-r8.py
+      - .github/workflows/apply-external-svg-profile-r8.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - assets/profile-photo-r8.svg
+      - scripts/apply-external-svg-profile-r8.py
+      - .github/workflows/apply-external-svg-profile-r8.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-render-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: python -m pip install --disable-pip-version-check cairosvg pillow
+      - name: Apply external SVG profile fix
+        run: python scripts/apply-external-svg-profile-r8.py
+      - name: Render local SVG and verify visible pixel content
+        run: |
+          python - <<'PY'
+          from io import BytesIO
+          from pathlib import Path
+          import cairosvg
+          from PIL import Image, ImageStat
+
+          svg = Path('assets/profile-photo-r8.svg').read_bytes()
+          png = cairosvg.svg2png(bytestring=svg, output_width=256, output_height=256)
+          image = Image.open(BytesIO(png)).convert('RGB')
+          image.load()
+          assert image.size == (256, 256)
+          stat = ImageStat.Stat(image)
+          assert max(stat.var) > 500, stat.var
+          print('Rendered SVG variance:', stat.var)
+          PY
+      - run: npm run check
+      - run: npm test
+      - name: Commit tested external SVG fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm scripts/apply-external-svg-profile-r8.py .github/workflows/apply-external-svg-profile-r8.yml
+          git add assets/profile-photo-r8.svg index.html about-ca-siddharth-bhatia.html assets/profile-photo.css assets/script.js package.json test/profile-photo-svg.js .github/workflows/live-profile-photo-smoke.yml
+          git commit -m "Use externally served SVG portrait with render checks"
+          git push origin HEAD:$TARGET_BRANCH
