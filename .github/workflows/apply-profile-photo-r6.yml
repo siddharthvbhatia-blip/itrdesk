@@ -5,11 +5,13 @@ on:
     branches: [agent/profile-photo-multilayer-fix-r6]
     paths:
       - scripts/apply-profile-multilayer-fix.py
+      - scripts/upgrade-profile-fix-to-svg.py
       - .github/workflows/apply-profile-photo-r6.yml
   pull_request:
     branches: [main]
     paths:
       - scripts/apply-profile-multilayer-fix.py
+      - scripts/upgrade-profile-fix-to-svg.py
       - .github/workflows/apply-profile-photo-r6.yml
 
 permissions:
@@ -32,17 +34,31 @@ jobs:
         with:
           node-version: 20
       - run: python -m pip install --disable-pip-version-check pillow
+      - name: Upgrade repair to SVG fallback
+        run: python scripts/upgrade-profile-fix-to-svg.py
       - name: Apply multilayer photo fix
         run: python scripts/apply-profile-multilayer-fix.py
-      - name: Decode both local profile assets
+      - name: Decode JPEG and generated SVG fallback
         run: |
           python - <<'PY'
+          from io import BytesIO
+          import base64
+          import re
+          from pathlib import Path
           from PIL import Image
-          for name in ['assets/ca-siddharth-bhatia-profile-v3.jpg','assets/ca-siddharth-bhatia-profile.png']:
-              image=Image.open(name)
-              image.load()
-              assert image.size[0] >= 192 and image.size[1] >= 192, (name,image.size)
-              print(name,image.format,image.size)
+
+          jpg = Image.open('assets/ca-siddharth-bhatia-profile-v3.jpg')
+          jpg.load()
+          assert jpg.size[0] >= 192 and jpg.size[1] >= 192, jpg.size
+
+          svg = Path('assets/ca-siddharth-bhatia-profile-fallback.svg').read_text(encoding='utf-8')
+          match = re.search(r'data:image/jpeg;base64,([^\"]+)', svg)
+          assert match, 'SVG fallback has no embedded JPEG'
+          embedded = base64.b64decode(match.group(1), validate=True)
+          fallback = Image.open(BytesIO(embedded))
+          fallback.load()
+          assert fallback.size[0] >= 192 and fallback.size[1] >= 192, fallback.size
+          print('JPEG', jpg.size, 'SVG embedded JPEG', fallback.size)
           PY
       - run: npm run check
       - run: npm test
@@ -50,7 +66,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm scripts/apply-profile-multilayer-fix.py .github/workflows/apply-profile-photo-r6.yml
-          git add index.html about-ca-siddharth-bhatia.html assets/profile-photo.css assets/script.js package.json test/profile-photo-assets.js .github/workflows/live-profile-photo-smoke.yml
-          git commit -m "Use multilayer profile photo fallbacks and live decode checks"
+          git rm scripts/apply-profile-multilayer-fix.py scripts/upgrade-profile-fix-to-svg.py .github/workflows/apply-profile-photo-r6.yml
+          git rm -f docs/profile-photo* docs/.keep-profile-fix 2>/dev/null || true
+          git add index.html about-ca-siddharth-bhatia.html assets/ca-siddharth-bhatia-profile-fallback.svg assets/profile-photo.css assets/script.js package.json test/profile-photo-assets.js .github/workflows/live-profile-photo-smoke.yml
+          git commit -m "Use browser-safe profile photo fallbacks and live decode checks"
           git push origin HEAD:$TARGET_BRANCH
