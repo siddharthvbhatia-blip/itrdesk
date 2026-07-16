@@ -1,0 +1,1 @@
+This temporary file exists only to ensure the profile-photo repair workflow is evaluated on the branch and will be removed by the repair workflow if needed.
