@@ -27,7 +27,7 @@
 <header class="site-header"><div class="container nav-wrap">
   <a class="brand" href="index.html" aria-label="ITR Desk home"><span class="brand-title">ITR Desk</span><span class="brand-subtitle">by CA Siddharth Bhatia</span></a>
   <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
-  <nav id="site-nav" class="site-nav" aria-label="Primary navigation"><a href="index.html#services">Services</a><a href="calculator.html" aria-current="page">Tax Calculator</a><a href="checklist.html">Checklist</a><a href="index.html#case-selector">Choose ITR Type</a><a href="index.html#faq">FAQ</a><a href="index.html#enquiry">Enquiry</a><a href="privacy.html">Privacy</a></nav>
+  <nav id="site-nav" class="site-nav" aria-label="Primary navigation"><a href="index.html">Home</a><a href="calculator.html" aria-current="page">Tax Calculator</a><a href="tax-tools.html">Tax Tools</a><a href="index.html#form-finder">ITR Form Finder</a><a href="checklist.html">Checklist</a><a href="index.html#enquiry">Enquiry</a><a href="privacy.html">Privacy</a></nav>
 </div></header>
 
 <main id="main">
@@ -155,16 +155,16 @@
   </aside>
 </div></section>
 
-<section id="paid-computation" class="section paid-computation-section"><div class="container paid-computation-grid">
+<section id="paid-computation" class="section paid-computation-section"><div class="container"><details class="checkout-disclosure"><summary><span><strong>Optional secure computation copy</strong><small>Review the separate PDF and editable Word document flow</small></span><span class="summary-action">View details</span></summary><div class="paid-computation-grid">
   <div class="paid-offer">
-    <p class="eyebrow">Professional computation copy</p><h2>Download a structured PDF and editable Word computation.</h2>
+    <p class="eyebrow">User-initiated document option</p><h2>Generate a structured PDF and editable Word computation.</h2>
     <p>The report follows the professional structure of a tax computation: taxpayer particulars, head-wise income, deductions, normal and special-rate tax, old/new regime comparison, reliefs, taxes paid and payable/refund.</p>
-    <div class="price-card"><span>One-time computation fee</span><strong>₹1,000</strong><small>One verified payment unlocks both PDF and Word for the same computation for 24 hours.</small></div>
+    <div class="price-card"><span>Separate secure checkout</span><strong>PDF + Word</strong><small>The applicable amount is displayed by Razorpay before you authorise payment. One verified payment unlocks both formats for the same computation for 24 hours.</small></div>
     <ul class="paid-feature-list"><li>PDF and editable DOCX formats</li><li>Payment-verified private download</li><li>Payment reference printed on the report</li><li>No Aadhaar or bank account requested</li></ul>
-    <div class="paid-boundary"><strong>Computation only</strong><p>The ₹1,000 payment does not include preparation or filing of the ITR, verification of documents, tax audit, certification, notice response or representation.</p></div>
+    <div class="paid-boundary"><strong>Computation only</strong><p>The computation payment does not include preparation or filing of the ITR, verification of documents, tax audit, certification, notice response or representation.</p></div>
   </div>
   <form id="paidReportForm" class="paid-report-form" novalidate>
-    <h3>Details for the computation</h3><p>First calculate the tax above, then complete the particulars below.</p>
+    <h3>Details for the computation</h3><p>First calculate the tax above. Complete these particulars only if you deliberately choose the separate document flow.</p>
     <div class="calc-grid two">
       <label>Name of assessee *<input id="reportName" autocomplete="name" maxlength="100" required /></label>
       <label>PAN *<input id="reportPan" maxlength="10" autocapitalize="characters" placeholder="ABCDE1234F" required /></label>
@@ -178,18 +178,19 @@
     <label>Address<input id="reportAddress" maxlength="350" autocomplete="street-address" /></label>
     <label class="paid-consent"><input id="reportConsent" type="checkbox" /> <span>I confirm that the figures and particulars entered are mine/authorised, and I accept the <a href="terms.html" target="_blank">terms</a>, <a href="refund-policy.html" target="_blank">refund policy</a> and <a href="privacy.html" target="_blank">privacy policy</a>.</span></label>
     <div id="paymentStatus" class="payment-status" role="status" aria-live="polite"></div>
-    <button id="payForComputation" type="submit" class="btn primary paid-button">Pay ₹1,000 and unlock PDF + Word</button>
+    <button id="payForComputation" type="submit" class="btn primary paid-button">Continue to secure checkout</button>
     <button id="retryPaymentVerification" type="button" class="btn ghost paid-retry" hidden>Verify completed payment again</button>
     <div id="paidDownloads" class="paid-downloads" hidden><p><strong>Payment verified.</strong> Your documents are unlocked for this computation.</p><button id="downloadPaidPdf" type="button" class="btn primary">Download PDF</button><button id="downloadPaidDocx" type="button" class="btn ghost">Download Word (.docx)</button></div>
     <p class="micro-note">A paid computation is an automated estimate based on customer-entered figures. It is not an ITR acknowledgement, filing confirmation, audit report or certificate.</p>
   </form>
-</div></section>
+</div></details></div></section>
 
-<section class="section itr-filing-cta"><div class="container cta-band"><div><p class="eyebrow">Need the complete return filed?</p><h2>Get your ITR reviewed and filed by CA Siddharth Bhatia.</h2><p>Share your income profile and documents on WhatsApp. Scope, eligibility, filing form, professional acceptance and fee will be confirmed after review.</p></div><a class="btn secondary" href="https://wa.me/917879857126?text=Hi%20CA%20Siddharth%20Bhatia%2C%20I%20used%20the%20ITR%20Desk%20calculator%20and%20want%20to%20get%20my%20income-tax%20return%20reviewed%20and%20filed.%20Please%20share%20the%20document%20checklist%20and%20professional%20fee." target="_blank" rel="noopener">File my ITR with you</a></div></section>
+<section class="section itr-filing-cta"><div class="container cta-band"><div><p class="eyebrow">Optional professional enquiry</p><h2>Request the checklist and scope for a complete return review.</h2><p>If you independently choose to seek assistance, share only a broad income profile first. Eligibility, records, form, scope, professional acceptance and applicable fee are confirmed after review.</p></div><a class="btn secondary" href="index.html#enquiry">Request checklist and scope</a></div></section>
 
 <section class="section muted"><div class="container"><div class="section-heading"><p class="eyebrow">Calculation discipline</p><h2>What must be verified before filing</h2><p>A comprehensive calculator is only as reliable as the income classification and net taxable amounts entered into it.</p></div><div class="cards-grid"><article class="info-card"><span class="card-number">01</span><h3>Capital-gain schedules</h3><p>Verify holding period, dates, STT, grandfathering, cost, indexation comparison and section 54-series exemptions.</p></article><article class="info-card"><span class="card-number">02</span><h3>Loss set-off</h3><p>Apply current-year and brought-forward loss restrictions before entering net special-rate amounts.</p></article><article class="info-card"><span class="card-number">03</span><h3>Return utility</h3><p>Reconcile the estimate with AIS, Form 26AS, tax challans and the applicable ITR utility before filing.</p></article></div></div></section>
 </main>
 
 <footer class="site-footer"><div class="container footer-grid"><div><h2>ITR Desk</h2><p>CA-reviewed ITR filing guidance for salary, capital gains, F&amp;O, business/profession, NRI and AIS/26AS mismatch cases.</p><p><strong>Contact:</strong> +91 7879857126<br><strong>Email:</strong> siddharth.v.bhatia@gmail.com</p></div><div><h3>Useful pages</h3><ul><li><a href="calculator.html">Comprehensive tax calculator</a></li><li><a href="checklist.html">ITR checklist</a></li><li><a href="itr-filing-indore.html">ITR filing in Indore</a></li><li><a href="capital-gain-itr-filing.html">Capital gain ITR</a></li></ul></div><div><h3>Professional note</h3><p>The calculator and content are for general tax awareness. Professional assistance is subject to document review, applicable law, client confirmation and professional acceptance.</p></div></div><div class="container footer-bottom">© 2026 ITR Desk by CA Siddharth Bhatia. Indicative computation should be reconciled with the applicable Income Tax Department utility.</div></footer>
-<a class="wa-float" href="https://wa.me/917879857126?text=Hi%2C%20I%20used%20the%20AY%202026-27%20tax%20calculator%20and%20need%20ITR%20guidance." target="_blank" rel="noopener">WhatsApp ITR Enquiry</a>
+<nav class="mobile-dock" aria-label="Mobile quick actions"><a href="calculator.html"><span>₹</span>Tax</a><a href="index.html#form-finder"><span>?</span>ITR form</a><a href="checklist.html"><span>✓</span>Checklist</a><a href="index.html#enquiry"><span>↗</span>Enquiry</a></nav>
+<a class="wa-float" href="https://wa.me/917879857126?text=Hi%2C%20I%20reviewed%20the%20AY%202026-27%20calculator%20and%20would%20like%20the%20relevant%20document%20checklist." target="_blank" rel="noopener">WhatsApp enquiry</a>
 </body></html>
