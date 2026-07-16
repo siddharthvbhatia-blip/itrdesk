@@ -6,6 +6,11 @@ on:
     paths:
       - scripts/apply-profile-multilayer-fix.py
       - .github/workflows/apply-profile-photo-r6.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - scripts/apply-profile-multilayer-fix.py
+      - .github/workflows/apply-profile-photo-r6.yml
 
 permissions:
   contents: write
@@ -14,8 +19,12 @@ jobs:
   apply-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -44,4 +53,4 @@ jobs:
           git rm scripts/apply-profile-multilayer-fix.py .github/workflows/apply-profile-photo-r6.yml
           git add index.html about-ca-siddharth-bhatia.html assets/profile-photo.css assets/script.js package.json test/profile-photo-assets.js .github/workflows/live-profile-photo-smoke.yml
           git commit -m "Use multilayer profile photo fallbacks and live decode checks"
-          git push
+          git push origin HEAD:$TARGET_BRANCH
