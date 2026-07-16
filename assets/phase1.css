@@ -45,3 +45,7 @@
   .professional-portrait,.professional-portrait img,.profile-hero-photo{width:132px!important;height:132px!important;max-width:132px!important}
   .professional-verification dl div{grid-template-columns:1fr;gap:2px}.professional-verification dd{text-align:left}
 }
+
+/* Profile image restoration: ensure the photo itself fills the circular frame */
+.profile-hero-photo,.professional-portrait,.sidebar-portrait{overflow:hidden!important;background:#eef0f4!important}
+.profile-hero-photo img,.professional-portrait img,.sidebar-portrait{display:block!important;opacity:1!important;visibility:visible!important;object-fit:cover!important;object-position:center!important}
