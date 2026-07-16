@@ -51,7 +51,7 @@
       component('115BBE','Unexplained income — section 115BBE',v.unexplainedIncome,.60,'fixed',.25),
       component('115BBF','Patent royalty — section 115BBF',v.patentIncome,.10),
       component('115BBG','Carbon credits — section 115BBG',v.carbonCreditIncome,.10),
-      component('115ADividend','Non-resident dividend — section 115A',v.nriDividendIncome,.20,'cap15'),
+      component('115ADividend','Non-resident dividend — section 115A',v.nriDividendIncome,.20),
       component('115AInterest','Specified non-resident interest',v.nriInterestIncome,.05),
       component('115ARoyalty','Non-resident royalty / FTS — section 115A',v.nriRoyaltyFtsIncome,.20),
       component('otherSpecial','Other / DTAA special-rate income 1',v.otherSpecialIncome,v.otherSpecialRate/100,v.otherSpecialSurcharge),
