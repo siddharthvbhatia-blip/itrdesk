@@ -9,6 +9,14 @@ on:
       - assets/profile-photo.css
       - test/run-tests.js
       - .github/workflows/live-profile-photo-smoke.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - index.html
+      - about-ca-siddharth-bhatia.html
+      - assets/profile-photo.css
+      - test/run-tests.js
+      - .github/workflows/live-profile-photo-smoke.yml
   workflow_dispatch:
   schedule:
     - cron: '17 3 * * *'
