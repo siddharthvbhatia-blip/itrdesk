@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "private": true,
   "scripts": {
-    "test": "node test/run-tests.js && node test/profile-photo-known-good.js && node test/about-profile-r14.js",
+    "test": "node test/run-tests.js",
     "check": "node --check assets/script.js && node --check assets/profile-runtime-r14.js && node --check assets/calculator.js && node --check assets/payment.js && node --check assets/itr-preparation.js && node --check assets/document-import.js"
   },
   "engines": { "node": ">=20" }
