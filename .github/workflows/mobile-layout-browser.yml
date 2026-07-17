@@ -1,4 +1,4 @@
-name: Profile portrait and layout browser checks
+name: Concise website portrait and layout checks
 
 on:
   pull_request:
@@ -10,9 +10,11 @@ on:
       - assets/styles.css
       - assets/profile-photo.css
       - assets/phase1.css
+      - assets/clean-v2.css
       - assets/script.js
       - assets/profile-runtime-r14.js
       - test/final-profile-r16.js
+      - test/clean-site-r17.js
       - test/portrait-visual-proof-r16.py
       - test/mobile-layout-browser.js
       - test/desktop-profile-browser-r16.js
@@ -26,9 +28,11 @@ on:
       - assets/styles.css
       - assets/profile-photo.css
       - assets/phase1.css
+      - assets/clean-v2.css
       - assets/script.js
       - assets/profile-runtime-r14.js
       - test/final-profile-r16.js
+      - test/clean-site-r17.js
       - test/portrait-visual-proof-r16.py
       - test/mobile-layout-browser.js
       - test/desktop-profile-browser-r16.js
@@ -38,7 +42,7 @@ permissions:
   contents: read
 
 jobs:
-  chromium-profile:
+  chromium-clean-site:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -49,10 +53,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify final portrait contains visible photographic content
+      - name: Verify portrait contains visible photographic content
         run: |
           python -m pip install --disable-pip-version-check pillow
           python test/portrait-visual-proof-r16.py
+      - name: Run concise content checks
+        run: node test/clean-site-r17.js
       - name: Install Chromium test runtime
         run: |
           npm install --no-save playwright@1.52.0
@@ -62,19 +68,19 @@ jobs:
           python3 -m http.server 4173 >/tmp/itrdesk-http.log 2>&1 &
           sleep 2
           curl --fail --silent http://127.0.0.1:4173/index.html >/dev/null
-      - name: Verify mobile portrait and layout in Chromium
+      - name: Verify concise mobile pages in Chromium
         env:
           BASE_URL: http://127.0.0.1:4173
         run: node test/mobile-layout-browser.js
-      - name: Verify desktop portrait and separation in Chromium
+      - name: Verify concise desktop pages in Chromium
         env:
           BASE_URL: http://127.0.0.1:4173
         run: node test/desktop-profile-browser-r16.js
-      - name: Upload profile and layout diagnostics
+      - name: Upload clean-site diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: profile-layout-diagnostics
+          name: clean-site-layout-diagnostics
           path: test-results
           if-no-files-found: warn
           retention-days: 7
