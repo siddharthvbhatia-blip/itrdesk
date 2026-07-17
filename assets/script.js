@@ -3,9 +3,9 @@
 
   const PHONE='917879857126';
   const ENQUIRY_API='https://itrdesk-payment-backend.vercel.app';
-  const LINKEDIN_URL='https://www.linkedin.com/in/ca-siddharth-bhatia-';
+  const LINKEDIN_URL='https://www.linkedin.com/in/ca-siddharth-bhatia';
   const GOOGLE_PROFILE_URL='https://www.google.com/search?q=Siddharth+Bhatia+and+Co+Indore';
-  const PROFILE_IMAGE='assets/ca-siddharth-bhatia-profile.png';
+  const PROFILE_IMAGE='assets/ca-siddharth-bhatia-final-r16.jpg?v=20260717-r16';
   const waUrl=message=>`https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
   const clean=value=>String(value||'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim();
 
@@ -17,10 +17,10 @@
   window.ITRDeskTrack=track;
 
   function loadPhaseOneStyles(){
-    if(document.querySelector('link[href="assets/phase1.css"]'))return;
+    if(document.querySelector('link[href^="assets/phase1.css"]'))return;
     const link=document.createElement('link');
     link.rel='stylesheet';
-    link.href='assets/phase1.css';
+    link.href='assets/phase1.css?v=20260717-r16';
     document.head.appendChild(link);
   }
 
@@ -103,7 +103,7 @@
   function updateProfileImages(){
     document.querySelectorAll('.professional-portrait img,.profile-hero-photo img,.sidebar-portrait').forEach(image=>{
       image.src=PROFILE_IMAGE;
-      image.width=640;image.height=640;
+      image.width=180;image.height=180;
       image.alt='CA Siddharth Bhatia in professional attire';
     });
   }
@@ -243,34 +243,27 @@
   if(typeof module!=='undefined')module.exports={classifyItrProfile};
 })();
 
-
-/* KNOWN GOOD PROFILE PHOTO FALLBACK START */
+/* VERIFIED PROFILE PHOTO FALLBACK */
 (() => {
-  const initialiseKnownGoodProfilePhotos = () => {
-    document.querySelectorAll('img[data-profile-photo]').forEach((image) => {
-      if (image.dataset.knownGoodProfileReady === 'true') return;
-      image.dataset.knownGoodProfileReady = 'true';
-      const remote = image.dataset.remoteFallback;
+  const initialiseProfilePhotos = () => {
+    document.querySelectorAll('img[data-profile-photo],.professional-portrait img,.profile-hero-photo img,.sidebar-portrait').forEach((image) => {
+      const remote = 'https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia-final-r16.jpg?v=20260717-r16';
       let fallbackUsed = false;
       const useFallback = () => {
-        if (!remote || fallbackUsed) return;
+        if (fallbackUsed) return;
         fallbackUsed = true;
         image.src = remote;
       };
-      image.addEventListener('error', useFallback);
+      image.addEventListener('error', useFallback, {once:true});
       image.addEventListener('load', () => {
-        if (image.naturalWidth < 100 || image.naturalHeight < 100) useFallback();
+        if (image.naturalWidth < 150 || image.naturalHeight < 150) useFallback();
         else image.dataset.profilePhotoLoaded = 'true';
       });
       window.setTimeout(() => {
-        if (!image.complete || image.naturalWidth < 100 || image.naturalHeight < 100) useFallback();
+        if (!image.complete || image.naturalWidth < 150 || image.naturalHeight < 150) useFallback();
       }, 1600);
     });
   };
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initialiseKnownGoodProfilePhotos);
-  } else {
-    initialiseKnownGoodProfilePhotos();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialiseProfilePhotos);
+  else initialiseProfilePhotos();
 })();
-/* KNOWN GOOD PROFILE PHOTO FALLBACK END */
