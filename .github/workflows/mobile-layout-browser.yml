@@ -10,6 +10,7 @@ on:
       - assets/profile-photo.css
       - assets/phase1.css
       - assets/script.js
+      - assets/profile-runtime-r14.js
       - test/mobile-layout-browser.js
       - .github/workflows/mobile-layout-browser.yml
   push:
@@ -21,6 +22,7 @@ on:
       - assets/profile-photo.css
       - assets/phase1.css
       - assets/script.js
+      - assets/profile-runtime-r14.js
       - test/mobile-layout-browser.js
       - .github/workflows/mobile-layout-browser.yml
 
@@ -52,3 +54,11 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:4173
         run: node test/mobile-layout-browser.js
+      - name: Upload mobile layout diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-layout-diagnostics
+          path: test-results
+          if-no-files-found: warn
+          retention-days: 7
