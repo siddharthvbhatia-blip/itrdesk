@@ -4,14 +4,13 @@ on:
   push:
     branches: [main]
     paths:
-      - index.html
       - about-ca-siddharth-bhatia.html
-      - assets/ca-siddharth-bhatia.jpeg
-      - assets/ca-siddharth-bhatia-profile.png
+      - assets/ca-siddharth-bhatia-final-r16.jpg
+      - assets/phase1.css
       - assets/profile-runtime-r14.js
       - assets/profile-photo.css
       - assets/script.js
-      - test/profile-photo-known-good.js
+      - test/mobile-layout-browser.js
       - .github/workflows/live-profile-photo-smoke.yml
   workflow_dispatch:
   schedule:
@@ -29,7 +28,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install --disable-pip-version-check pillow
-      - name: Verify published portrait, About page and LinkedIn URL
+      - name: Verify published final portrait, page references and LinkedIn URL
         env:
           BUILD_SHA: ${{ github.sha }}
         run: |
@@ -42,49 +41,57 @@ jobs:
 
           base = 'https://siddharthvbhatia-blip.github.io/itrdesk/'
           build = os.environ.get('BUILD_SHA', 'manual')
-          asset = 'assets/ca-siddharth-bhatia-profile.png'
+          asset = 'assets/ca-siddharth-bhatia-final-r16.jpg'
           linkedin = 'https://www.linkedin.com/in/ca-siddharth-bhatia'
           last = None
 
+          def get(path, attempt, binary=False):
+              request = urllib.request.Request(
+                  f'{base}{path}?smoke={build}-{attempt}',
+                  headers={'User-Agent':'ITR-Desk-photo-smoke/7.0','Cache-Control':'no-cache'},
+              )
+              raw = urllib.request.urlopen(request, timeout=20).read()
+              return raw if binary else raw.decode('utf-8')
+
           for attempt in range(1, 31):
               try:
-                  request = urllib.request.Request(
-                      f'{base}{asset}?smoke={build}-{attempt}',
-                      headers={'User-Agent':'ITR-Desk-photo-smoke/6.0','Cache-Control':'no-cache'},
-                  )
-                  raw = urllib.request.urlopen(request, timeout=20).read()
+                  raw = get(asset, attempt, binary=True)
                   image = Image.open(BytesIO(raw)).convert('RGB')
                   image.load()
-                  assert image.width >= 180 and image.height >= 180, image.size
-                  assert max(ImageStat.Stat(image).var) > 100, 'Published portrait appears blank'
+                  assert image.width >= 170 and image.height >= 170, image.size
+                  stats = ImageStat.Stat(image)
+                  assert max(stats.stddev) > 60, f'Published portrait lacks photographic detail: {stats.stddev}'
+                  pixels = list(image.resize((90, 90)).getdata())
+                  dark_ratio = sum(1 for pixel in pixels if sum(pixel) / 3 < 80) / len(pixels)
+                  assert dark_ratio > 0.10, f'Published portrait resembles a pale placeholder: {dark_ratio}'
 
-                  request = urllib.request.Request(
-                      f'{base}about-ca-siddharth-bhatia.html?smoke={build}-{attempt}',
-                      headers={'User-Agent':'ITR-Desk-photo-smoke/6.0','Cache-Control':'no-cache'},
-                  )
-                  about = urllib.request.urlopen(request, timeout=20).read().decode('utf-8')
+                  about = get('about-ca-siddharth-bhatia.html', attempt)
                   assert about.count('data-profile-photo') >= 2
-                  assert 'assets/ca-siddharth-bhatia-profile.png?v=20260717-r14' in about
-                  assert 'assets/profile-runtime-r14.js?v=20260717-r14' in about
-                  assert 'data-remote-fallback="https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia-profile.png"' in about
+                  assert about.count('assets/ca-siddharth-bhatia-final-r16.jpg?v=20260717-r16') >= 4
+                  assert 'assets/phase1.css?v=20260717-r16' in about
+                  assert 'assets/profile-runtime-r14.js?v=20260717-r16' in about
+                  assert 'data-remote-fallback="https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia-final-r16.jpg"' in about
                   assert linkedin in about
                   assert linkedin + '-' not in about
-                  assert 'src="data:image/jpeg;base64,' not in about
+                  assert 'ca-siddharth-bhatia-profile.png' not in about
 
-                  request = urllib.request.Request(
-                      f'{base}index.html?smoke={build}-{attempt}',
-                      headers={'User-Agent':'ITR-Desk-photo-smoke/6.0','Cache-Control':'no-cache'},
-                  )
-                  home = urllib.request.urlopen(request, timeout=20).read().decode('utf-8')
-                  assert home.count('data-profile-photo') >= 1
-                  assert 'src="data:image/jpeg;base64,' not in home
+                  phase = get('assets/phase1.css', attempt)
+                  assert 'content:url("ca-siddharth-bhatia-final-r16.jpg?v=20260717-r16")' in phase
 
-                  print('PASS live approved portrait and LinkedIn smoke test')
+                  runtime = get('assets/profile-runtime-r14.js', attempt)
+                  assert "PROFILE_IMAGE='assets/ca-siddharth-bhatia-final-r16.jpg?v=20260717-r16'" in runtime
+
+                  script = get('assets/script.js', attempt)
+                  assert "PROFILE_IMAGE='assets/ca-siddharth-bhatia-final-r16.jpg?v=20260717-r16'" in script
+                  assert linkedin in script
+                  assert linkedin + '-' not in script
+
+                  print('PASS live final professional portrait and LinkedIn smoke test')
                   raise SystemExit(0)
               except Exception as exc:
                   last = exc
                   print(f'Attempt {attempt}/30 not ready: {exc}')
                   if attempt < 30:
                       time.sleep(30)
-          raise SystemExit(f'Live profile portrait smoke test failed: {last}')
+          raise SystemExit(f'Live final profile portrait smoke test failed: {last}')
           PY
