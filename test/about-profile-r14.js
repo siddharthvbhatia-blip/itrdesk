@@ -1,0 +1,15 @@
+'use strict';
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+const about = fs.readFileSync(path.join(root, 'about-ca-siddharth-bhatia.html'), 'utf8');
+const runtime = fs.readFileSync(path.join(root, 'assets', 'profile-runtime-r14.js'), 'utf8');
+assert(about.includes('assets/profile-runtime-r14.js?v=20260717-r14'), 'About page lacks the repair runtime');
+assert((about.match(/assets\/ca-siddharth-bhatia-profile\.png\?v=20260717-r14/g) || []).length >= 4, 'About page lacks versioned portrait references');
+assert(about.includes('https://www.linkedin.com/in/ca-siddharth-bhatia'), 'About page lacks the verified LinkedIn URL');
+assert(!about.includes('https://www.linkedin.com/in/ca-siddharth-bhatia-"'), 'About page retains the broken LinkedIn URL');
+assert(runtime.includes("const PROFILE_IMAGE='assets/ca-siddharth-bhatia-profile.png?v=20260717-r14'"), 'Runtime lacks the cache-safe portrait');
+assert(runtime.includes("const LINKEDIN_URL='https://www.linkedin.com/in/ca-siddharth-bhatia'"), 'Runtime lacks the verified LinkedIn URL');
+assert(runtime.includes('naturalWidth<150'), 'Runtime does not validate decoded portrait dimensions');
+console.log('PASS About-page portrait and LinkedIn repair');
