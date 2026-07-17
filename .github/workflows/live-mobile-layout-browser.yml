@@ -1,4 +1,4 @@
-name: Live mobile layout monitor
+name: Live profile portrait and layout monitor
 
 on:
   pull_request:
@@ -15,8 +15,9 @@ on:
       - assets/phase1.css
       - assets/script.js
       - assets/profile-runtime-r14.js
-      - assets/ca-siddharth-bhatia-profile.png
+      - assets/ca-siddharth-bhatia-final-r16.jpg
       - test/mobile-layout-browser.js
+      - test/desktop-profile-browser-r16.js
       - .github/workflows/live-mobile-layout-browser.yml
   schedule:
     - cron: '43 3 * * *'
@@ -26,7 +27,7 @@ permissions:
   contents: read
 
 jobs:
-  verify-live-mobile:
+  verify-live-profile:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -38,23 +39,23 @@ jobs:
         run: |
           npm install --no-save playwright@1.52.0
           npx playwright install --with-deps chromium
-      - name: Wait for GitHub Pages and verify the public mobile layout
+      - name: Wait for GitHub Pages and verify public mobile and desktop profile rendering
         env:
           BASE_URL: https://siddharthvbhatia-blip.github.io/itrdesk
         run: |
           for attempt in $(seq 1 30); do
-            echo "Live mobile check attempt ${attempt}/30"
-            if node test/mobile-layout-browser.js; then
+            echo "Live profile check attempt ${attempt}/30"
+            if node test/mobile-layout-browser.js && node test/desktop-profile-browser-r16.js; then
               exit 0
             fi
             sleep 20
           done
           exit 1
-      - name: Upload live mobile diagnostics
+      - name: Upload live profile diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: live-mobile-layout-diagnostics
+          name: live-profile-layout-diagnostics
           path: test-results
           if-no-files-found: warn
           retention-days: 7
