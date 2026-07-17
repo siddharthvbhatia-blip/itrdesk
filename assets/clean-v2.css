@@ -1,5 +1,6 @@
 /* Clean professional presentation — R17 */
 body.clean-site{background:#fff}
+.clean-site .wa-float{display:none!important}
 .clean-site .section{padding:58px 0}
 .clean-site .section.muted{background:#faf7f1}
 .clean-site .section-heading{max-width:680px;margin-bottom:26px}
@@ -39,8 +40,8 @@ body.clean-site{background:#fff}
 .clean-step h3{font-size:1.08rem;margin:14px 0 5px}
 .clean-step p{margin:0;color:var(--muted);font-size:.9rem}
 
-.clean-faq{display:grid;gap:12px;max-width:820px}
-.clean-faq details{padding:18px 20px;border-radius:18px;box-shadow:none}
+.clean-faq{display:grid;grid-template-columns:1fr;gap:12px;max-width:820px}
+.clean-faq details{padding:18px 20px;border-radius:18px;box-shadow:none;min-height:0}
 .clean-faq details p{font-size:.93rem;line-height:1.55}
 
 .clean-enquiry-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(360px,1.15fr);gap:34px;align-items:start}
