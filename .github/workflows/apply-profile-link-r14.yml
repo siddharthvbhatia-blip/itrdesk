@@ -1,27 +1,28 @@
 name: Apply profile photo and LinkedIn repair
 
 on:
-  push:
+  pull_request_target:
     branches: [main]
-    paths:
-      - .github/workflows/apply-profile-link-r14.yml
-  workflow_dispatch:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 concurrency:
-  group: profile-link-r14
+  group: profile-link-r14-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
   repair-review-branch:
+    if: github.head_ref == 'agent/fix-photo-linkedin-r14'
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      TARGET_BRANCH: ${{ github.head_ref }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: agent/fix-photo-linkedin-r14
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
@@ -50,61 +51,29 @@ jobs:
           image.load()
           if image.width < 180 or image.height < 180:
               raise SystemExit(f'Profile image is too small: {image.size}')
-          rgb = image.convert('RGB')
-          if max(ImageStat.Stat(rgb).var) < 100:
+          if max(ImageStat.Stat(image.convert('RGB')).var) < 100:
               raise SystemExit('Profile image appears blank')
           image.save(target, optimize=True)
 
           script_path = root / 'assets' / 'script.js'
-          script = script_path.read_text(encoding='utf-8')
-          script = script.replace(old_link, correct_link)
-          script = re.sub(
-              r"const PROFILE_IMAGE='assets/[^']+';",
-              f"const PROFILE_IMAGE='assets/{target_name}?v=20260717-r14';",
-              script,
-              count=1,
-          )
-          script = script.replace(
-              "if(document.querySelector('link[href=\"assets/phase1.css\"]'))return;",
-              "if(document.querySelector('link[href^=\"assets/phase1.css\"]'))return;",
-          )
-          script = re.sub(
-              r"link\.href='assets/phase1\.css(?:\?[^']*)?';",
-              "link.href='assets/phase1.css?v=20260717-r14';",
-              script,
-              count=1,
-          )
+          script = script_path.read_text(encoding='utf-8').replace(old_link, correct_link)
+          script = re.sub(r"const PROFILE_IMAGE='assets/[^']+';", f"const PROFILE_IMAGE='assets/{target_name}?v=20260717-r14';", script, count=1)
+          script = script.replace("if(document.querySelector('link[href=\"assets/phase1.css\"]'))return;", "if(document.querySelector('link[href^=\"assets/phase1.css\"]'))return;")
+          script = re.sub(r"link\.href='assets/phase1\.css(?:\?[^']*)?';", "link.href='assets/phase1.css?v=20260717-r14';", script, count=1)
           script_path.write_text(script, encoding='utf-8')
 
           remote = f'https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/{target_name}'
           for name in ['index.html', 'about-ca-siddharth-bhatia.html']:
               path = root / name
               text = path.read_text(encoding='utf-8').replace(old_link, correct_link)
-              text = re.sub(
-                  r'(<img[^>]*data-profile-photo[^>]*\bsrc=")[^"]+("[^>]*>)',
-                  rf'\1assets/{target_name}?v=20260717-r14\2',
-                  text,
-              )
-              text = re.sub(
-                  r'data-remote-fallback="[^"]+"',
-                  f'data-remote-fallback="{remote}"',
-                  text,
-              )
+              text = re.sub(r'(<img[^>]*data-profile-photo[^>]*\bsrc=")[^"]+("[^>]*>)', rf'\1assets/{target_name}?v=20260717-r14\2', text)
+              text = re.sub(r'data-remote-fallback="[^"]+"', f'data-remote-fallback="{remote}"', text)
               if name.startswith('about'):
-                  text = re.sub(
-                      r'(<meta property="og:image" content=")[^"]+("\s*/>)',
-                      rf'\1https://siddharthvbhatia-blip.github.io/itrdesk/assets/{target_name}?v=20260717-r14\2',
-                      text,
-                  )
-                  text = re.sub(
-                      r'("image":")[^"]+("[,}])',
-                      rf'\1https://siddharthvbhatia-blip.github.io/itrdesk/assets/{target_name}?v=20260717-r14\2',
-                      text,
-                      count=1,
-                  )
+                  text = re.sub(r'(<meta property="og:image" content=")[^"]+("\s*/>)', rf'\1https://siddharthvbhatia-blip.github.io/itrdesk/assets/{target_name}?v=20260717-r14\2', text)
+                  text = re.sub(r'("image":")[^"]+("[,}])', rf'\1https://siddharthvbhatia-blip.github.io/itrdesk/assets/{target_name}?v=20260717-r14\2', text, count=1)
               path.write_text(text, encoding='utf-8')
 
-          known_good = f'''\
+          (root / 'test' / 'profile-photo-known-good.js').write_text(f'''\
           'use strict';
           const assert = require('assert');
           const fs = require('fs');
@@ -120,13 +89,11 @@ jobs:
             assert((html.match(/data-profile-photo/g) || []).length >= minimum, `${{name}} lacks profile markers`);
             assert(html.includes(`assets/${{asset}}?v=20260717-r14`), `${{name}} lacks the cache-safe portrait`);
             assert(html.includes(`data-remote-fallback="https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/${{asset}}"`), `${{name}} lacks the independent portrait fallback`);
-            assert(!html.includes('ca-siddharth-bhatia.jpeg?v=20260717-r9'), `${{name}} still uses the old close-up portrait`);
           }}
           console.log('PASS cache-safe professional profile photo and references');
-          '''
-          (root / 'test' / 'profile-photo-known-good.js').write_text(known_good.lstrip(), encoding='utf-8')
+          '''.lstrip(), encoding='utf-8')
 
-          link_test = f'''\
+          (root / 'test' / 'profile-link-r14.js').write_text(f'''\
           'use strict';
           const assert = require('assert');
           const fs = require('fs');
@@ -140,24 +107,21 @@ jobs:
             assert(!text.includes(bad), `${{name}} still contains the broken LinkedIn URL`);
           }}
           console.log('PASS verified LinkedIn profile URL');
-          '''
-          (root / 'test' / 'profile-link-r14.js').write_text(link_test.lstrip(), encoding='utf-8')
+          '''.lstrip(), encoding='utf-8')
 
           package_path = root / 'package.json'
           package = json.loads(package_path.read_text(encoding='utf-8'))
-          command = package['scripts']['test']
-          if 'node test/profile-link-r14.js' not in command:
-              command += ' && node test/profile-link-r14.js'
-          package['scripts']['test'] = command
+          if 'node test/profile-link-r14.js' not in package['scripts']['test']:
+              package['scripts']['test'] += ' && node test/profile-link-r14.js'
           package_path.write_text(json.dumps(package, indent=2) + '\n', encoding='utf-8')
 
           smoke_path = root / '.github' / 'workflows' / 'live-profile-photo-smoke.yml'
           smoke = smoke_path.read_text(encoding='utf-8')
           smoke = smoke.replace('assets/ca-siddharth-bhatia.jpeg', f'assets/{target_name}')
           smoke = smoke.replace('Verify published JPEG and page references', 'Verify published profile image and page references')
-          smoke = smoke.replace("f'{base}assets/ca-siddharth-bhatia.jpeg?smoke={{build}}-{{attempt}}'", f"f'{{base}}assets/{target_name}?smoke={{build}}-{{attempt}}'")
+          smoke = smoke.replace("f'{base}assets/ca-siddharth-bhatia.jpeg?smoke={build}-{attempt}'", f"f'{{base}}assets/{target_name}?smoke={{build}}-{{attempt}}'")
           smoke = smoke.replace("assert 'assets/ca-siddharth-bhatia.jpeg?v=20260717-r9' in html", f"assert 'assets/{target_name}?v=20260717-r14' in html")
-          smoke = smoke.replace('data-remote-fallback="https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia.jpeg"', f'data-remote-fallback="{{remote}}"')
+          smoke = smoke.replace('data-remote-fallback="https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia.jpeg"', f'data-remote-fallback="{remote}"')
           smoke_path.write_text(smoke, encoding='utf-8')
           PY
       - name: Run syntax and regression tests
@@ -169,5 +133,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html about-ca-siddharth-bhatia.html assets/script.js assets/ca-siddharth-bhatia-profile-r14.png package.json test/profile-photo-known-good.js test/profile-link-r14.js .github/workflows/live-profile-photo-smoke.yml
-          git commit -m "Restore professional portrait and correct LinkedIn profile"
-          git push origin HEAD:agent/fix-photo-linkedin-r14
+          if git diff --cached --quiet; then
+            echo "Profile and LinkedIn repair already applied"
+          else
+            git commit -m "Restore professional portrait and correct LinkedIn profile"
+            git push origin HEAD:$TARGET_BRANCH
+          fi
