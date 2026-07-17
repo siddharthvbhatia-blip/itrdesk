@@ -1,31 +1,30 @@
 (function(){
   'use strict';
 
-  const PROFILE_IMAGE='assets/ca-siddharth-bhatia-profile.png?v=20260717-r14';
-  const PROFILE_FALLBACK='https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia-profile.png';
+  const PROFILE_IMAGE='assets/ca-siddharth-bhatia-final-r16.jpg?v=20260717-r16';
+  const PROFILE_FALLBACK='https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia-final-r16.jpg';
   const LINKEDIN_URL='https://www.linkedin.com/in/ca-siddharth-bhatia';
 
   function restoreProfileImages(){
-    document.querySelectorAll('img[data-profile-photo]').forEach((image)=>{
-      if(image.dataset.r14Ready==='true')return;
-      image.dataset.r14Ready='true';
+    document.querySelectorAll('img[data-profile-photo],.professional-portrait img,.profile-hero-photo img,.sidebar-portrait').forEach((image)=>{
+      image.dataset.profileR16Ready='true';
       image.removeAttribute('srcset');
-      image.sizes='auto';
-      image.width=640;
-      image.height=640;
+      image.removeAttribute('sizes');
+      image.width=180;
+      image.height=180;
       image.alt='CA Siddharth Bhatia in professional attire';
       image.style.display='block';
       image.style.opacity='1';
       image.style.visibility='visible';
       image.style.objectFit='cover';
-      image.style.objectPosition='center 18%';
+      image.style.objectPosition='center';
       image.style.borderRadius='50%';
 
       let fallbackUsed=false;
       const useFallback=()=>{
         if(fallbackUsed)return;
         fallbackUsed=true;
-        image.src=PROFILE_FALLBACK+'?v=20260717-r14';
+        image.src=PROFILE_FALLBACK+'?v=20260717-r16';
       };
       image.addEventListener('error',useFallback,{once:true});
       image.addEventListener('load',()=>{
@@ -57,6 +56,6 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);
   else apply();
   window.addEventListener('load',apply,{once:true});
-  window.setTimeout(apply,400);
-  window.setTimeout(apply,1400);
+  window.setTimeout(apply,250);
+  window.setTimeout(apply,1000);
 })();
