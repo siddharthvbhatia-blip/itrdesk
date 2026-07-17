@@ -15,7 +15,7 @@ async function snapshot(page, selector) {
       bottom: rect.bottom,
       width: rect.width,
       height: rect.height,
-      borderRadius: parseFloat(style.borderRadius),
+      borderRadius: style.borderRadius,
       position: style.position
     };
   });
@@ -24,7 +24,9 @@ async function snapshot(page, selector) {
 function assertCircle(label, value) {
   assert(Math.abs(value.width - value.height) <= 2, `${label} is not square: ${value.width} x ${value.height}`);
   assert(value.width >= 120 && value.width <= 180, `${label} has unsafe width ${value.width}`);
-  assert(value.borderRadius >= value.width / 2 - 3, `${label} is not circular: radius ${value.borderRadius}`);
+  const percentageCircle = value.borderRadius.includes('%') && parseFloat(value.borderRadius) >= 49;
+  const pixelCircle = !value.borderRadius.includes('%') && parseFloat(value.borderRadius) >= value.width / 2 - 3;
+  assert(percentageCircle || pixelCircle, `${label} is not circular: radius ${value.borderRadius}`);
 }
 
 (async () => {
@@ -33,8 +35,10 @@ function assertCircle(label, value) {
     const about = await browser.newPage({ viewport: { width: 360, height: 800 } });
     await about.goto(`${base}/about-ca-siddharth-bhatia.html?mobile-check=1`, { waitUntil: 'networkidle' });
     await about.waitForTimeout(500);
-    assertCircle('About portrait frame', await snapshot(about, '.profile-hero-photo'));
-    assertCircle('About portrait image', await snapshot(about, '.profile-hero-photo img'));
+    const aboutFrame = await snapshot(about, '.profile-hero-photo');
+    const aboutImage = await snapshot(about, '.profile-hero-photo img');
+    assertCircle('About portrait frame', aboutFrame);
+    assertCircle('About portrait image', aboutImage);
     const sidebar = await snapshot(about, '.profile-sidebar');
     assert(!['sticky', 'fixed'].includes(sidebar.position), `About sidebar remains ${sidebar.position}`);
     const aboutOverflow = await about.evaluate(() => ({ inner: innerWidth, scroll: document.documentElement.scrollWidth }));
@@ -50,7 +54,8 @@ function assertCircle(label, value) {
     await home.goto(`${base}/index.html?mobile-check=1`, { waitUntil: 'networkidle' });
     await home.waitForSelector('.professional-verification');
     await home.waitForTimeout(500);
-    assertCircle('Homepage portrait', await snapshot(home, '.professional-portrait img'));
+    const homePortrait = await snapshot(home, '.professional-portrait img');
+    assertCircle('Homepage portrait', homePortrait);
     const blocks = await home.locator('.professional-card > .professional-portrait, .professional-card > .professional-copy, .professional-card > .professional-verification').evaluateAll((elements) => elements.map((element) => {
       const rect = element.getBoundingClientRect();
       return { top: rect.top, bottom: rect.bottom };
@@ -62,7 +67,7 @@ function assertCircle(label, value) {
     const homeOverflow = await home.evaluate(() => ({ inner: innerWidth, scroll: document.documentElement.scrollWidth }));
     assert(homeOverflow.scroll <= homeOverflow.inner + 2, `Homepage horizontal overflow: ${homeOverflow.scroll} > ${homeOverflow.inner}`);
 
-    console.log('PASS Chromium 360px circular portrait and no-overlap checks');
+    console.log('PASS Chromium 360px circular portrait and no-overlap checks', { aboutFrame, aboutImage, sidebarPosition: sidebar.position, guideGap, homePortrait, blocks });
   } finally {
     await browser.close();
   }
