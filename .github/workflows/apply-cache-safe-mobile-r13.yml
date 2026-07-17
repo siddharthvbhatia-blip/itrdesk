@@ -1,14 +1,9 @@
 name: Apply cache-safe mobile assets
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
-    paths:
-      - .github/workflows/apply-cache-safe-mobile-r13.yml
-      - index.html
-      - about-ca-siddharth-bhatia.html
-      - assets/script.js
-      - package.json
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
@@ -19,14 +14,15 @@ concurrency:
 
 jobs:
   patch-review-branch:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:
-      TARGET_BRANCH: ${{ github.head_ref }}
+      TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
