@@ -1,22 +1,32 @@
 name: Apply cache-safe mobile assets
 
 on:
-  push:
+  pull_request:
     branches: [main]
     paths:
       - .github/workflows/apply-cache-safe-mobile-r13.yml
+      - index.html
+      - about-ca-siddharth-bhatia.html
+      - assets/script.js
+      - package.json
 
 permissions:
   contents: write
+
+concurrency:
+  group: cache-safe-mobile-r13-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   patch-review-branch:
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    env:
+      TARGET_BRANCH: ${{ github.head_ref }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: agent/cache-safe-mobile-layout-r13
+          ref: ${{ github.head_ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -38,9 +48,7 @@ jobs:
               text = path.read_text(encoding='utf-8')
               text = re.sub(r'\s*<link rel="stylesheet" href="assets/(?:styles|profile-photo|phase1)\.css(?:\?[^\"]*)?"\s*/>', '', text)
               text = re.sub(r'\s*<script defer src="assets/script\.js(?:\?[^\"]*)?"></script>', '', text)
-              links = [
-                  f'  <link rel="stylesheet" href="assets/styles.css?v={version}" />',
-              ]
+              links = [f'  <link rel="stylesheet" href="assets/styles.css?v={version}" />']
               if name == 'about-ca-siddharth-bhatia.html':
                   links.append(f'  <link rel="stylesheet" href="assets/profile-photo.css?v={version}" />')
               links.extend([
@@ -109,5 +117,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html about-ca-siddharth-bhatia.html assets/script.js package.json test/cache-safe-mobile-assets.js
-          git commit -m "Version mobile portrait assets to prevent stale browser CSS"
-          git push origin HEAD:agent/cache-safe-mobile-layout-r13
+          if git diff --cached --quiet; then
+            echo "Cache-safe files are already current"
+          else
+            git commit -m "Version mobile portrait assets to prevent stale browser CSS"
+            git push origin HEAD:$TARGET_BRANCH
+          fi
