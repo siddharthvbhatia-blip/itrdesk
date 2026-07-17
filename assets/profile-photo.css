@@ -1,54 +1,79 @@
 /* About-page portrait refinement: compact passport-style circular image */
 .profile-hero-grid{
+  display:grid;
   grid-template-columns:160px minmax(0,1fr);
   gap:clamp(26px,4vw,50px);
+  align-items:center;
 }
 
 .profile-hero-photo{
+  display:block;
   width:160px;
   height:160px;
-  aspect-ratio:1;
+  min-width:160px;
+  min-height:160px;
+  max-width:160px;
+  max-height:160px;
+  aspect-ratio:1/1;
   margin:0;
   justify-self:center;
   overflow:hidden;
   border:4px solid #fff;
   border-radius:50%;
-  background:#e8e5eb;
+  background:#eef0f4;
   box-shadow:0 16px 38px rgba(16,35,31,.17),0 0 0 1px rgba(185,130,60,.2);
 }
 
 .profile-hero-photo img{
   display:block;
-  width:100%;
-  height:100%;
-  aspect-ratio:1;
+  width:160px;
+  height:160px;
+  min-width:160px;
+  min-height:160px;
+  max-width:160px;
+  max-height:160px;
+  aspect-ratio:1/1;
+  border-radius:50%;
   object-fit:cover;
-  object-position:center 5%;
+  object-position:center 18%;
+  opacity:1;
+  visibility:visible;
 }
 
 .sidebar-portrait{
+  display:block;
   width:108px;
   height:108px;
-  aspect-ratio:1;
+  min-width:108px;
+  min-height:108px;
+  max-width:108px;
+  max-height:108px;
+  aspect-ratio:1/1;
   margin:0 auto 20px;
+  overflow:hidden;
   border:3px solid #fff;
   border-radius:50%;
   object-fit:cover;
-  object-position:center 5%;
+  object-position:center 18%;
+  background:#eef0f4;
   box-shadow:0 10px 26px rgba(16,35,31,.14),0 0 0 1px rgba(185,130,60,.16);
 }
 
 @media(max-width:760px){
   .profile-hero-grid{
-    grid-template-columns:1fr;
+    grid-template-columns:minmax(0,1fr);
     justify-items:center;
     text-align:center;
   }
 
-  .profile-hero-photo{
-    width:140px;
-    height:140px;
-    max-width:140px;
+  .profile-hero-photo,
+  .profile-hero-photo img{
+    width:144px;
+    height:144px;
+    min-width:144px;
+    min-height:144px;
+    max-width:144px;
+    max-height:144px;
   }
 
   .profile-hero-grid .contact-chips,
@@ -56,42 +81,16 @@
     justify-content:center;
     align-items:center;
   }
+}
 
-  .profile-hero-grid .contact-chips{
-    flex-direction:row;
+@media(max-width:420px){
+  .profile-hero-photo,
+  .profile-hero-photo img{
+    width:132px;
+    height:132px;
+    min-width:132px;
+    min-height:132px;
+    max-width:132px;
+    max-height:132px;
   }
 }
-
-@media(max-width:480px){
-  .profile-hero-photo{
-    width:128px;
-    height:128px;
-    max-width:128px;
-  }
-
-  .profile-hero-grid .contact-chips{
-    flex-direction:column;
-  }
-}
-
-
-/* KNOWN GOOD PROFILE PHOTO START */
-.profile-hero-photo,
-.professional-portrait{
-  overflow:hidden!important;
-  background:#eef0f4 url("https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia.jpeg") center 17%/cover no-repeat!important;
-}
-.profile-hero-photo img[data-profile-photo],
-.professional-portrait img[data-profile-photo],
-.sidebar-portrait[data-profile-photo]{
-  display:block!important;
-  width:100%!important;
-  height:100%!important;
-  max-width:100%!important;
-  opacity:1!important;
-  visibility:visible!important;
-  object-fit:cover!important;
-  object-position:center 17%!important;
-  background:#eef0f4 url("https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia.jpeg") center 17%/cover no-repeat!important;
-}
-/* KNOWN GOOD PROFILE PHOTO END */

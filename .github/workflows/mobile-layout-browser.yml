@@ -1,0 +1,54 @@
+name: Mobile layout browser checks
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - index.html
+      - about-ca-siddharth-bhatia.html
+      - assets/styles.css
+      - assets/profile-photo.css
+      - assets/phase1.css
+      - assets/script.js
+      - test/mobile-layout-browser.js
+      - .github/workflows/mobile-layout-browser.yml
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - about-ca-siddharth-bhatia.html
+      - assets/styles.css
+      - assets/profile-photo.css
+      - assets/phase1.css
+      - assets/script.js
+      - test/mobile-layout-browser.js
+      - .github/workflows/mobile-layout-browser.yml
+
+permissions:
+  contents: read
+
+jobs:
+  chromium-mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Chromium test runtime
+        run: |
+          npm install --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Start local website
+        run: |
+          python3 -m http.server 4173 >/tmp/itrdesk-http.log 2>&1 &
+          sleep 2
+          curl --fail --silent http://127.0.0.1:4173/index.html >/dev/null
+      - name: Measure mobile layout in Chromium
+        env:
+          BASE_URL: http://127.0.0.1:4173
+        run: node test/mobile-layout-browser.js
