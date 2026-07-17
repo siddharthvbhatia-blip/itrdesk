@@ -14,6 +14,8 @@ on:
       - assets/profile-photo.css
       - assets/phase1.css
       - assets/script.js
+      - assets/profile-runtime-r14.js
+      - assets/ca-siddharth-bhatia-profile.png
       - test/mobile-layout-browser.js
       - .github/workflows/live-mobile-layout-browser.yml
   schedule:
@@ -48,3 +50,11 @@ jobs:
             sleep 20
           done
           exit 1
+      - name: Upload live mobile diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-mobile-layout-diagnostics
+          path: test-results
+          if-no-files-found: warn
+          retention-days: 7
