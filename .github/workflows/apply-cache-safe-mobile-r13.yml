@@ -1,0 +1,113 @@
+name: Apply cache-safe mobile assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/apply-cache-safe-mobile-r13.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-review-branch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/cache-safe-mobile-layout-r13
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Pin corrected mobile assets to a fresh version
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+
+          version = '20260717-r13'
+          root = Path('.')
+
+          for name in ['index.html', 'about-ca-siddharth-bhatia.html']:
+              path = root / name
+              text = path.read_text(encoding='utf-8')
+              text = re.sub(r'\s*<link rel="stylesheet" href="assets/(?:styles|profile-photo|phase1)\.css(?:\?[^\"]*)?"\s*/>', '', text)
+              text = re.sub(r'\s*<script defer src="assets/script\.js(?:\?[^\"]*)?"></script>', '', text)
+              links = [
+                  f'  <link rel="stylesheet" href="assets/styles.css?v={version}" />',
+              ]
+              if name == 'about-ca-siddharth-bhatia.html':
+                  links.append(f'  <link rel="stylesheet" href="assets/profile-photo.css?v={version}" />')
+              links.extend([
+                  f'  <link rel="stylesheet" href="assets/phase1.css?v={version}" />',
+                  f'  <script defer src="assets/script.js?v={version}"></script>',
+              ])
+              anchor = '  <script type="application/ld+json">'
+              if anchor not in text:
+                  raise SystemExit(f'JSON-LD anchor missing in {name}')
+              text = text.replace(anchor, '\n'.join(links) + '\n' + anchor, 1)
+              path.write_text(text, encoding='utf-8')
+
+          script_path = root / 'assets' / 'script.js'
+          script = script_path.read_text(encoding='utf-8')
+          script = re.sub(
+              r"const PROFILE_IMAGE='assets/ca-siddharth-bhatia-profile\.png(?:\?[^']*)?';",
+              f"const PROFILE_IMAGE='assets/ca-siddharth-bhatia-profile.png?v={version}';",
+              script,
+          )
+          script = script.replace(
+              "if(document.querySelector('link[href=\"assets/phase1.css\"]'))return;",
+              "if(document.querySelector('link[href^=\"assets/phase1.css\"]'))return;",
+          )
+          script = re.sub(
+              r"link\.href='assets/phase1\.css(?:\?[^']*)?';",
+              f"link.href='assets/phase1.css?v={version}';",
+              script,
+          )
+          script_path.write_text(script, encoding='utf-8')
+
+          test = f'''\
+          'use strict';
+          const assert = require('assert');
+          const fs = require('fs');
+          const path = require('path');
+          const root = path.resolve(__dirname, '..');
+          const version = '{version}';
+          for (const name of ['index.html', 'about-ca-siddharth-bhatia.html']) {{
+            const html = fs.readFileSync(path.join(root, name), 'utf8');
+            assert(html.includes(`assets/styles.css?v=${{version}}`), `${{name}} lacks versioned base CSS`);
+            assert(html.includes(`assets/phase1.css?v=${{version}}`), `${{name}} lacks versioned mobile CSS`);
+            assert(html.includes(`assets/script.js?v=${{version}}`), `${{name}} lacks versioned JavaScript`);
+            if (name.startsWith('about')) assert(html.includes(`assets/profile-photo.css?v=${{version}}`), 'About page lacks versioned portrait CSS');
+          }}
+          const script = fs.readFileSync(path.join(root, 'assets', 'script.js'), 'utf8');
+          assert(script.includes(`assets/ca-siddharth-bhatia-profile.png?v=${{version}}`), 'Profile image source is not cache-versioned');
+          assert(script.includes(`assets/phase1.css?v=${{version}}`), 'Dynamic mobile stylesheet fallback is not cache-versioned');
+          assert(script.includes('link[href^="assets/phase1.css"]'), 'Dynamic loader may duplicate the phase-one stylesheet');
+          console.log('PASS cache-safe mobile CSS, script and portrait asset references');
+          '''
+          (root / 'test' / 'cache-safe-mobile-assets.js').write_text(test.lstrip(), encoding='utf-8')
+
+          package_path = root / 'package.json'
+          package = json.loads(package_path.read_text(encoding='utf-8'))
+          command = package['scripts']['test']
+          if 'node test/cache-safe-mobile-assets.js' not in command:
+              package['scripts']['test'] = command + ' && node test/cache-safe-mobile-assets.js'
+          package_path.write_text(json.dumps(package, indent=2) + '\n', encoding='utf-8')
+          PY
+      - name: Run all syntax and regression tests
+        run: |
+          npm run check
+          npm test
+      - name: Commit tested cache-safe update to review branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html about-ca-siddharth-bhatia.html assets/script.js package.json test/cache-safe-mobile-assets.js
+          git commit -m "Version mobile portrait assets to prevent stale browser CSS"
+          git push origin HEAD:agent/cache-safe-mobile-layout-r13
