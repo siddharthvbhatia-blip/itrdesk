@@ -1,6 +1,6 @@
 {
   "name": "itrdesk-website",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "scripts": {
     "test": "node test/run-tests.js && node test/profile-photo-known-good.js",
