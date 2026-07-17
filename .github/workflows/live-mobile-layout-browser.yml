@@ -1,4 +1,4 @@
-name: Live profile portrait and layout monitor
+name: Live concise website monitor
 
 on:
   pull_request:
@@ -13,9 +13,11 @@ on:
       - assets/styles.css
       - assets/profile-photo.css
       - assets/phase1.css
+      - assets/clean-v2.css
       - assets/script.js
       - assets/profile-runtime-r14.js
       - assets/ca-siddharth-bhatia-final-r16.jpg
+      - test/clean-site-r17.js
       - test/mobile-layout-browser.js
       - test/desktop-profile-browser-r16.js
       - .github/workflows/live-mobile-layout-browser.yml
@@ -27,7 +29,7 @@ permissions:
   contents: read
 
 jobs:
-  verify-live-profile:
+  verify-live-clean-site:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -35,27 +37,29 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Run concise source checks
+        run: node test/clean-site-r17.js
       - name: Install Chromium test runtime
         run: |
           npm install --no-save playwright@1.52.0
           npx playwright install --with-deps chromium
-      - name: Wait for GitHub Pages and verify public mobile and desktop profile rendering
+      - name: Wait for GitHub Pages and verify public concise pages
         env:
           BASE_URL: https://siddharthvbhatia-blip.github.io/itrdesk
         run: |
           for attempt in $(seq 1 30); do
-            echo "Live profile check attempt ${attempt}/30"
+            echo "Live concise-site check attempt ${attempt}/30"
             if node test/mobile-layout-browser.js && node test/desktop-profile-browser-r16.js; then
               exit 0
             fi
             sleep 20
           done
           exit 1
-      - name: Upload live profile diagnostics
+      - name: Upload live clean-site diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: live-profile-layout-diagnostics
+          name: live-clean-site-diagnostics
           path: test-results
           if-no-files-found: warn
           retention-days: 7
