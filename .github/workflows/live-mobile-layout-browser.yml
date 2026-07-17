@@ -1,10 +1,6 @@
 name: Live concise website monitor
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - .github/workflows/live-mobile-layout-browser.yml
   push:
     branches: [main]
     paths:
