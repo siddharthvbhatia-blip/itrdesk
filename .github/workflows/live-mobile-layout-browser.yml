@@ -1,0 +1,50 @@
+name: Live mobile layout monitor
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/live-mobile-layout-browser.yml
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - about-ca-siddharth-bhatia.html
+      - assets/styles.css
+      - assets/profile-photo.css
+      - assets/phase1.css
+      - assets/script.js
+      - test/mobile-layout-browser.js
+      - .github/workflows/live-mobile-layout-browser.yml
+  schedule:
+    - cron: '43 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live-mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Chromium test runtime
+        run: |
+          npm install --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Wait for GitHub Pages and verify the public mobile layout
+        env:
+          BASE_URL: https://siddharthvbhatia-blip.github.io/itrdesk
+        run: |
+          for attempt in $(seq 1 30); do
+            echo "Live mobile check attempt ${attempt}/30"
+            if node test/mobile-layout-browser.js; then
+              exit 0
+            fi
+            sleep 20
+          done
+          exit 1
