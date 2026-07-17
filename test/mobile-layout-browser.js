@@ -84,7 +84,13 @@ function circleError(label, value) {
 
     const home = await browser.newPage({ viewport: { width: 360, height: 800 } });
     await home.goto(`${base}/index.html?mobile-check=20260717-r14`, { waitUntil: 'networkidle' });
-    await home.waitForTimeout(1800);
+    const homeImageLocator = home.locator('.professional-portrait img');
+    await homeImageLocator.scrollIntoViewIfNeeded();
+    await home.waitForFunction(() => {
+      const image = document.querySelector('.professional-portrait img');
+      return image && image.complete && image.naturalWidth >= 150 && image.naturalHeight >= 150;
+    }, null, { timeout: 10000 });
+    await home.waitForTimeout(400);
     await home.screenshot({ path: path.join(outputDir, 'home-mobile.png'), fullPage: true });
     report.home = await home.evaluate(() => {
       const image = document.querySelector('.professional-portrait img');
