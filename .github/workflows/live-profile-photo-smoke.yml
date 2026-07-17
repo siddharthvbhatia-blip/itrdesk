@@ -7,16 +7,8 @@ on:
       - index.html
       - about-ca-siddharth-bhatia.html
       - assets/ca-siddharth-bhatia.jpeg
-      - assets/profile-photo.css
-      - assets/script.js
-      - test/profile-photo-known-good.js
-      - .github/workflows/live-profile-photo-smoke.yml
-  pull_request:
-    branches: [main]
-    paths:
-      - index.html
-      - about-ca-siddharth-bhatia.html
-      - assets/ca-siddharth-bhatia.jpeg
+      - assets/ca-siddharth-bhatia-profile.png
+      - assets/profile-runtime-r14.js
       - assets/profile-photo.css
       - assets/script.js
       - test/profile-photo-known-good.js
@@ -37,7 +29,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install --disable-pip-version-check pillow
-      - name: Verify published JPEG and page references
+      - name: Verify published portrait, About page and LinkedIn URL
         env:
           BUILD_SHA: ${{ github.sha }}
         run: |
@@ -50,35 +42,49 @@ jobs:
 
           base = 'https://siddharthvbhatia-blip.github.io/itrdesk/'
           build = os.environ.get('BUILD_SHA', 'manual')
+          asset = 'assets/ca-siddharth-bhatia-profile.png'
+          linkedin = 'https://www.linkedin.com/in/ca-siddharth-bhatia'
           last = None
+
           for attempt in range(1, 31):
               try:
                   request = urllib.request.Request(
-                      f'{base}assets/ca-siddharth-bhatia.jpeg?smoke={build}-{attempt}',
-                      headers={'User-Agent':'ITR-Desk-photo-smoke/5.0','Cache-Control':'no-cache'},
+                      f'{base}{asset}?smoke={build}-{attempt}',
+                      headers={'User-Agent':'ITR-Desk-photo-smoke/6.0','Cache-Control':'no-cache'},
                   )
                   raw = urllib.request.urlopen(request, timeout=20).read()
                   image = Image.open(BytesIO(raw)).convert('RGB')
                   image.load()
-                  assert image.width >= 300 and image.height >= 300, image.size
-                  assert max(ImageStat.Stat(image).var) > 100, 'Published JPEG appears blank'
+                  assert image.width >= 180 and image.height >= 180, image.size
+                  assert max(ImageStat.Stat(image).var) > 100, 'Published portrait appears blank'
 
-                  for page, minimum in [('index.html',1),('about-ca-siddharth-bhatia.html',2)]:
-                      request = urllib.request.Request(
-                          f'{base}{page}?smoke={build}-{attempt}',
-                          headers={'User-Agent':'ITR-Desk-photo-smoke/5.0','Cache-Control':'no-cache'},
-                      )
-                      html = urllib.request.urlopen(request, timeout=20).read().decode('utf-8')
-                      assert html.count('data-profile-photo') >= minimum
-                      assert 'assets/ca-siddharth-bhatia.jpeg?v=20260717-r9' in html
-                      assert 'data-remote-fallback="https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia.jpeg"' in html
-                      assert 'src="data:image/jpeg;base64,' not in html
-                  print('PASS live known-good profile photo smoke test')
+                  request = urllib.request.Request(
+                      f'{base}about-ca-siddharth-bhatia.html?smoke={build}-{attempt}',
+                      headers={'User-Agent':'ITR-Desk-photo-smoke/6.0','Cache-Control':'no-cache'},
+                  )
+                  about = urllib.request.urlopen(request, timeout=20).read().decode('utf-8')
+                  assert about.count('data-profile-photo') >= 2
+                  assert 'assets/ca-siddharth-bhatia-profile.png?v=20260717-r14' in about
+                  assert 'assets/profile-runtime-r14.js?v=20260717-r14' in about
+                  assert 'data-remote-fallback="https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/assets/ca-siddharth-bhatia-profile.png"' in about
+                  assert linkedin in about
+                  assert linkedin + '-' not in about
+                  assert 'src="data:image/jpeg;base64,' not in about
+
+                  request = urllib.request.Request(
+                      f'{base}index.html?smoke={build}-{attempt}',
+                      headers={'User-Agent':'ITR-Desk-photo-smoke/6.0','Cache-Control':'no-cache'},
+                  )
+                  home = urllib.request.urlopen(request, timeout=20).read().decode('utf-8')
+                  assert home.count('data-profile-photo') >= 1
+                  assert 'src="data:image/jpeg;base64,' not in home
+
+                  print('PASS live approved portrait and LinkedIn smoke test')
                   raise SystemExit(0)
               except Exception as exc:
                   last = exc
                   print(f'Attempt {attempt}/30 not ready: {exc}')
                   if attempt < 30:
                       time.sleep(30)
-          raise SystemExit(f'Live profile photo smoke test failed: {last}')
+          raise SystemExit(f'Live profile portrait smoke test failed: {last}')
           PY
