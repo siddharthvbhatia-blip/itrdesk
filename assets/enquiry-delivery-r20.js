@@ -71,6 +71,8 @@
   async function postNativeProvider(payload){
     const reference=webReference();
     const frameName='itrdesk-enquiry-'+reference.toLowerCase();
+    const confirmationBase=new URL('enquiry-received.html',location.href).href;
+    const returnUrl=confirmationBase+'?reference='+encodeURIComponent(reference);
     const iframe=document.createElement('iframe');
     iframe.name=frameName;
     iframe.title='Enquiry delivery confirmation';
@@ -85,7 +87,6 @@
     form.hidden=true;
     form.acceptCharset='UTF-8';
 
-    const returnUrl=new URL('enquiry-received.html',location.href).href+'?reference='+encodeURIComponent(reference);
     const fields={
       _subject:'[ITR Desk Enquiry] '+payload.caseType+' — '+payload.name,
       _template:'table',
@@ -115,6 +116,7 @@
 
     return new Promise((resolve,reject)=>{
       let settled=false;
+      const timeout=Number(window.ITRDeskEnquiryNativeTimeout)||18000;
       const cleanup=()=>setTimeout(()=>{form.remove();iframe.remove()},1200);
       const succeed=()=>{
         if(settled)return;
@@ -130,12 +132,18 @@
         error.status=503;
         reject(error);
       };
-      iframe.addEventListener('load',succeed,{once:true});
+      const inspectReturn=()=>{
+        try{
+          const href=iframe.contentWindow.location.href;
+          if(href.startsWith(confirmationBase)&&new URL(href).searchParams.get('reference')===reference)succeed();
+        }catch(_){ }
+      };
+      iframe.addEventListener('load',inspectReturn);
       try{
         if(typeof form.requestSubmit==='function')form.requestSubmit();
         else form.submit();
       }catch(_){fail();return}
-      setTimeout(fail,15000);
+      setTimeout(fail,timeout);
     });
   }
 
