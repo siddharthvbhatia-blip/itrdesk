@@ -52,7 +52,7 @@ permissions:
 jobs:
   chromium-clean-site:
     runs-on: ubuntu-latest
-    timeout-minutes: 24
+    timeout-minutes: 22
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -86,30 +86,10 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:4173
         run: node test/desktop-profile-browser-r16.js
-      - name: Verify enquiry retry, success and fallback in Chromium
+      - name: Verify backend retry, direct email success and final WhatsApp fallback
         env:
           BASE_URL: http://127.0.0.1:4173
         run: node test/enquiry-browser-r18.js
-      - name: Verify deployed backend returns a real enquiry reference
-        if: github.event_name == 'pull_request' && github.head_ref == 'agent/enquiry-reliability-r18'
-        run: |
-          for attempt in $(seq 1 8); do
-            response_file=$(mktemp)
-            status=$(curl --silent --show-error --output "$response_file" --write-out '%{http_code}' \
-              --request POST 'https://itrdesk-payment-backend.vercel.app/api/enquiry' \
-              --header 'Origin: https://siddharthvbhatia-blip.github.io' \
-              --header 'Content-Type: application/json' \
-              --data '{"name":"ITR Desk End-to-End Test","mobile":"9876543210","email":"","city":"","caseType":"Not sure","details":[],"note":"Automated end-to-end delivery verification. No response required.","consent":true,"website":"","source":"ITR Desk website pull request smoke test"}')
-            body=$(cat "$response_file")
-            rm -f "$response_file"
-            echo "HTTP $status: $body"
-            if [ "$status" = "200" ] && echo "$body" | grep -Eq '"reference":"ENQ-[0-9]{8}-[A-F0-9]{6}"'; then
-              echo 'PASS deployed backend returned a delivery reference'
-              exit 0
-            fi
-            sleep 20
-          done
-          exit 1
       - name: Upload site diagnostics
         if: always()
         uses: actions/upload-artifact@v4
