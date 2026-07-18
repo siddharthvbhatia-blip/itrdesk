@@ -5,7 +5,6 @@ on:
     branches: [main]
     paths:
       - index.html
-      - enquiry-received.html
       - privacy.html
       - about-ca-siddharth-bhatia.html
       - assets/ca-siddharth-bhatia-final-r16.jpg
@@ -15,11 +14,11 @@ on:
       - assets/clean-v2.css
       - assets/script.js
       - assets/profile-runtime-r14.js
-      - assets/enquiry-delivery-r20.js
+      - assets/enquiry-handoff-r21.js
       - test/final-profile-r16.js
       - test/clean-site-r17.js
-      - test/enquiry-delivery-r20.js
-      - test/enquiry-browser-r20.js
+      - test/enquiry-handoff-r21.js
+      - test/enquiry-browser-r21.js
       - test/portrait-visual-proof-r16.py
       - test/mobile-layout-browser.js
       - test/desktop-profile-browser-r16.js
@@ -28,7 +27,6 @@ on:
     branches: [main]
     paths:
       - index.html
-      - enquiry-received.html
       - privacy.html
       - about-ca-siddharth-bhatia.html
       - assets/ca-siddharth-bhatia-final-r16.jpg
@@ -38,11 +36,11 @@ on:
       - assets/clean-v2.css
       - assets/script.js
       - assets/profile-runtime-r14.js
-      - assets/enquiry-delivery-r20.js
+      - assets/enquiry-handoff-r21.js
       - test/final-profile-r16.js
       - test/clean-site-r17.js
-      - test/enquiry-delivery-r20.js
-      - test/enquiry-browser-r20.js
+      - test/enquiry-handoff-r21.js
+      - test/enquiry-browser-r21.js
       - test/portrait-visual-proof-r16.py
       - test/mobile-layout-browser.js
       - test/desktop-profile-browser-r16.js
@@ -67,10 +65,10 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check pillow
           python test/portrait-visual-proof-r16.py
-      - name: Run concise content and R20 enquiry source checks
+      - name: Run concise content and R21 enquiry source checks
         run: |
           node test/clean-site-r17.js
-          node test/enquiry-delivery-r20.js
+          node test/enquiry-handoff-r21.js
       - name: Install Chromium test runtime
         run: |
           npm install --no-save playwright@1.52.0
@@ -88,10 +86,10 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:4173
         run: node test/desktop-profile-browser-r16.js
-      - name: Verify backend retry, native form success and final WhatsApp fallback
+      - name: Verify secure retry, WhatsApp handoff and validation errors
         env:
           BASE_URL: http://127.0.0.1:4173
-        run: node test/enquiry-browser-r20.js
+        run: node test/enquiry-browser-r21.js
       - name: Upload site diagnostics
         if: always()
         uses: actions/upload-artifact@v4
