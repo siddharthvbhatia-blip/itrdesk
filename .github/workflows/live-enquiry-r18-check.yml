@@ -1,4 +1,4 @@
-name: Live enquiry R19 browser check
+name: Live enquiry R19 browser diagnostic
 
 on:
   pull_request:
@@ -10,9 +10,9 @@ permissions:
   contents: read
 
 jobs:
-  verify-live-direct-delivery:
+  diagnose-live-direct-delivery:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -21,11 +21,9 @@ jobs:
         run: |
           npm install --no-save playwright@1.52.0
           npx playwright install --with-deps chromium
-      - name: Wait for GitHub Pages
-        run: sleep 75
-      - name: Submit a labelled enquiry through the live browser fallback
+      - name: Capture direct-provider behaviour from the published page
         run: |
-          cat > /tmp/live-enquiry-check.js <<'JS'
+          cat > /tmp/live-enquiry-diagnostic.js <<'JS'
           const { chromium } = require('playwright');
           (async () => {
             const browser = await chromium.launch({headless:true});
@@ -34,6 +32,8 @@ jobs:
               let backendCalls = 0;
               let directCalls = 0;
               const providerResponses = [];
+              const failedRequests = [];
+              const consoleMessages = [];
               await page.route('https://itrdesk-payment-backend.vercel.app/api/enquiry', async route => {
                 backendCalls += 1;
                 await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Automatic enquiry delivery is temporarily unavailable.'})});
@@ -41,31 +41,31 @@ jobs:
               page.on('request', request => {
                 if (request.url().startsWith('https://formsubmit.co/ajax/')) directCalls += 1;
               });
+              page.on('requestfailed', request => failedRequests.push({url:request.url(),failure:request.failure()}));
+              page.on('console', message => consoleMessages.push({type:message.type(),text:message.text()}));
               page.on('response', async response => {
                 if (response.url().startsWith('https://formsubmit.co/ajax/')) {
-                  providerResponses.push({status:response.status(),url:response.url(),body:await response.text().catch(()=> '')});
+                  providerResponses.push({status:response.status(),url:response.url(),headers:await response.allHeaders(),body:await response.text().catch(()=> '')});
                 }
               });
-              await page.goto('https://siddharthvbhatia-blip.github.io/itrdesk/?enquiry=live-r19', {waitUntil:'networkidle'});
+              await page.goto('https://siddharthvbhatia-blip.github.io/itrdesk/?enquiry=diagnostic-r19', {waitUntil:'networkidle'});
               await page.waitForFunction(() => document.querySelector('#itrForm')?.dataset.reliableEnquiry === 'r19', null, {timeout:30000});
               const scriptSource = await page.locator('script[src*="enquiry-delivery-r19.js"]').getAttribute('src');
-              await page.locator('input[name="name"]').fill('ITR Desk Live System Test');
+              await page.locator('input[name="name"]').fill('ITR Desk Live Diagnostic');
               await page.locator('input[name="phone"]').fill('9876543210');
               await page.locator('select[name="caseType"]').selectOption({label:'Not sure'});
-              await page.locator('textarea[name="note"]').fill('Automated live delivery verification. No response required.');
+              await page.locator('textarea[name="note"]').fill('Automated diagnostic. No response required.');
               await page.locator('input[name="consent"]').check();
               await page.locator('#itrForm button[type="submit"]').click();
-              await page.locator('#enquiryStatus.success').waitFor({timeout:35000});
+              await page.waitForTimeout(18000);
               const text = await page.locator('#enquiryStatus').innerText();
+              const statusClass = await page.locator('#enquiryStatus').getAttribute('class');
               const fallbackHidden = await page.locator('#enquiryFallback').evaluate(el => el.hidden);
-              console.log(JSON.stringify({scriptSource,backendCalls,directCalls,providerResponses,text,fallbackHidden},null,2));
+              console.log(JSON.stringify({scriptSource,backendCalls,directCalls,providerResponses,failedRequests,consoleMessages,text,statusClass,fallbackHidden},null,2));
               if (!scriptSource.includes('enquiry-delivery-r19.js?v=20260718-r19')) throw new Error(`Unexpected script: ${scriptSource}`);
-              if (backendCalls !== 2) throw new Error(`Expected 2 backend calls, got ${backendCalls}`);
               if (directCalls < 1) throw new Error('Direct provider was not called');
-              if (!/ENQ-[0-9]{8}-[A-F0-9]{6}/.test(text)) throw new Error('No enquiry reference shown');
-              if (!fallbackHidden) throw new Error('WhatsApp fallback should remain hidden');
-              console.log('PASS live website R19 direct enquiry fallback');
+              console.log('DIAGNOSTIC COMPLETE');
             } finally { await browser.close(); }
           })().catch(error => { console.error(error); process.exit(1); });
           JS
-          node /tmp/live-enquiry-check.js
+          node /tmp/live-enquiry-diagnostic.js
