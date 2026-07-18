@@ -1,4 +1,4 @@
-name: Live enquiry R20 browser diagnostic
+name: Live enquiry R21 browser check
 
 on:
   pull_request:
@@ -10,9 +10,9 @@ permissions:
   contents: read
 
 jobs:
-  diagnose-live-native-delivery:
+  verify-live-whatsapp-handoff:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -21,66 +21,59 @@ jobs:
         run: |
           npm install --no-save playwright@1.52.0
           npx playwright install --with-deps chromium
-      - name: Wait for GitHub Pages
-        run: sleep 60
-      - name: Submit through the live native form fallback
+      - name: Verify the published R21 handoff
         run: |
-          mkdir -p live-diagnostics
-          cat > live-diagnostics/live-enquiry-r20.js <<'JS'
-          const fs = require('fs');
+          cat > live-enquiry-r21.js <<'JS'
           const { chromium } = require('playwright');
           (async () => {
             const browser = await chromium.launch({headless:true});
-            const result = { backendCalls:0, nativePosts:0, providerResponses:[], failedRequests:[], consoleMessages:[], frameNavigations:[] };
             try {
-              const page = await browser.newPage({viewport:{width:390,height:844}});
-              await page.route('https://itrdesk-payment-backend.vercel.app/api/enquiry', async route => {
-                result.backendCalls += 1;
-                await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Automatic enquiry delivery is temporarily unavailable.'})});
-              });
-              page.on('request', request => {
-                if (request.url().startsWith('https://formsubmit.co/siddharth.v.bhatia@gmail.com')) {
-                  result.nativePosts += 1;
-                  result.nativeRequest = {method:request.method(),url:request.url(),body:request.postData()};
+              let report;
+              for (let attempt = 1; attempt <= 20; attempt += 1) {
+                const page = await browser.newPage({viewport:{width:390,height:844}});
+                await page.addInitScript(() => { window.ITRDeskDisableAutoWhatsApp = true; });
+                let backendCalls = 0;
+                await page.route('https://itrdesk-payment-backend.vercel.app/api/enquiry', async route => {
+                  backendCalls += 1;
+                  await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Secure delivery is temporarily unavailable.'})});
+                });
+                try {
+                  await page.goto(`https://siddharthvbhatia-blip.github.io/itrdesk/?enquiry=live-r21-${attempt}`, {waitUntil:'networkidle'});
+                  const version = await page.locator('#itrForm').getAttribute('data-reliable-enquiry');
+                  const script = await page.locator('script[src*="enquiry-handoff-r21.js"]').getAttribute('src').catch(() => null);
+                  if (version !== 'r21' || !script) {
+                    await page.close();
+                    await new Promise(resolve => setTimeout(resolve, 15000));
+                    continue;
+                  }
+                  await page.locator('input[name="name"]').fill('ITR Desk Live System Test');
+                  await page.locator('input[name="phone"]').fill('9876543210');
+                  await page.locator('select[name="caseType"]').selectOption({label:'Not sure'});
+                  await page.locator('textarea[name="note"]').fill('Automated live handoff verification. No response required.');
+                  await page.locator('input[name="consent"]').check();
+                  await page.locator('#itrForm button[type="submit"]').click();
+                  await page.locator('#enquiryStatus.handoff').waitFor({timeout:15000});
+                  const text = await page.locator('#enquiryStatus').innerText();
+                  const href = await page.locator('#enquiryFallback').getAttribute('href');
+                  const visible = await page.locator('#enquiryFallback').isVisible();
+                  report = {attempt,version,script,backendCalls,text,href,visible};
+                  console.log(JSON.stringify(report,null,2));
+                  if (backendCalls !== 2) throw new Error(`Expected 2 backend attempts, got ${backendCalls}`);
+                  if (!/WA-[0-9]{8}-[A-F0-9]{6}/.test(text)) throw new Error('No WhatsApp reference shown');
+                  if (!/Tap Send there to complete it/.test(text)) throw new Error('Completion instruction is missing');
+                  if (/not configured/i.test(text)) throw new Error('Old configuration error is still visible');
+                  if (!visible || !href.startsWith('https://wa.me/917879857126?text=')) throw new Error('Prepared WhatsApp link is missing');
+                  console.log('PASS live R21 enquiry handoff');
+                  await page.close();
+                  return;
+                } catch (error) {
+                  await page.close();
+                  if (attempt === 20) throw error;
+                  await new Promise(resolve => setTimeout(resolve, 15000));
                 }
-              });
-              page.on('requestfailed', request => result.failedRequests.push({url:request.url(),failure:request.failure()}));
-              page.on('console', message => result.consoleMessages.push({type:message.type(),text:message.text()}));
-              page.on('framenavigated', frame => result.frameNavigations.push(frame.url()));
-              page.on('response', async response => {
-                if (response.url().startsWith('https://formsubmit.co/')) {
-                  result.providerResponses.push({status:response.status(),url:response.url(),headers:await response.allHeaders(),body:(await response.text().catch(()=> '')).slice(0,1000)});
-                }
-              });
-              await page.goto('https://siddharthvbhatia-blip.github.io/itrdesk/?enquiry=live-r20-native', {waitUntil:'networkidle'});
-              await page.waitForFunction(() => document.querySelector('#itrForm')?.dataset.reliableEnquiry === 'r20', null, {timeout:30000});
-              result.scriptSource = await page.locator('script[src*="enquiry-delivery-r20.js"]').getAttribute('src');
-              await page.locator('input[name="name"]').fill('ITR Desk Live System Test');
-              await page.locator('input[name="phone"]').fill('9876543210');
-              await page.locator('select[name="caseType"]').selectOption({label:'Not sure'});
-              await page.locator('textarea[name="note"]').fill('Automated live native-form verification. No response required.');
-              await page.locator('input[name="consent"]').check();
-              await page.locator('#itrForm button[type="submit"]').click();
-              await page.waitForTimeout(22000);
-              result.text = await page.locator('#enquiryStatus').innerText();
-              result.statusClass = await page.locator('#enquiryStatus').getAttribute('class');
-              result.fallbackHidden = await page.locator('#enquiryFallback').evaluate(el => el.hidden);
-              await page.screenshot({path:'live-diagnostics/live-enquiry-r20.png',fullPage:true});
-            } catch (error) {
-              result.error = {name:error.name,message:error.message,stack:error.stack};
-            } finally {
-              fs.writeFileSync('live-diagnostics/diagnostic.json', JSON.stringify(result,null,2));
-              console.log(JSON.stringify(result,null,2));
-              await browser.close();
-            }
-          })();
+              }
+              throw new Error('R21 was not published in time');
+            } finally { await browser.close(); }
+          })().catch(error => { console.error(error); process.exit(1); });
           JS
-          node live-diagnostics/live-enquiry-r20.js
-      - name: Upload live provider diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: live-enquiry-r20-diagnostic
-          path: live-diagnostics
-          if-no-files-found: error
-          retention-days: 3
+          node live-enquiry-r21.js
