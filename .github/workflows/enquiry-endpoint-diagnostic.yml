@@ -1,0 +1,29 @@
+name: Enquiry endpoint diagnostic
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/enquiry-endpoint-diagnostic.yml
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Print the deployed enquiry response
+        run: |
+          response_file=$(mktemp)
+          status=$(curl --silent --show-error --output "$response_file" --write-out '%{http_code}' \
+            --request POST 'https://itrdesk-payment-backend.vercel.app/api/enquiry' \
+            --header 'Origin: https://siddharthvbhatia-blip.github.io' \
+            --header 'Content-Type: application/json' \
+            --data '{"name":"ITR Desk Diagnostic Test","mobile":"9876543210","email":"","city":"","caseType":"Not sure","details":[],"note":"Automated diagnostic. No response required.","consent":true,"website":"","source":"Enquiry endpoint diagnostic"}')
+          body=$(cat "$response_file")
+          rm -f "$response_file"
+          echo "STATUS=$status"
+          echo "BODY=$body"
+          test "$status" = "200"
