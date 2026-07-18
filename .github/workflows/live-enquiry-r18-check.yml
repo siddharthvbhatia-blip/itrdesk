@@ -24,7 +24,7 @@ jobs:
       - name: Capture direct-provider behaviour from the published page
         run: |
           mkdir -p live-diagnostics
-          cat > /tmp/live-enquiry-diagnostic.js <<'JS'
+          cat > live-diagnostics/live-enquiry-diagnostic.js <<'JS'
           const fs = require('fs');
           const { chromium } = require('playwright');
           (async () => {
@@ -46,7 +46,7 @@ jobs:
                   result.providerResponses.push({status:response.status(),url:response.url(),headers:await response.allHeaders(),body:await response.text().catch(()=> '')});
                 }
               });
-              await page.goto('https://siddharthvbhatia-blip.github.io/itrdesk/?enquiry=diagnostic-r19-artifact', {waitUntil:'networkidle'});
+              await page.goto('https://siddharthvbhatia-blip.github.io/itrdesk/?enquiry=diagnostic-r19-workspace', {waitUntil:'networkidle'});
               await page.waitForFunction(() => document.querySelector('#itrForm')?.dataset.reliableEnquiry === 'r19', null, {timeout:30000});
               result.scriptSource = await page.locator('script[src*="enquiry-delivery-r19.js"]').getAttribute('src');
               await page.locator('input[name="name"]').fill('ITR Desk Live Diagnostic');
@@ -69,7 +69,7 @@ jobs:
             }
           })();
           JS
-          node /tmp/live-enquiry-diagnostic.js
+          node live-diagnostics/live-enquiry-diagnostic.js
       - name: Upload live provider diagnostics
         if: always()
         uses: actions/upload-artifact@v4
