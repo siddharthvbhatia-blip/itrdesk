@@ -12,8 +12,10 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
+      - name: Wait for Vercel deployment
+        run: sleep 45
       - name: Print the deployed enquiry response
         run: |
           response_file=$(mktemp)
@@ -21,9 +23,10 @@ jobs:
             --request POST 'https://itrdesk-payment-backend.vercel.app/api/enquiry' \
             --header 'Origin: https://siddharthvbhatia-blip.github.io' \
             --header 'Content-Type: application/json' \
-            --data '{"name":"ITR Desk Diagnostic Test","mobile":"9876543210","email":"","city":"","caseType":"Not sure","details":[],"note":"Automated diagnostic. No response required.","consent":true,"website":"","source":"Enquiry endpoint diagnostic"}')
+            --data '{"name":"ITR Desk Diagnostic Test","mobile":"9876543210","email":"","city":"","caseType":"Not sure","details":[],"note":"Automated diagnostic after compatibility repair. No response required.","consent":true,"website":"","source":"Enquiry endpoint diagnostic"}')
           body=$(cat "$response_file")
           rm -f "$response_file"
           echo "STATUS=$status"
           echo "BODY=$body"
           test "$status" = "200"
+          echo "$body" | grep -Eq '"reference":"ENQ-[0-9]{8}-[A-F0-9]{6}"'
