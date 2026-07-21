@@ -3,8 +3,23 @@
 
   const ENDPOINT='https://itrdesk-payment-backend.vercel.app/api/enquiry';
   const PHONE='917879857126';
+  const GOOGLE_ADS_ID='AW-18235547880';
   const wait=milliseconds=>new Promise(resolve=>setTimeout(resolve,milliseconds));
   const clean=value=>String(value||'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/\s+/g,' ').trim();
+
+  function setupGoogleTag(){
+    window.dataLayer=window.dataLayer||[];
+    if(typeof window.gtag!=='function')window.gtag=function(){window.dataLayer.push(arguments)};
+    window.gtag('js',new Date());
+    window.gtag('config',GOOGLE_ADS_ID);
+    if(!document.querySelector('script[data-itrdesk-google-tag]')){
+      const script=document.createElement('script');
+      script.async=true;
+      script.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(GOOGLE_ADS_ID);
+      script.dataset.itrdeskGoogleTag='true';
+      document.head.appendChild(script);
+    }
+  }
 
   function reference(){
     const date=new Date().toISOString().slice(0,10).replace(/-/g,'');
@@ -59,6 +74,7 @@
   }
 
   function setup(){
+    setupGoogleTag();
     const form=document.querySelector('#itrForm');
     if(!form||form.dataset.reliableEnquiry==='r21')return;
     form.dataset.reliableEnquiry='r21';
@@ -98,8 +114,11 @@
       try{
         const result=await postWithRetry(payload);
         status.className='enquiry-status success';
-        status.textContent='Enquiry submitted successfully. Reference: '+result.reference+'. You do not need to send a WhatsApp message.';
+        status.textContent='Enquiry submitted successfully. Reference: '+result.reference+'. Redirecting to confirmation…';
         form.reset();
+        try{sessionStorage.setItem('itrdesk_enquiry_reference',result.reference)}catch(_){ }
+        if(typeof window.gtag==='function')window.gtag('event','generate_lead',{case_type:payload.caseType});
+        setTimeout(()=>location.assign('thank-you.html'),700);
       }catch(error){
         const validation=error&&error.status&&error.status<500&&error.status!==429;
         if(validation){
