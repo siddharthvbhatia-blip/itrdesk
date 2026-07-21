@@ -22,7 +22,8 @@ assert(client.includes('WA-${date}-${random}'), 'R21 client does not create a tr
 assert(client.includes('Tap Send there to complete it'), 'R21 client does not explain that the visitor must tap Send');
 assert(!client.includes('formsubmit.co'), 'R21 client retains the blocked third-party form dependency');
 assert(!client.includes('not configured'), 'R21 client exposes configuration-specific wording');
-assert(privacy.includes('opens WhatsApp'), 'Privacy page does not disclose the automatic WhatsApp handoff');
-assert(privacy.includes('only when you tap Send in WhatsApp'), 'Privacy page does not explain when the enquiry is completed');
+assert(privacy.includes('If every automatic delivery channel is temporarily unavailable'), 'Privacy page does not limit WhatsApp to final fallback');
+assert(privacy.includes('completed only when the visitor taps Send in WhatsApp'), 'Privacy page does not explain when the fallback enquiry is completed');
+assert(index.includes('WhatsApp is used only if every automatic delivery channel is temporarily unavailable'), 'Homepage does not describe WhatsApp as last resort');
 
-console.log('PASS backend retry, cache-safe R21 handoff, prepared WhatsApp reference and privacy wording');
+console.log('PASS backend retry, cache-safe R21 handoff, prepared WhatsApp reference and last-resort privacy wording');
