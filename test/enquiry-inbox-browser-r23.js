@@ -55,7 +55,7 @@ fs.mkdirSync(output, { recursive: true });
       assert.equal(await page.locator('input[type="password"]').count(), 0, `${viewport.name}: password field remains`);
       assert.equal(await page.evaluate(() => window.__inboxFetchCount || 0), 0, `${viewport.name}: unauthorised page made an API request`);
 
-      await page.goto(`${base}/admin-inbox.html?check=r24-${viewport.name}#access=test-magic-access`, { waitUntil:'networkidle' });
+      await page.goto(`${base}/admin-inbox.html?check=r24-${viewport.name}-magic#access=test-magic-access`, { waitUntil:'networkidle' });
       await page.waitForSelector('#inboxApp:not([hidden])');
       assert.equal(new URL(page.url()).hash, '', `${viewport.name}: access key remains in address bar`);
       assert.equal(await page.locator('.inbox-message').count(), 2, `${viewport.name}: inbox cards missing`);
