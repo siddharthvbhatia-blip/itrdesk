@@ -1,0 +1,61 @@
+name: Live enquiry inbox and CA favicon monitor
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/live-inbox-favicon-r23.yml
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - about-ca-siddharth-bhatia.html
+      - admin-inbox.html
+      - privacy.html
+      - assets/favicon-ca-r23.svg
+      - assets/admin-inbox-r23.css
+      - assets/admin-inbox-r23.js
+      - .github/workflows/live-inbox-favicon-r23.yml
+  workflow_dispatch:
+  schedule:
+    - cron: '37 4 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Wait for GitHub Pages deployment and verify files
+        run: |
+          set -euo pipefail
+          base='https://siddharthvbhatia-blip.github.io/itrdesk'
+          for attempt in $(seq 1 30); do
+            token="r23-${GITHUB_SHA}-${attempt}"
+            curl -sS -H 'Cache-Control: no-cache' "$base/index.html?deploy=$token" -o /tmp/index.html || true
+            curl -sS -H 'Cache-Control: no-cache' "$base/about-ca-siddharth-bhatia.html?deploy=$token" -o /tmp/about.html || true
+            curl -sS -H 'Cache-Control: no-cache' "$base/admin-inbox.html?deploy=$token" -o /tmp/admin.html || true
+            curl -sS -H 'Cache-Control: no-cache' "$base/privacy.html?deploy=$token" -o /tmp/privacy.html || true
+            curl -sS -H 'Cache-Control: no-cache' "$base/assets/favicon-ca-r23.svg?deploy=$token" -o /tmp/favicon.svg || true
+
+            if grep -q 'favicon-ca-r23.svg?v=20260721-r23' /tmp/index.html \
+              && grep -q 'Send your message directly from the website' /tmp/index.html \
+              && grep -q 'favicon-ca-r23.svg?v=20260721-r23' /tmp/about.html \
+              && grep -q 'noindex, nofollow, noarchive' /tmp/admin.html \
+              && grep -q 'assets/admin-inbox-r23.js?v=20260721-r23' /tmp/admin.html \
+              && grep -q 'Private administrator inbox' /tmp/privacy.html \
+              && grep -q 'viewBox="0 0 64 64"' /tmp/favicon.svg \
+              && grep -q '#17639a' /tmp/favicon.svg \
+              && grep -q '#f47920' /tmp/favicon.svg \
+              && grep -q '#50b848' /tmp/favicon.svg; then
+              echo 'PASS deployed direct enquiry copy, protected inbox, privacy disclosure and CA favicon'
+              exit 0
+            fi
+            echo "GitHub Pages deployment attempt ${attempt}/30 is not ready."
+            sleep 20
+          done
+          echo 'Live enquiry inbox/favicon verification failed.'
+          for file in /tmp/index.html /tmp/about.html /tmp/admin.html /tmp/privacy.html /tmp/favicon.svg; do echo "--- $file"; head -30 "$file" || true; done
+          exit 1
