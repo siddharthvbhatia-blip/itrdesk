@@ -267,3 +267,19 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialiseProfilePhotos);
   else initialiseProfilePhotos();
 })();
+
+/* GLOBAL CA FAVICON — R25 */
+(() => {
+  const applyCaFavicon = () => {
+    let icon = document.querySelector('link[rel~="icon"]');
+    if (!icon) {
+      icon = document.createElement('link');
+      icon.rel = 'icon';
+      document.head.appendChild(icon);
+    }
+    icon.type = 'image/svg+xml';
+    icon.href = 'assets/favicon-ca-r23.svg?v=20260721-r25';
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyCaFavicon, {once:true});
+  else applyCaFavicon();
+})();
