@@ -1,0 +1,68 @@
+/* ITR Desk blue-and-white professional theme — R22 */
+:root{
+  color-scheme:light;
+  --ink:#0b2341;
+  --muted:#52687d;
+  --soft:#eef6fc;
+  --cream:#f6faff;
+  --white:#ffffff;
+  --green:#17639a;
+  --green-dark:#0c4772;
+  --gold:#1d6697;
+  --gold-soft:#dcecf7;
+  --line:#d6e3ee;
+  --danger:#a9362b;
+  --shadow:0 22px 60px rgba(15,74,116,.13);
+}
+html,body{background:#fff!important;color:var(--ink)!important}
+body{accent-color:var(--green)}
+::selection{background:#cfe5f5;color:#08243d}
+.site-header{background:rgba(255,255,255,.96)!important;border-bottom-color:#d7e4ef!important;box-shadow:0 5px 24px rgba(12,71,114,.06)}
+.site-nav{color:#3c5870!important}
+.site-nav a:hover,.site-nav [aria-current="page"]{color:var(--green)!important}
+.nav-toggle{border-color:#cdddea!important;background:#fff!important;color:var(--ink)!important}
+.brand-title{color:#104f7e!important}
+.brand-subtitle{color:#5a7185!important}
+.brand-with-ca-logo{display:flex!important;flex-direction:row!important;align-items:center!important;gap:11px!important}
+.brand-copy{display:flex;flex-direction:column;line-height:1.1}
+.ca-india-logo{display:block;width:58px;height:42px;flex:0 0 58px;object-fit:contain;background:#fff;border-radius:8px}
+.hero,.clean-hero,.calculator-hero,.page-hero{background:radial-gradient(circle at 88% 14%,#d8ebf8 0,#f2f8fd 35%,#fff 72%)!important}
+.clean-site .section.muted,.section.muted,.calculator-section,.paid-computation-section{background:#f5f9fd!important}
+.clean-profile-card,.clean-action-card,.clean-service-card,.clean-step,.lead-form,.content-card,.sidebar-card,.tax-form,.result-breakdown,.calc-scope,.paid-offer,.paid-report-form,.finder-form,.interactive-tool,.professional-verification{border-color:#d4e3ef!important;background:#fff!important;box-shadow:0 12px 36px rgba(15,74,116,.07)!important}
+.clean-profile-card img,.profile-hero-photo,.professional-portrait img,.sidebar-portrait{box-shadow:0 14px 38px rgba(15,74,116,.16),0 0 0 1px rgba(23,99,154,.18)!important}
+.btn.primary,.clean-step span,.calc-heading>span,.step span,.language-toggle button.active{background:linear-gradient(135deg,#176da7,#0d4f80)!important;color:#fff!important;box-shadow:0 12px 28px rgba(23,99,154,.22)!important}
+.btn.primary:hover{background:linear-gradient(135deg,#125f94,#093f68)!important}
+.btn.secondary{background:#e6f1f9!important;color:#0d4f80!important;border-color:#c9deed!important}
+.btn.secondary:hover{background:#d8eaf6!important}
+.btn.ghost{border-color:#cdddea!important;background:#fff!important;color:#153b5b!important}
+.eyebrow,.clean-service-card span,.contact-card span{color:#17639a!important}
+.clean-action-card .clean-icon,.journey-card>span,.status-chip,.result-kicker{background:#e5f1f9!important;color:#17639a!important}
+.clean-action-card:hover,.journey-card:hover,.case-btn:hover{border-color:#91bddb!important;box-shadow:0 18px 42px rgba(15,74,116,.11)!important}
+.clean-action-card strong,.clean-profile-card .text-link,.text-link,.source-box a,.tool-card strong,.journey-card strong,.tool-index a,.paid-consent a{color:#17639a!important}
+.clean-identity-line,.hero-text,.section-heading p,.clean-enquiry-copy p,.clean-action-card p,.clean-service-card p,.clean-step p,.faq details p,.micro-note{color:#52687d!important}
+.tag,.card-number{background:#e5f1f9!important;color:#0d4f80!important}
+.alert-box,.paid-boundary,.calc-warnings{background:#f2f8fd!important;border-color:#c9deed!important;color:#224b6b!important}
+.notice{border-left-color:#17639a!important;background:#f5f9fd!important}
+.lead-form input,.lead-form select,.lead-form textarea,.tax-form input,.tax-form select,.paid-report-form input,.paid-report-form select,.finder-form select,.finder-form input[type="number"],.interactive-tool input,.interactive-tool select{border-color:#cbdce9!important;background:#fff!important;color:#0b2341!important}
+.lead-form input:focus,.lead-form select:focus,.lead-form textarea:focus,.tax-form input:focus,.tax-form select:focus,.paid-report-form input:focus,.paid-report-form select:focus,.finder-form select:focus,.interactive-tool input:focus,.interactive-tool select:focus{outline:none!important;border-color:#17639a!important;box-shadow:0 0 0 3px rgba(23,99,154,.14)!important}
+.result-summary,.price-card,.cta-band,.clean-cta{background:linear-gradient(135deg,#0b3e67,#176fa8)!important;color:#fff!important}
+.result-summary>p:not(.eyebrow),.result-summary .regime-cards span,.result-summary .regime-cards small,.price-card span,.price-card small,.cta-band p,.clean-cta p{color:#dceef9!important}
+.result-summary .eyebrow,.itr-filing-cta .eyebrow{color:#bfe0f5!important}
+.finder-result,.tool-result,.paid-downloads,.payment-status.success,.enquiry-status.success{background:#edf7fd!important;border-color:#b7d7ec!important;color:#0c4772!important}
+.verification-links a,.clean-link-stack a{border-color:#b9d5e8!important;background:#f1f8fd!important;color:#0c4772!important}
+.enquiry-status.handoff{background:#edf7fd!important;border:1px solid #b7d7ec!important;color:#0c4772!important}
+.mobile-dock{background:#fff!important;border-top:1px solid #d4e3ef!important;box-shadow:0 -8px 24px rgba(12,71,114,.08)!important}
+.mobile-dock a{color:#3c5870!important}
+.mobile-dock a span{color:#17639a!important}
+.site-footer,.clean-footer{background:#092b49!important;color:#fff!important}
+.site-footer p,.site-footer li,.footer-bottom{color:#bcd1e1!important}
+.site-footer a{color:#fff!important}
+.wa-float{background:#17639a!important;box-shadow:0 14px 35px rgba(12,71,114,.25)!important}
+.wa-float:hover{background:#0d4f80!important}
+.report-preview::after{background:#dcecf7!important;color:#0c4772!important}
+.deadline-card{background:linear-gradient(135deg,#fff,#eef6fc)!important}
+.feedback-card,.language-card,.docs-panel,.sidebar-card,.contact-card,.calc-details{background:#f5f9fd!important}
+@media(max-width:640px){
+  .ca-india-logo{width:48px;height:35px;flex-basis:48px}
+  .brand-with-ca-logo{gap:8px!important}
+}
