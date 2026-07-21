@@ -1,6 +1,10 @@
-name: Live concise website monitor
+name: Live concise website and office contact monitor
 
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/live-mobile-layout-browser.yml
   push:
     branches: [main]
     paths:
@@ -14,6 +18,8 @@ on:
       - assets/profile-runtime-r14.js
       - assets/ca-siddharth-bhatia-final-r16.jpg
       - test/clean-site-r17.js
+      - test/home-contact-r24.js
+      - test/home-contact-browser-r24.js
       - test/mobile-layout-browser.js
       - test/desktop-profile-browser-r16.js
       - .github/workflows/live-mobile-layout-browser.yml
@@ -33,29 +39,31 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Run concise source checks
-        run: node test/clean-site-r17.js
+      - name: Run concise and office contact source checks
+        run: |
+          node test/clean-site-r17.js
+          node test/home-contact-r24.js
       - name: Install Chromium test runtime
         run: |
           npm install --no-save playwright@1.52.0
           npx playwright install --with-deps chromium
-      - name: Wait for GitHub Pages and verify public concise pages
+      - name: Wait for GitHub Pages and verify public pages and office contact details
         env:
           BASE_URL: https://siddharthvbhatia-blip.github.io/itrdesk
         run: |
           for attempt in $(seq 1 30); do
-            echo "Live concise-site check attempt ${attempt}/30"
-            if node test/mobile-layout-browser.js && node test/desktop-profile-browser-r16.js; then
+            echo "Live homepage contact check attempt ${attempt}/30"
+            if node test/mobile-layout-browser.js && node test/desktop-profile-browser-r16.js && node test/home-contact-browser-r24.js; then
               exit 0
             fi
             sleep 20
           done
           exit 1
-      - name: Upload live clean-site diagnostics
+      - name: Upload live website and contact diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: live-clean-site-diagnostics
+          name: live-home-contact-diagnostics
           path: test-results
           if-no-files-found: warn
           retention-days: 7
