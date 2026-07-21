@@ -66,10 +66,17 @@
       return;
     }
 
+    const pendingReveals = new Set(revealElements);
+    const revealElement = (element) => {
+      if (!pendingReveals.has(element)) return;
+      element.classList.add('is-visible');
+      pendingReveals.delete(element);
+    };
+
     const observer = new IntersectionObserver((entries, instance) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
+        revealElement(entry.target);
         instance.unobserve(entry.target);
       });
     }, {
@@ -87,12 +94,23 @@
     const hero = document.querySelector('.clean-hero,.page-hero');
     const header = document.querySelector('.site-header');
     let ticking = false;
+    const revealPassedElements = () => {
+      if (!pendingReveals.size) return;
+      const threshold = window.innerHeight * 1.08;
+      [...pendingReveals].forEach((element) => {
+        if (element.getBoundingClientRect().top < threshold) {
+          revealElement(element);
+          observer.unobserve(element);
+        }
+      });
+    };
     const updateScrollMotion = () => {
       const scrollTop = Math.max(window.scrollY || document.documentElement.scrollTop, 0);
       const total = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
       progress.style.transform = `scaleX(${Math.min(scrollTop / total, 1)})`;
       if (hero && window.innerWidth > 760) hero.style.setProperty('--hero-shift', `${Math.min(scrollTop * 0.11, 42)}px`);
       if (header) header.classList.toggle('motion-scrolled', scrollTop > 18);
+      revealPassedElements();
       ticking = false;
     };
     const requestScrollUpdate = () => {
