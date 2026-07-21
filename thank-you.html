@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18235547880"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18235547880');
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enquiry Received | ITR Desk</title>
+  <meta name="description" content="Your ITR Desk professional enquiry has been received successfully." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#17639a" />
+  <link rel="icon" href="assets/favicon-ca-r23.svg?v=20260721-r23" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/styles.css?v=20260721-r22" />
+  <link rel="stylesheet" href="assets/phase1.css?v=20260721-r22" />
+  <link rel="stylesheet" href="assets/clean-v2.css?v=20260721-r22" />
+  <link rel="stylesheet" href="assets/blue-white-r22.css?v=20260721-r22" />
+  <script defer src="assets/script.js?v=20260718-r17"></script>
+  <style>
+    .confirmation-wrap{min-height:70vh;display:grid;place-items:center;padding:48px 20px}
+    .confirmation-card{max-width:720px;width:100%;text-align:center;background:#fff;border:1px solid rgba(23,99,154,.18);border-radius:24px;padding:42px 30px;box-shadow:0 18px 50px rgba(15,55,85,.10)}
+    .confirmation-mark{width:74px;height:74px;margin:0 auto 20px;border-radius:50%;display:grid;place-items:center;background:#e8f5ee;color:#166534;font-size:38px;font-weight:700}
+    .confirmation-card h1{margin-bottom:12px}
+    .confirmation-card p{max-width:580px;margin:0 auto 14px}
+    .confirmation-reference{margin:22px auto;padding:14px 18px;border-radius:14px;background:#f4f8fb;font-weight:700;letter-spacing:.02em}
+    .confirmation-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px}
+  </style>
+</head>
+<body class="clean-site">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand brand-with-ca-logo" href="index.html" aria-label="ITR Desk home">
+      <img class="ca-india-logo" src="assets/ca-india-logo-r22.webp?v=20260721-r22" alt="CA India logo" width="58" height="42" />
+      <span class="brand-copy"><span class="brand-title">ITR Desk</span><span class="brand-subtitle">by CA Siddharth Bhatia</span></span>
+    </a>
+  </div>
+</header>
+<main id="main" class="confirmation-wrap">
+  <section class="confirmation-card" aria-labelledby="confirmation-title">
+    <div class="confirmation-mark" aria-hidden="true">✓</div>
+    <p class="eyebrow">Enquiry received</p>
+    <h1 id="confirmation-title">Your details were submitted successfully.</h1>
+    <p>Your case details have reached the private ITR Desk inbox for preliminary review. You do not need to send the same enquiry again on WhatsApp.</p>
+    <p>CA Siddharth Bhatia or the office will contact you after reviewing the broad case information.</p>
+    <div id="confirmationReference" class="confirmation-reference" hidden></div>
+    <div class="alert-box"><strong>Safety reminder:</strong> never share an income-tax password, OTP, UPI PIN, card PIN or banking password with anyone.</div>
+    <div class="confirmation-actions">
+      <a class="btn primary" href="index.html">Return to ITR Desk</a>
+      <a class="btn secondary" href="checklist.html">Open document checklist</a>
+    </div>
+  </section>
+</main>
+<footer class="site-footer clean-footer">
+  <div class="container footer-bottom">© 2026 ITR Desk by CA Siddharth Bhatia. General information only; professional work is subject to review and acceptance.</div>
+</footer>
+<script>
+  (function(){
+    try{
+      var reference=sessionStorage.getItem('itrdesk_enquiry_reference');
+      if(reference){
+        var box=document.getElementById('confirmationReference');
+        box.textContent='Reference: '+reference;
+        box.hidden=false;
+        sessionStorage.removeItem('itrdesk_enquiry_reference');
+      }
+    }catch(_){ }
+  })();
+</script>
+</body>
+</html>
