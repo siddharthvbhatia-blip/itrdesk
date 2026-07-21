@@ -1,4 +1,4 @@
-/* Clean professional presentation — R17 */
+/* Clean professional presentation — R24 */
 body.clean-site{background:#fff}
 .clean-site .wa-float{display:none!important}
 .clean-site .section{padding:58px 0}
@@ -14,6 +14,14 @@ body.clean-site{background:#fff}
 .clean-hero-copy h1{font-size:clamp(2.7rem,5.5vw,4.8rem);line-height:.98;letter-spacing:-.065em;margin:0 0 18px;max-width:760px}
 .clean-hero-copy .hero-text{font-size:1.12rem;max-width:650px;margin-bottom:22px}
 .clean-identity-line{display:flex;flex-wrap:wrap;gap:9px 18px;margin-top:20px;color:#53635e;font-size:.92rem;font-weight:750}
+.hero-contact-panel{display:grid;grid-template-columns:minmax(190px,.72fr) minmax(300px,1.28fr);gap:11px;max-width:760px;margin-top:18px}
+.hero-contact-item{display:flex;align-items:center;gap:12px;min-width:0;padding:13px 15px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.92);box-shadow:0 9px 24px rgba(16,35,31,.055);color:var(--ink);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.hero-contact-item:hover{transform:translateY(-2px);border-color:#b7d6ce;box-shadow:0 13px 30px rgba(16,35,31,.085)}
+.hero-contact-icon{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border-radius:12px;background:#edf7f4;color:var(--green);font-size:1.12rem;font-weight:900}
+.hero-contact-item>span:last-child{min-width:0}
+.hero-contact-item strong{display:block;margin-bottom:2px;color:var(--ink);font-size:.82rem;line-height:1.2;text-transform:uppercase;letter-spacing:.065em}
+.hero-contact-item small{display:block;color:var(--muted);font-size:.9rem;line-height:1.36;font-weight:720;overflow-wrap:anywhere}
+.hero-contact-address small{font-size:.84rem}
 .clean-profile-card{display:grid;justify-items:center;text-align:center;background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:0 20px 55px rgba(16,35,31,.09)}
 .clean-profile-card img{width:142px;height:142px;object-fit:cover;object-position:center;border-radius:50%;border:4px solid #fff;box-shadow:0 12px 34px rgba(16,35,31,.16),0 0 0 1px rgba(185,130,60,.22)}
 .clean-profile-card h2{font-size:1.45rem;margin:16px 0 3px;letter-spacing:-.035em}
@@ -90,11 +98,20 @@ body.clean-site{background:#fff}
   .clean-footer .footer-grid{grid-template-columns:1fr 1fr}
 }
 
+@media(max-width:720px){
+  .hero-contact-panel{grid-template-columns:1fr;max-width:100%}
+  .hero-contact-address small{font-size:.88rem}
+}
+
 @media(max-width:640px){
   .clean-site .section{padding:40px 0}
   .clean-hero{padding:44px 0 38px!important}
   .clean-hero-grid{gap:28px}
   .clean-hero-copy h1{font-size:2.65rem}
+  .hero-contact-panel{margin-top:16px;gap:9px}
+  .hero-contact-item{padding:12px 13px}
+  .hero-contact-icon{flex-basis:37px;width:37px;height:37px}
+  .hero-contact-item small{font-size:.88rem}
   .clean-profile-card{padding:22px;width:100%}
   .clean-action-grid,.clean-service-grid,.clean-step-grid,.clean-form-grid,.clean-footer .footer-grid{grid-template-columns:1fr}
   .clean-action-card{min-height:0}

@@ -14,7 +14,7 @@ const visibleText = (html) => html
   .trim();
 const words = (html) => visibleText(html).split(/\s+/).filter(Boolean).length;
 const sections = (html) => (html.match(/<section\b/gi) || []).length;
-const hasCleanStyles = html => /assets\/clean-v2\.css\?v=202607(?:18-r17|21-r22)/.test(html);
+const hasCleanStyles = html => /assets\/clean-v2\.css\?v=202607(?:18-r17|21-r22|21-r24)/.test(html);
 
 const home = read('index.html');
 const about = read('about-ca-siddharth-bhatia.html');
