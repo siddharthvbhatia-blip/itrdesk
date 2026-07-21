@@ -1,10 +1,6 @@
 name: Live enquiry inbox and CA favicon monitor
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - .github/workflows/live-inbox-favicon-r23.yml
   push:
     branches: [main]
     paths:
