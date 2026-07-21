@@ -14,12 +14,13 @@ const visibleText = (html) => html
   .trim();
 const words = (html) => visibleText(html).split(/\s+/).filter(Boolean).length;
 const sections = (html) => (html.match(/<section\b/gi) || []).length;
+const hasCleanStyles = html => /assets\/clean-v2\.css\?v=202607(?:18-r17|21-r22)/.test(html);
 
 const home = read('index.html');
 const about = read('about-ca-siddharth-bhatia.html');
 
-assert(home.includes('assets/clean-v2.css?v=20260718-r17'), 'Homepage does not load the clean presentation stylesheet');
-assert(about.includes('assets/clean-v2.css?v=20260718-r17'), 'About page does not load the clean presentation stylesheet');
+assert(hasCleanStyles(home), 'Homepage does not load the clean presentation stylesheet');
+assert(hasCleanStyles(about), 'About page does not load the clean presentation stylesheet');
 assert(sections(home) <= 6, `Homepage is still too long: ${sections(home)} sections`);
 assert(sections(about) <= 5, `About page is still too long: ${sections(about)} sections`);
 assert(words(home) < 850, `Homepage visible copy is still too long: ${words(home)} words`);
@@ -44,4 +45,4 @@ assert(about.includes('ca-siddharth-bhatia-final-r16.jpg?v=20260718-r17'), 'Abou
 assert(!home.includes('https://www.linkedin.com/in/ca-siddharth-bhatia-'), 'Homepage contains broken LinkedIn URL');
 assert(!about.includes('https://www.linkedin.com/in/ca-siddharth-bhatia-'), 'About page contains broken LinkedIn URL');
 
-console.log('PASS concise homepage and About-page content limits, links, form and portrait checks');
+console.log('PASS concise homepage and About-page content limits, links, form, portrait and clean stylesheet checks');
