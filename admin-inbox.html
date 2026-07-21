@@ -5,32 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Private Enquiry Inbox | ITR Desk</title>
   <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#17639a" />
-  <link rel="icon" href="assets/favicon-ca-r23.svg?v=20260721-r23" type="image/svg+xml" />
+  <link rel="icon" href="assets/favicon-ca-r23.svg?v=20260721-r24" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/styles.css?v=20260721-r22" />
   <link rel="stylesheet" href="assets/blue-white-r22.css?v=20260721-r22" />
-  <link rel="stylesheet" href="assets/admin-inbox-r23.css?v=20260721-r23" />
-  <script defer src="assets/admin-inbox-r23.js?v=20260721-r23"></script>
+  <link rel="stylesheet" href="assets/admin-inbox-r23.css?v=20260721-r24" />
+  <script defer src="assets/admin-inbox-r24.js?v=20260721-r24"></script>
 </head>
 <body class="inbox-page">
   <main class="inbox-shell">
     <header class="inbox-header">
       <div>
-        <a class="inbox-brand" href="index.html"><img src="assets/favicon-ca-r23.svg?v=20260721-r23" alt="CA India" /> ITR Desk</a>
+        <a class="inbox-brand" href="index.html"><img src="assets/favicon-ca-r23.svg?v=20260721-r24" alt="CA India" /> ITR Desk</a>
         <h1>Private enquiry inbox</h1>
-        <p>Review website enquiries, call the visitor, or continue the discussion by WhatsApp or email. The inbox password is kept only for the current browser session.</p>
+        <p>Review website enquiries, call the visitor, or continue the discussion by WhatsApp or email. A trusted device opens the inbox directly without asking for a password.</p>
       </div>
       <a class="btn ghost" href="index.html">Open website</a>
     </header>
 
-    <section id="inboxLogin" class="inbox-login" aria-labelledby="inboxLoginTitle">
-      <h2 id="inboxLoginTitle">Administrator access</h2>
-      <p>Enter the private inbox password. It is not stored permanently in the browser.</p>
-      <form id="inboxLoginForm">
-        <label>Inbox password<input id="inboxPassword" type="password" autocomplete="current-password" required /></label>
-        <button class="btn primary" type="submit">Open enquiry inbox</button>
-        <p id="inboxLoginStatus" class="inbox-login-status" role="alert"></p>
-      </form>
+    <section id="inboxAccess" class="inbox-login" aria-labelledby="inboxAccessTitle" hidden>
+      <h2 id="inboxAccessTitle">Private device access required</h2>
+      <p id="inboxAccessStatus" class="inbox-login-status" role="status">Open your private access link once on this device. No password entry is required.</p>
+      <p class="micro-note">For client privacy, the public website never contains the access key and cannot display enquiries to an unauthorised visitor.</p>
     </section>
 
     <section id="inboxApp" class="inbox-app" hidden>
@@ -39,7 +36,7 @@
         <div class="inbox-toolbar-right">
           <a id="inboxNotifications" class="btn secondary" href="#" target="_blank" rel="noopener" hidden>Enable mobile notifications</a>
           <button id="inboxRefresh" class="btn primary" type="button">Refresh</button>
-          <button id="inboxLogout" class="btn ghost" type="button">Lock inbox</button>
+          <button id="inboxForgetDevice" class="btn ghost" type="button">Remove this device</button>
         </div>
       </div>
       <div id="inboxStatus" class="inbox-status"></div>
