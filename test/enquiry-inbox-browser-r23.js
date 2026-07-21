@@ -10,10 +10,10 @@ fs.mkdirSync(output, { recursive: true });
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
+  let attempts = 0;
   try {
     for (const viewport of [{name:'desktop',width:1365,height:900},{name:'mobile',width:360,height:800}]) {
       const page = await browser.newPage({ viewport: { width:viewport.width, height:viewport.height } });
-      let attempts = 0;
       await page.route('https://itrdesk-payment-backend.vercel.app/api/enquiries', async route => {
         attempts += 1;
         const auth = route.request().headers().authorization || '';
@@ -60,7 +60,7 @@ fs.mkdirSync(output, { recursive: true });
       await page.screenshot({ path:path.join(output,`enquiry-inbox-${viewport.name}-r23.png`), fullPage:true });
       await page.close();
     }
-    assert(attempts >= 4, 'Inbox test did not exercise rejected and accepted logins');
+    assert(attempts >= 4, `Inbox test expected at least 4 API requests, observed ${attempts}`);
     console.log('PASS private inbox login, enquiry rendering, notification link, session-only password and responsive layout');
   } finally {
     await browser.close();
