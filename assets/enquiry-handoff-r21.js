@@ -117,7 +117,6 @@
         status.textContent='Enquiry submitted successfully. Reference: '+result.reference+'. Redirecting to confirmation…';
         form.reset();
         try{sessionStorage.setItem('itrdesk_enquiry_reference',result.reference)}catch(_){ }
-        if(typeof window.gtag==='function')window.gtag('event','generate_lead',{case_type:payload.caseType});
         setTimeout(()=>location.assign('thank-you.html'),700);
       }catch(error){
         const validation=error&&error.status&&error.status<500&&error.status!==429;
