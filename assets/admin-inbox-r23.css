@@ -37,7 +37,9 @@
 @media(max-width:700px){
   .inbox-shell{width:min(100% - 22px,1120px);padding-top:26px}
   .inbox-header,.inbox-toolbar{align-items:stretch;flex-direction:column}
-  .inbox-toolbar-right .btn{flex:1}
+  .inbox-toolbar-right{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:10px}
+  .inbox-toolbar-right .btn{width:100%;min-height:46px;padding:11px 12px;white-space:normal;border-radius:16px}
+  #inboxNotifications{grid-column:1/-1}
   .inbox-grid{grid-template-columns:1fr}.inbox-grid .wide{grid-column:auto}
   .inbox-message-head{flex-direction:column}.inbox-reference{align-self:flex-start}
   .inbox-actions{display:grid;grid-template-columns:1fr 1fr}.inbox-actions .btn{width:100%}
