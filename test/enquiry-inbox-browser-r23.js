@@ -30,13 +30,21 @@ fs.mkdirSync(output, { recursive: true });
       const page = await browser.newPage({ viewport: { width:viewport.width, height:viewport.height } });
       await page.route('https://itrdesk-payment-backend.vercel.app/api/enquiries', async route => {
         attempts += 1;
-        const auth = route.request().headers().authorization || '';
+        const request = route.request();
+        const cors = {
+          'Access-Control-Allow-Origin': base,
+          'Access-Control-Allow-Methods': 'GET,OPTIONS',
+          'Access-Control-Allow-Headers': 'Authorization,Content-Type',
+          'Cache-Control': 'no-store'
+        };
+        if(request.method()==='OPTIONS') return route.fulfill({status:204,headers:cors,body:''});
+        const auth = request.headers().authorization || '';
         if (auth !== 'Bearer test-magic-access') {
-          return route.fulfill({ status:401, contentType:'application/json', body:JSON.stringify({error:'This device is not authorised for the private enquiry inbox.'}) });
+          return route.fulfill({ status:401, headers:{...cors,'Content-Type':'application/json'}, body:JSON.stringify({error:'This device is not authorised for the private enquiry inbox.'}) });
         }
         return route.fulfill({
           status:200,
-          contentType:'application/json',
+          headers:{...cors,'Content-Type':'application/json'},
           body:JSON.stringify({
             accepted:true,
             storage:'recent-notifications',
@@ -76,7 +84,7 @@ fs.mkdirSync(output, { recursive: true });
       assert.equal(removed, null, `${viewport.name}: access key remains after remove-device action`);
       await page.close();
     }
-    assert(attempts >= 4, `Inbox test expected at least 4 API requests, observed ${attempts}`);
+    assert(attempts >= 8, `Inbox test expected CORS and API requests, observed ${attempts}`);
     console.log('PASS CA logo on Calculator/Review/Contact and passwordless trusted-device inbox access');
   } finally {
     await browser.close();
