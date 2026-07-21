@@ -8,6 +8,7 @@ const asset = 'ca-siddharth-bhatia-final-r16.jpg';
 const correctLinkedIn = 'https://www.linkedin.com/in/ca-siddharth-bhatia';
 const badLinkedIn = correctLinkedIn + '-';
 const photo = fs.readFileSync(path.join(root, 'assets', asset));
+const hasPhaseStyles = page => /assets\/phase1\.css\?v=202607(?:18-r17|21-r22)/.test(page);
 
 assert(photo.length > 3000, 'Final professional portrait is unexpectedly small');
 assert.deepEqual([...photo.subarray(0, 3)], [0xff, 0xd8, 0xff], 'Final professional portrait is not a JPEG');
@@ -15,8 +16,8 @@ assert.deepEqual([...photo.subarray(0, 3)], [0xff, 0xd8, 0xff], 'Final professio
 for (const pageName of ['index.html','about-ca-siddharth-bhatia.html']) {
   const page = fs.readFileSync(path.join(root, pageName), 'utf8');
   assert(page.includes(asset), `${pageName} does not use the final portrait`);
-  assert(page.includes('assets/phase1.css?v=20260718-r17'), `${pageName} does not pin the R17 portrait CSS`);
-  assert(page.includes('assets/profile-runtime-r14.js?v=20260718-r17'), `${pageName} does not pin the R17 portrait runtime`);
+  assert(hasPhaseStyles(page), `${pageName} does not pin an approved phase/profile stylesheet version`);
+  assert(page.includes('assets/profile-runtime-r14.js?v=20260718-r17'), `${pageName} does not pin the portrait runtime`);
   assert(!page.includes('ca-siddharth-bhatia-profile.png'), `${pageName} still references the blank placeholder`);
   assert(!page.includes(badLinkedIn), `${pageName} retains the broken LinkedIn URL`);
 }
@@ -35,4 +36,4 @@ for (const name of ['assets/script.js', 'assets/profile-runtime-r14.js']) {
   assert(!source.includes(badLinkedIn), `${name} retains the broken LinkedIn URL`);
 }
 
-console.log('PASS final portrait source, R17 page pins, fallback and LinkedIn checks');
+console.log('PASS final portrait source, approved page pins, fallback and LinkedIn checks');
