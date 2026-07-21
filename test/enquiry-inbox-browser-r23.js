@@ -81,4 +81,8 @@ fs.mkdirSync(output, { recursive: true });
   } finally {
     await browser.close();
   }
-})().catch(error => { console.error(error); process.exit(1); });
+})().catch(error => {
+  try { fs.writeFileSync(path.join(output,'enquiry-inbox-r24-error.txt'),String(error && error.stack || error)); } catch (_) {}
+  console.error(error);
+  process.exit(1);
+});
