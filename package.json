@@ -1,10 +1,10 @@
 {
   "name": "itrdesk-website",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "private": true,
   "scripts": {
-    "test": "node test/run-tests.js && node test/final-profile-r16.js && node test/clean-site-r17.js && node test/enquiry-handoff-r21.js",
-    "check": "node --check assets/script.js && node --check assets/profile-runtime-r14.js && node --check assets/enquiry-handoff-r21.js && node --check assets/calculator.js && node --check assets/payment.js && node --check assets/itr-preparation.js && node --check assets/document-import.js"
+    "test": "node test/run-tests.js && node test/final-profile-r16.js && node test/clean-site-r17.js && node test/enquiry-handoff-r21.js && node test/blue-white-logo-r22.js",
+    "check": "node --check assets/script.js && node --check assets/profile-runtime-r14.js && node --check assets/enquiry-handoff-r21.js && node --check assets/calculator.js && node --check assets/payment.js && node --check assets/itr-preparation.js && node --check assets/document-import.js && node --check test/blue-white-browser-r22.js"
   },
   "engines": { "node": ">=20" }
 }
