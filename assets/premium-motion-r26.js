@@ -14,7 +14,7 @@
     document.body.appendChild(progress);
 
     const heroItems = [
-      ...document.querySelectorAll('.clean-hero-copy > *, .clean-about-grid > *, .page-hero .container > *')
+      ...document.querySelectorAll('.clean-hero-copy > *, .clean-profile-card, .clean-about-grid > *, .page-hero .container > *')
     ];
     heroItems.forEach((element, index) => {
       element.classList.add('motion-hero-item');
