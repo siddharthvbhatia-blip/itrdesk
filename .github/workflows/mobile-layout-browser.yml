@@ -1,4 +1,4 @@
-name: Concise website portrait, layout and enquiry checks
+name: Concise website portrait, layout, theme and enquiry checks
 
 on:
   pull_request:
@@ -8,10 +8,12 @@ on:
       - privacy.html
       - about-ca-siddharth-bhatia.html
       - assets/ca-siddharth-bhatia-final-r16.jpg
+      - assets/ca-india-logo-r22.webp
       - assets/styles.css
       - assets/profile-photo.css
       - assets/phase1.css
       - assets/clean-v2.css
+      - assets/blue-white-r22.css
       - assets/script.js
       - assets/profile-runtime-r14.js
       - assets/enquiry-handoff-r21.js
@@ -19,6 +21,8 @@ on:
       - test/clean-site-r17.js
       - test/enquiry-handoff-r21.js
       - test/enquiry-browser-r21.js
+      - test/blue-white-logo-r22.js
+      - test/blue-white-browser-r22.js
       - test/portrait-visual-proof-r16.py
       - test/mobile-layout-browser.js
       - test/desktop-profile-browser-r16.js
@@ -30,10 +34,12 @@ on:
       - privacy.html
       - about-ca-siddharth-bhatia.html
       - assets/ca-siddharth-bhatia-final-r16.jpg
+      - assets/ca-india-logo-r22.webp
       - assets/styles.css
       - assets/profile-photo.css
       - assets/phase1.css
       - assets/clean-v2.css
+      - assets/blue-white-r22.css
       - assets/script.js
       - assets/profile-runtime-r14.js
       - assets/enquiry-handoff-r21.js
@@ -41,6 +47,8 @@ on:
       - test/clean-site-r17.js
       - test/enquiry-handoff-r21.js
       - test/enquiry-browser-r21.js
+      - test/blue-white-logo-r22.js
+      - test/blue-white-browser-r22.js
       - test/portrait-visual-proof-r16.py
       - test/mobile-layout-browser.js
       - test/desktop-profile-browser-r16.js
@@ -52,7 +60,7 @@ permissions:
 jobs:
   chromium-clean-site:
     runs-on: ubuntu-latest
-    timeout-minutes: 22
+    timeout-minutes: 24
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -65,10 +73,11 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check pillow
           python test/portrait-visual-proof-r16.py
-      - name: Run concise content and R21 enquiry source checks
+      - name: Run concise content, enquiry, logo and theme source checks
         run: |
           node test/clean-site-r17.js
           node test/enquiry-handoff-r21.js
+          node test/blue-white-logo-r22.js
       - name: Install Chromium test runtime
         run: |
           npm install --no-save playwright@1.52.0
@@ -86,6 +95,10 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:4173
         run: node test/desktop-profile-browser-r16.js
+      - name: Verify CA logo and blue-white theme in Chromium
+        env:
+          BASE_URL: http://127.0.0.1:4173
+        run: node test/blue-white-browser-r22.js
       - name: Verify secure retry, WhatsApp handoff and validation errors
         env:
           BASE_URL: http://127.0.0.1:4173
@@ -94,7 +107,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: clean-site-enquiry-diagnostics
+          name: clean-site-theme-enquiry-diagnostics
           path: test-results
           if-no-files-found: warn
           retention-days: 7
