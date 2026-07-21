@@ -10,7 +10,6 @@ fs.mkdirSync(output, { recursive: true });
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
-  let attempts = 0;
   try {
     const logoPage = await browser.newPage({ viewport: { width:1365, height:900 } });
     for (const file of ['calculator.html','itr-preparation-json.html','contact.html']) {
@@ -28,24 +27,17 @@ fs.mkdirSync(output, { recursive: true });
 
     for (const viewport of [{name:'desktop',width:1365,height:900},{name:'mobile',width:360,height:800}]) {
       const page = await browser.newPage({ viewport: { width:viewport.width, height:viewport.height } });
-      await page.route('https://itrdesk-payment-backend.vercel.app/api/enquiries', async route => {
-        attempts += 1;
-        const request = route.request();
-        const cors = {
-          'Access-Control-Allow-Origin': base,
-          'Access-Control-Allow-Methods': 'GET,OPTIONS',
-          'Access-Control-Allow-Headers': 'Authorization,Content-Type',
-          'Cache-Control': 'no-store'
-        };
-        if(request.method()==='OPTIONS') return route.fulfill({status:204,headers:cors,body:''});
-        const auth = request.headers().authorization || '';
-        if (auth !== 'Bearer test-magic-access') {
-          return route.fulfill({ status:401, headers:{...cors,'Content-Type':'application/json'}, body:JSON.stringify({error:'This device is not authorised for the private enquiry inbox.'}) });
-        }
-        return route.fulfill({
-          status:200,
-          headers:{...cors,'Content-Type':'application/json'},
-          body:JSON.stringify({
+      await page.addInitScript(() => {
+        const originalFetch = window.fetch.bind(window);
+        window.fetch = async (input, init = {}) => {
+          const url = String(input && input.url ? input.url : input);
+          if (!url.includes('itrdesk-payment-backend.vercel.app/api/enquiries')) return originalFetch(input, init);
+          window.__inboxFetchCount = (window.__inboxFetchCount || 0) + 1;
+          const headers = new Headers(init.headers || {});
+          if (headers.get('Authorization') !== 'Bearer test-magic-access') {
+            return new Response(JSON.stringify({error:'This device is not authorised for the private enquiry inbox.'}), {status:401,headers:{'Content-Type':'application/json'}});
+          }
+          return new Response(JSON.stringify({
             accepted:true,
             storage:'recent-notifications',
             retentionNotice:'The website inbox currently shows recent notifications only. Connect Google Drive for permanent storage.',
@@ -54,13 +46,14 @@ fs.mkdirSync(output, { recursive: true });
               {reference:'ENQ-20260721-A1B2C3',createdAt:'2026-07-21T08:00:00.000Z',name:'Asha Sharma',mobile:'9876543210',caseType:'Salary / Form 16',note:'Please call after 4 PM.',status:'New'},
               {reference:'ENQ-20260721-D4E5F6',createdAt:'2026-07-21T07:00:00.000Z',name:'Rahul Verma',mobile:'9123456780',email:'rahul@example.com',caseType:'F&O / Intraday / Trading',note:'Turnover statement is ready.',status:'New'}
             ]
-          })
-        });
+          }), {status:200,headers:{'Content-Type':'application/json'}});
+        };
       });
 
       await page.goto(`${base}/admin-inbox.html?check=r24-${viewport.name}`, { waitUntil:'networkidle' });
       assert(await page.locator('#inboxAccess').isVisible(), `${viewport.name}: unauthorised device guidance is missing`);
       assert.equal(await page.locator('input[type="password"]').count(), 0, `${viewport.name}: password field remains`);
+      assert.equal(await page.evaluate(() => window.__inboxFetchCount || 0), 0, `${viewport.name}: unauthorised page made an API request`);
 
       await page.goto(`${base}/admin-inbox.html?check=r24-${viewport.name}#access=test-magic-access`, { waitUntil:'networkidle' });
       await page.waitForSelector('#inboxApp:not([hidden])');
@@ -74,6 +67,7 @@ fs.mkdirSync(output, { recursive: true });
       await page.reload({ waitUntil:'networkidle' });
       await page.waitForSelector('#inboxApp:not([hidden])');
       assert.equal(await page.locator('.inbox-message').count(), 2, `${viewport.name}: remembered access failed after reload`);
+      assert((await page.evaluate(() => window.__inboxFetchCount || 0)) >= 1, `${viewport.name}: inbox API simulation was not exercised`);
       const geometry = await page.evaluate(() => ({ innerWidth, scrollWidth:document.documentElement.scrollWidth }));
       assert(geometry.scrollWidth <= geometry.innerWidth + 2, `${viewport.name}: horizontal overflow ${geometry.scrollWidth} > ${geometry.innerWidth}`);
       await page.screenshot({ path:path.join(output,`enquiry-inbox-${viewport.name}-r24.png`), fullPage:true });
@@ -84,7 +78,6 @@ fs.mkdirSync(output, { recursive: true });
       assert.equal(removed, null, `${viewport.name}: access key remains after remove-device action`);
       await page.close();
     }
-    assert(attempts >= 8, `Inbox test expected CORS and API requests, observed ${attempts}`);
     console.log('PASS CA logo on Calculator/Review/Contact and passwordless trusted-device inbox access');
   } finally {
     await browser.close();
