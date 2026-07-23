@@ -30,6 +30,19 @@
   max-width: 100%;
 }
 
+.advanced-results .callback-row {
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+}
+
+.advanced-results .callback-row > * {
+  min-width: 0;
+}
+
+.advanced-results .callback-row > .btn {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
 .income-head-summary {
   position: relative;
   display: grid;

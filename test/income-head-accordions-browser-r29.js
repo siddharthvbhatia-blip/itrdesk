@@ -34,16 +34,16 @@ async function verify(viewport, label) {
     assert(initial.scrollWidth <= initial.innerWidth + 2, `${label}: accordion layout causes horizontal overflow`);
 
     const capital = page.locator('[data-income-head="capital-gains"]');
-    await capital.locator('summary').click();
+    await capital.locator('.income-head-summary').click();
     assert(await capital.evaluate((item) => item.open), `${label}: capital-gains heading did not open`);
     assert(await page.locator('#stcg111A').isVisible(), `${label}: capital-gain inputs did not become visible`);
 
     await page.locator('#stcg111A').fill('100000');
-    await capital.locator('summary').click();
+    await capital.locator('.income-head-summary').click();
     assert.equal(await page.locator('#stcg111A').inputValue(), '1,00,000', `${label}: entered capital gain was not preserved after closing`);
 
     const normal = page.locator('[data-income-head="normal-rate"]');
-    await normal.locator('summary').focus();
+    await normal.locator('.income-head-summary').focus();
     await page.keyboard.press('Enter');
     assert(await normal.evaluate((item) => item.open), `${label}: keyboard Enter did not open normal-rate income`);
     await page.locator('#salaryIncome').fill('1000000');
@@ -56,7 +56,7 @@ async function verify(viewport, label) {
       `${label}: accordion fields did not reach the calculator`
     );
 
-    await capital.locator('summary').click();
+    await capital.locator('.income-head-summary').click();
     await page.locator('#taxCalculator #resetCalculator').click();
     await page.waitForTimeout(50);
 

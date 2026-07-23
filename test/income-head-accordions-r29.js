@@ -10,7 +10,7 @@ const css = fs.readFileSync(path.join(root, 'assets', 'income-head-accordions-r2
 const js = fs.readFileSync(path.join(root, 'assets', 'income-head-accordions-r29.js'), 'utf8');
 
 assert(
-  calculator.includes('assets/income-head-accordions-r29.css?v=20260723-r29c'),
+  calculator.includes('assets/income-head-accordions-r29.css?v=20260723-r29d'),
   'Calculator does not load the cache-versioned R29 accordion stylesheet'
 );
 assert(
@@ -74,6 +74,7 @@ assert(css.includes('.income-head-summary::after'), 'Triangle indicator styling 
 assert(css.includes('.income-head-accordion[open]'), 'Open-state styling is missing');
 assert(css.includes('.income-head-accordion:not([open]) > .income-head-body'), 'Closed-state content hiding is missing');
 assert(css.includes('grid-template-columns: minmax(0, 1fr)'), 'Results-column overflow containment is missing');
+assert(css.includes('.advanced-results .callback-row'), 'Callback-row overflow containment is missing');
 assert(css.includes('.income-head-summary:focus-visible'), 'Keyboard focus styling is missing');
 assert(css.includes('@media (max-width: 640px)'), 'Phone accordion layout is missing');
 assert(css.includes('@media (prefers-reduced-motion: reduce)'), 'Reduced-motion fallback is missing');
