@@ -2,6 +2,12 @@
   'use strict';
   const $=id=>document.getElementById(id),form=$('paidReportForm');
   if(!form)return;
+  if(!document.querySelector('link[href*="download-suite-r30.css"]')){
+    const style=document.createElement('link');style.rel='stylesheet';style.href='assets/download-suite-r30.css?v=20260723-r30';document.head.appendChild(style);
+  }
+  const section=form.closest('.paid-computation-section'),disclosure=form.closest('.checkout-disclosure');
+  if(section)section.classList.add('premium-download-suite');
+  if(disclosure)disclosure.classList.add('download-suite');
   const apiMeta=document.querySelector('meta[name="itrdesk-payment-api"]');
   const API_BASE=String(apiMeta&&apiMeta.content||'').replace(/\/$/,'');
   const configured=/^https:\/\/[A-Za-z0-9.-]+$/.test(API_BASE)&&API_BASE!=='https://PAYMENT_API_BASE'&&API_BASE!=='PAYMENT_API_BASE';
@@ -26,9 +32,9 @@
   }
   async function api(path,body,blob){const response=await fetch(API_BASE+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(blob&&response.ok)return response;const data=await response.json().catch(()=>({error:'Unexpected server response.'}));if(!response.ok)throw new Error(data.error||'The request could not be completed.');return data}
   function loadRazorpay(){if(window.Razorpay)return Promise.resolve();if(razorpayPromise)return razorpayPromise;razorpayPromise=new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://checkout.razorpay.com/v1/checkout.js';script.async=true;script.onload=resolve;script.onerror=()=>reject(new Error('Secure payment window could not be loaded. Check your internet connection.'));document.head.appendChild(script)});return razorpayPromise}
-  function resetPayButton(){if(!configured||paidSession)return;payButton.disabled=false;payButton.textContent='Continue to secure checkout'}
+  function resetPayButton(){if(!configured||paidSession)return;payButton.disabled=false;payButton.textContent='Pay ₹1,000 securely and unlock PDF + Word'}
   function savePending(response,report){pendingPayment={response,report};retryButton.hidden=false}
-  function clearPending(){pendingPayment=null;retryButton.hidden=true;try{sessionStorage.removeItem('itrdeskPendingPayment')}catch(_){}}
+  function clearPending(){pendingPayment=null;retryButton.hidden=true;try{sessionStorage.removeItem('itrdeskPendingPayment')}catch(_){} }
   function savePaidSession(session){
     paidSession={token:session.token,expiresAt:session.expiresAt};legacyReport=null;
     try{sessionStorage.setItem('itrdeskPaidReportAuth',JSON.stringify(paidSession))}catch(_){}
@@ -46,7 +52,7 @@
         setStatus('A verified paid computation is available in this browser session until '+new Date(stored.expiresAt).toLocaleString('en-IN')+'.','success');
       }else sessionStorage.removeItem('itrdeskPaidReportAuth');
       sessionStorage.removeItem('itrdeskPendingPayment');
-    }catch(_){try{sessionStorage.removeItem('itrdeskPaidReportAuth');sessionStorage.removeItem('itrdeskPendingPayment')}catch(__){}}
+    }catch(_){try{sessionStorage.removeItem('itrdeskPaidReportAuth');sessionStorage.removeItem('itrdeskPendingPayment')}catch(__){} }
   }
   async function verifyPayment(response,report){savePending(response,report);setStatus('Payment received. Verifying it securely before releasing the documents...');const verified=await api('/api/verify-payment',{...response,report});if(!verified.verified||!verified.token)throw new Error('Payment could not be verified. No document was released.');savePaidSession({token:verified.token,expiresAt:verified.expiresAt})}
 
@@ -54,9 +60,9 @@
     event.preventDefault();if(!configured){setStatus('The secure computation checkout has not been activated yet. Free tax calculation remains available.','error');return}
     let report;
     try{
-      report=reportData();payButton.disabled=true;payButton.textContent='Creating secure checkout...';setStatus('Preparing the secure payment order. Razorpay will display the amount before authorisation...');
+      report=reportData();payButton.disabled=true;payButton.textContent='Creating secure checkout...';setStatus('Preparing the secure ₹1,000 payment order. Razorpay will display the amount before authorisation...');
       const [order]=await Promise.all([api('/api/create-order',{report}),loadRazorpay()]);
-      const checkout=new Razorpay({key:order.keyId,amount:order.amount,currency:order.currency,name:'ITR Desk',description:'AY 2026-27 PDF + Word computation',order_id:order.orderId,prefill:{name:report.identity.name,email:report.identity.email,contact:report.identity.mobile},notes:{service:'Paid tax computation'},theme:{color:'#0f6b5d'},handler:async response=>{try{await verifyPayment(response,report)}catch(error){setStatus(error.message+' If your account was debited, use “Verify completed payment again” before refreshing this page.','error');resetPayButton()}},modal:{confirm_close:true,ondismiss:()=>{if(!paidSession)setStatus('Payment window closed. No document has been unlocked.');resetPayButton()}}});
+      const checkout=new Razorpay({key:order.keyId,amount:order.amount,currency:order.currency,name:'ITR Desk',description:'AY 2026-27 PDF + Word computation',order_id:order.orderId,prefill:{name:report.identity.name,email:report.identity.email,contact:report.identity.mobile},notes:{service:'Paid tax computation'},theme:{color:'#17639a'},handler:async response=>{try{await verifyPayment(response,report)}catch(error){setStatus(error.message+' If your account was debited, use “Verify completed payment again” before refreshing this page.','error');resetPayButton()}},modal:{confirm_close:true,ondismiss:()=>{if(!paidSession)setStatus('Payment window closed. No document has been unlocked.');resetPayButton()}}});
       checkout.on('payment.failed',response=>setStatus('Payment failed: '+clean(response&&response.error&&response.error.description||'Please try again.'),'error'));payButton.textContent='Payment window open…';checkout.open();
     }catch(error){setStatus(error.message,'error');resetPayButton()}
   });
@@ -64,9 +70,10 @@
   async function download(format){
     if(!paidSession){setStatus('Complete and verify the computation payment first.','error');return}
     const button=format==='pdf'?$('downloadPaidPdf'):$('downloadPaidDocx'),original=button.textContent;
-    try{button.disabled=true;button.textContent='Preparing...';setStatus('Generating your '+(format==='pdf'?'PDF':'Word')+' computation securely...');const body={format,token:paidSession.token};if(legacyReport)body.report=legacyReport;const response=await api('/api/download',body,true);const blob=await response.blob();const disposition=response.headers.get('Content-Disposition')||'',match=disposition.match(/filename="([^"]+)"/),filename=match?match[1]:'ITR-Computation-AY-2026-27.'+(format==='pdf'?'pdf':'docx');const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);setStatus('Download prepared successfully.','success')}catch(error){setStatus(error.message,'error')}finally{button.disabled=false;button.textContent=original}
+    try{button.disabled=true;button.textContent='Preparing...';setStatus('Generating your '+(format==='pdf'?'PDF':'Word')+' computation securely...');const body={format,token:paidSession.token};if(legacyReport)body.report=legacyReport;const response=await api('/api/download',body,true);const blob=await response.blob();const disposition=response.headers.get('Content-Disposition')||'',match=disposition.match(/filename="([^"]+)"/),filename=match?match[1]:'ITR-Computation-AY-2026-27.'+(format==='pdf'?'pdf':'docx');const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);setStatus('Download prepared successfully. Get the computation reviewed before using it for filing.','success')}catch(error){setStatus(error.message,'error')}finally{button.disabled=false;button.textContent=original}
   }
   $('downloadPaidPdf').addEventListener('click',()=>download('pdf'));$('downloadPaidDocx').addEventListener('click',()=>download('docx'));
   if(!configured){payButton.disabled=true;payButton.textContent='Secure checkout activation pending';setStatus('Secure online payment is being activated. Free tax calculation remains available.')}
+  else if(!paidSession)payButton.textContent='Pay ₹1,000 securely and unlock PDF + Word';
   restoreSession();
 })();
