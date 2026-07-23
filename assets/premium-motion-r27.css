@@ -1,0 +1,294 @@
+/* Premium interaction layer — R27
+   Adds guided micro-interactions to the existing R26 motion system.
+   Motion is decorative only and never changes tax or enquiry logic. */
+
+:root{
+  --motion-blue:#17639a;
+  --motion-blue-deep:#0c4772;
+  --motion-blue-soft:#dcecf7;
+  --motion-success:#23855b;
+}
+
+/* Decorative hero symbols sit behind the content and remain deliberately faint. */
+.clean-hero>.container,.page-hero>.container{position:relative;z-index:2}
+.motion-hero-symbols{
+  position:absolute;
+  z-index:1;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  user-select:none;
+}
+.motion-hero-symbol{
+  position:absolute;
+  display:grid;
+  place-items:center;
+  width:74px;
+  height:74px;
+  border:1px solid rgba(23,99,154,.14);
+  border-radius:22px;
+  background:rgba(255,255,255,.46);
+  color:rgba(23,99,154,.22);
+  box-shadow:0 20px 50px rgba(15,74,116,.06);
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:.03em;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  animation:motionSymbolFloat 8s ease-in-out infinite;
+}
+.motion-hero-symbol:nth-child(1){top:18%;left:5%;width:58px;height:58px;border-radius:18px;animation-delay:-1.4s}
+.motion-hero-symbol:nth-child(2){top:15%;right:6%;animation-delay:-4.2s}
+.motion-hero-symbol:nth-child(3){right:24%;bottom:9%;width:64px;height:64px;border-radius:19px;animation-delay:-6.1s}
+@keyframes motionSymbolFloat{
+  0%,100%{transform:translate3d(0,0,0) rotate(-2deg)}
+  50%{transform:translate3d(0,-13px,0) rotate(2deg)}
+}
+
+.motion-title-line{position:relative;display:table}
+.motion-title-line::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-10px;
+  width:min(150px,32%);
+  height:4px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--motion-blue),#55a8d8);
+  transform:scaleX(0);
+  transform-origin:left center;
+}
+.motion-title-line.is-visible::after,
+.motion-started .motion-title-line::after{
+  transform:scaleX(1);
+  transition:transform 1050ms cubic-bezier(.22,1,.36,1) 460ms;
+}
+
+/* Cursor-following light for primary choice cards. */
+.motion-card{
+  --motion-card-x:50%;
+  --motion-card-y:50%;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.motion-card::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:0;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(250px circle at var(--motion-card-x) var(--motion-card-y),rgba(72,155,207,.18),transparent 68%);
+  transition:opacity 260ms ease;
+}
+.motion-card>*{position:relative;z-index:1}
+.motion-card .clean-icon,
+.motion-card .card-number,
+.motion-card>span:first-child{
+  transition:transform 360ms cubic-bezier(.22,1,.36,1),box-shadow 300ms ease;
+}
+.motion-card strong{transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+@media(hover:hover) and (pointer:fine){
+  .motion-card:hover::before{opacity:1}
+  .motion-card:hover .clean-icon,
+  .motion-card:hover .card-number,
+  .motion-card:hover>span:first-child{
+    transform:translate3d(0,-3px,0) rotate(-4deg);
+    box-shadow:0 10px 24px rgba(23,99,154,.14);
+  }
+  .motion-card:hover strong{transform:translateX(5px)}
+}
+
+/* The three-step workflow now visibly connects and completes in sequence. */
+.motion-step-track{
+  position:relative;
+  isolation:isolate;
+}
+.motion-step-track::before,.motion-step-track::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  top:38px;
+  left:16.666%;
+  right:16.666%;
+  height:3px;
+  border-radius:999px;
+  pointer-events:none;
+}
+.motion-step-track::before{background:#d7e6f1}
+.motion-step-track::after{
+  background:linear-gradient(90deg,var(--motion-blue),#56a9d8);
+  transform:scaleX(0);
+  transform-origin:left center;
+  transition:transform 1450ms cubic-bezier(.22,1,.36,1) 120ms;
+}
+.motion-step-track.is-track-active::after{transform:scaleX(1)}
+.motion-step-track .clean-step,.motion-step-track .step{position:relative;z-index:1}
+.motion-step-track .clean-step>span,.motion-step-track .step>span{
+  transition:transform 420ms cubic-bezier(.22,1,.36,1),box-shadow 420ms ease,background-color 300ms ease;
+}
+.motion-step-track .is-step-active>span{
+  transform:scale(1.12);
+  box-shadow:0 0 0 7px rgba(23,99,154,.11),0 12px 24px rgba(23,99,154,.20)!important;
+}
+
+/* Checklist ticks draw in only when their actual list item becomes visible. */
+html.motion-r27-ready .motion-check-item{
+  opacity:0;
+  transform:translate3d(-15px,8px,0);
+}
+html.motion-r27-ready .motion-check-item::before{transform:scale(0) rotate(-30deg)}
+html.motion-r27-ready .motion-check-item.is-check-visible{
+  opacity:1;
+  transform:none;
+  transition:opacity 520ms ease,transform 620ms cubic-bezier(.22,1,.36,1);
+  transition-delay:var(--check-delay,0ms);
+}
+html.motion-r27-ready .motion-check-item.is-check-visible::before{
+  transform:scale(1) rotate(0);
+  transition:transform 520ms cubic-bezier(.34,1.56,.64,1);
+  transition-delay:calc(var(--check-delay,0ms) + 90ms);
+}
+
+/* Calculator result motion: rolling values, relative bars and a clear lower estimate. */
+.regime-cards>div{
+  position:relative;
+  overflow:hidden;
+  transition:transform 360ms cubic-bezier(.22,1,.36,1),border-color 300ms ease,background-color 300ms ease;
+}
+.regime-cards>div::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:var(--liability-width,0%);
+  height:4px;
+  border-radius:0 999px 999px 0;
+  background:#8fd0f3;
+  transition:width 850ms cubic-bezier(.22,1,.36,1);
+}
+.regime-cards>div.is-lower-estimate{
+  transform:translateY(-4px);
+  border-color:rgba(255,255,255,.58)!important;
+  background:rgba(255,255,255,.17)!important;
+  box-shadow:0 14px 28px rgba(4,31,53,.18);
+}
+.regime-cards>div.is-lower-estimate::before{
+  content:"Lower estimate";
+  display:inline-flex;
+  margin-bottom:5px;
+  border-radius:999px;
+  padding:3px 8px;
+  background:#fff;
+  color:var(--motion-blue-deep);
+  font-size:.66rem;
+  font-weight:900;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.motion-number{font-variant-numeric:tabular-nums}
+.motion-number.is-number-rolling{animation:motionNumberGlow 720ms ease}
+.result-summary.is-result-updating{animation:motionResultSettle 720ms cubic-bezier(.22,1,.36,1)}
+@keyframes motionNumberGlow{
+  0%{opacity:.55;filter:blur(1px)}
+  55%{opacity:1;filter:blur(0);text-shadow:0 0 18px rgba(255,255,255,.35)}
+  100%{text-shadow:none}
+}
+@keyframes motionResultSettle{
+  0%{transform:scale(.988);box-shadow:0 10px 28px rgba(12,71,114,.12)}
+  60%{transform:scale(1.008)}
+  100%{transform:scale(1)}
+}
+
+/* Form feedback is driven only by the real enquiry status classes. */
+.lead-form label.motion-field-ok input,
+.lead-form label.motion-field-ok select,
+.lead-form label.motion-field-ok textarea{
+  border-color:#83b8d7!important;
+  box-shadow:0 0 0 3px rgba(23,99,154,.08)!important;
+}
+.lead-form.is-submitting{box-shadow:0 18px 52px rgba(23,99,154,.13)!important}
+.lead-form.is-submitting button[type="submit"]{cursor:wait}
+.lead-form.is-form-success{
+  border-color:#8bc8ad!important;
+  box-shadow:0 18px 55px rgba(35,133,91,.15)!important;
+}
+.enquiry-status.success,.enquiry-status.error,.enquiry-status.handoff{
+  position:relative;
+  padding-left:52px!important;
+  animation:motionStatusEnter 520ms cubic-bezier(.22,1,.36,1);
+}
+.enquiry-status.success::before,.enquiry-status.error::before,.enquiry-status.handoff::before{
+  position:absolute;
+  left:15px;
+  top:50%;
+  display:grid;
+  place-items:center;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  transform:translateY(-50%);
+  color:#fff;
+  font-weight:900;
+}
+.enquiry-status.success::before{content:"✓";background:var(--motion-success)}
+.enquiry-status.error::before{content:"!";background:#b1443b}
+.enquiry-status.handoff::before{content:"↗";background:var(--motion-blue)}
+@keyframes motionStatusEnter{
+  from{opacity:0;transform:translate3d(0,10px,0) scale(.985)}
+  to{opacity:1;transform:none}
+}
+
+/* The confirmation animation appears only on the real thank-you page. */
+.confirmation-card.motion-confirmed{animation:motionConfirmationCard 760ms cubic-bezier(.22,1,.36,1) both}
+.confirmation-card.motion-confirmed .confirmation-mark{
+  animation:motionConfirmationMark 820ms cubic-bezier(.34,1.56,.64,1) 150ms both;
+}
+.confirmation-card.motion-confirmed .confirmation-reference{
+  animation:motionReferenceEnter 620ms cubic-bezier(.22,1,.36,1) 440ms both;
+}
+@keyframes motionConfirmationCard{
+  from{opacity:0;transform:translate3d(0,28px,0) scale(.98)}
+  to{opacity:1;transform:none}
+}
+@keyframes motionConfirmationMark{
+  0%{opacity:0;transform:scale(.4) rotate(-18deg);box-shadow:0 0 0 0 rgba(35,133,91,.18)}
+  65%{opacity:1;transform:scale(1.1) rotate(3deg);box-shadow:0 0 0 14px rgba(35,133,91,.10)}
+  100%{transform:scale(1) rotate(0);box-shadow:0 0 0 7px rgba(35,133,91,.07)}
+}
+@keyframes motionReferenceEnter{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+
+@media(max-width:950px){
+  .motion-step-track.clean-step-grid{grid-template-columns:1fr}
+  .motion-step-track::before,.motion-step-track::after{
+    top:38px;
+    bottom:38px;
+    left:39px;
+    right:auto;
+    width:3px;
+    height:auto;
+  }
+  .motion-step-track::after{
+    transform:scaleY(0);
+    transform-origin:center top;
+  }
+  .motion-step-track.is-track-active::after{transform:scaleY(1)}
+}
+
+@media(max-width:760px){
+  .motion-hero-symbol:nth-child(1){display:none}
+  .motion-hero-symbol:nth-child(2){top:9%;right:-26px;transform:scale(.78)}
+  .motion-hero-symbol:nth-child(3){right:7%;bottom:5%;transform:scale(.72)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .motion-hero-symbols{display:none!important}
+  .motion-title-line::after,.motion-step-track::after{transform:none!important}
+  html.motion-r27-ready .motion-check-item{opacity:1!important;transform:none!important}
+  html.motion-r27-ready .motion-check-item::before{transform:none!important}
+  .regime-cards>div,.result-summary,.confirmation-card,.confirmation-mark,.confirmation-reference{animation:none!important;transform:none!important}
+}
