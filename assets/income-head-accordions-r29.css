@@ -20,6 +20,16 @@
   display: none;
 }
 
+.advanced-results {
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.advanced-results > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .income-head-summary {
   position: relative;
   display: grid;
