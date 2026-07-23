@@ -6,7 +6,7 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const read = (name) => fs.readFileSync(path.join(root, name), 'utf8');
-const stylesheet = 'assets/professional-visuals-r28.css?v=20260723-r28';
+const stylesheet = 'assets/professional-visuals-r28.css?v=20260723-r28b';
 const css = read('assets/professional-visuals-r28.css');
 const index = read('index.html');
 
