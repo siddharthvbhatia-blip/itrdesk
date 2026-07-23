@@ -20,9 +20,11 @@
   <link rel="stylesheet" href="assets/premium-motion-r26.css?v=20260721-r26" />
   <link rel="stylesheet" href="assets/premium-motion-r27.css?v=20260723-r27" />
   <link rel="stylesheet" href="assets/professional-visuals-r28.css?v=20260723-r28b" />
+  <link rel="stylesheet" href="assets/income-head-accordions-r29.css?v=20260723-r29" />
   <script defer src="assets/script.js"></script>
   <script defer src="assets/calculator.js"></script>
   <script defer src="assets/document-import.js"></script>
+  <script defer src="assets/income-head-accordions-r29.js?v=20260723-r29"></script>
   <script defer src="assets/payment.js"></script>
   <script defer src="assets/premium-motion-r26.js?v=20260721-r26"></script>
   <script defer src="assets/premium-motion-r27.js?v=20260723-r27"></script>
@@ -68,87 +70,100 @@
 
 <section class="section calculator-section"><div class="container calculator-layout advanced-layout">
   <form id="taxCalculator" class="tax-form advanced-tax-form" novalidate>
-    <div class="calc-heading"><span>1</span><div><h2>Taxpayer details</h2><p>Determines slabs, rebate, basic-exemption adjustment and regime comparison.</p></div></div>
-    <div class="calc-grid three">
-      <label>Assessee type<select id="assesseeType"><option value="individual">Individual</option><option value="huf">HUF</option></select></label>
-      <label>Residential status<select id="residentialStatus"><option value="resident">Resident</option><option value="nonresident">Non-resident</option></select></label>
-      <label>Age on 31 March 2026<select id="taxpayerAge"><option value="below60">Below 60 years</option><option value="60to79">60 to 79 years</option><option value="80plus">80 years or above</option></select></label>
-    </div>
-
-    <div class="calc-heading"><span>2</span><div><h2>Normal-rate income</h2><p>Enter annual taxable amounts before the deductions entered below.</p></div></div>
-    <div class="calc-grid two">
-      <label>Salary / taxable pension (₹)<input id="salaryIncome" class="money-input" inputmode="decimal" value="0" /><small>Standard deduction is applied automatically.</small></label>
-      <label>House-property income or loss (₹)<input id="houseIncome" class="money-input" inputmode="decimal" value="0" /><small>Enter after section 24; use minus for loss. Regime-wise set-off limits are applied.</small></label>
-      <label>Business / profession income (₹)<input id="businessIncome" class="money-input" inputmode="decimal" value="0" /></label>
-      <label>Dividend income (₹)<input id="dividendIncome" class="money-input" inputmode="decimal" value="0" /><small>Separated to apply the surcharge cap correctly.</small></label>
-      <label>Other normal-rate income (₹)<input id="otherIncome" class="money-input" inputmode="decimal" value="0" /><small>Interest, family pension and other slab-rate income.</small></label>
-      <label>Net agricultural income (₹)<input id="agriculturalIncome" class="money-input" inputmode="decimal" value="0" /><small>Used only for rate integration where applicable.</small></label>
-    </div>
-
-    <details class="calc-details" open><summary>Chapter VI-A and regime deductions</summary><p>Deductions are restricted to eligible normal-rate income and do not reduce special-rate income.</p>
-      <div class="calc-grid two">
-        <label>Section 80C — old regime (₹)<input id="deduction80C" class="money-input" inputmode="decimal" value="0" /><small>Restricted to ₹1,50,000.</small></label>
-        <label>Section 80D — old regime (₹)<input id="deduction80D" class="money-input" inputmode="decimal" value="0" /></label>
-        <label>Section 80CCD(1B) NPS — old regime (₹)<input id="deductionNPS" class="money-input" inputmode="decimal" value="0" /><small>Restricted to ₹50,000.</small></label>
-        <label>Other old-regime deductions (₹)<input id="otherOldDeductions" class="money-input" inputmode="decimal" value="0" /></label>
-        <label>Deductions permitted in both/new regime (₹)<input id="commonDeductions" class="money-input" inputmode="decimal" value="0" /><small>For example, eligible employer NPS contribution; verify eligibility and limit.</small></label>
-      </div>
-    </details>
-
-    <div class="calc-heading"><span>3</span><div><h2>Capital gains at special rates</h2><p>Enter net positive taxable gains after permitted cost, exemptions and loss set-off, except where the field states otherwise.</p></div></div>
-    <details class="calc-details special-panel" open><summary>Capital-gain inputs</summary>
-      <div class="calc-grid two details-grid">
-        <label>STCG under section 111A — 20% (₹)<input id="stcg111A" class="money-input" inputmode="decimal" value="0" /><small>STT-paid listed equity/equity-oriented fund/business trust.</small></label>
-        <label>FII/FPI STCG under section 115AD — 30% (₹)<input id="stcg115AD" class="money-input" inputmode="decimal" value="0" /><small>Specified securities where the section 111A/STT rate does not apply.</small></label>
-        <label>LTCG under section 112A — 12.5% (₹)<input id="ltcg112A" class="money-input" inputmode="decimal" value="0" /><small>Enter gain before the ₹1,25,000 annual threshold.</small></label>
-        <label>Other LTCG under section 112 — 12.5% (₹)<input id="ltcg112" class="money-input" inputmode="decimal" value="0" /><small>For transfers during FY 2025-26, subject to applicable conditions.</small></label>
-        <label>Legacy property LTCG without indexation (₹)<input id="propertyGainNoIndex" class="money-input" inputmode="decimal" value="0" /><small>Resident individual/HUF: property acquired before 23 July 2024.</small></label>
-        <label>Same legacy property LTCG with indexation (₹)<input id="propertyGainIndexed" class="money-input" inputmode="decimal" value="0" /><small>Used only to compare 20% indexed tax with 12.5% non-indexed tax.</small></label>
-        <label>Other/DTAA capital gain (₹)<input id="customCapitalGain" class="money-input" inputmode="decimal" value="0" /></label>
-        <label>Applicable other/DTAA CG rate (%)<input id="customCapitalRate" class="rate-input" inputmode="decimal" value="12.5" min="0" max="100" /></label>
-        <label>Other/DTAA CG surcharge treatment<select id="customCapitalSurcharge"><option value="cap15">Capped at 15%</option><option value="general">General individual/HUF rate</option><option value="none">No surcharge</option></select><small>Select the treatment applicable to the charging section or treaty position.</small></label>
-      </div>
-    </details>
-
-    <div class="calc-heading"><span>4</span><div><h2>Other special-rate income</h2><p>These amounts are kept outside the slab-rate base and taxed at the specified rate.</p></div></div>
-    <details class="calc-details special-panel" open><summary>Special-income inputs</summary>
-      <div class="calc-grid two details-grid">
-        <label>Lottery, crossword, card games, horse races — 115BB (₹)<input id="lotteryIncome" class="money-input" inputmode="decimal" value="0" /><small>30% rate.</small></label>
-        <label>Net winnings from online games — 115BBJ (₹)<input id="onlineGamingIncome" class="money-input" inputmode="decimal" value="0" /><small>30% rate.</small></label>
-        <label>Virtual digital assets — 115BBH (₹)<input id="vdaIncome" class="money-input" inputmode="decimal" value="0" /><small>30% rate; enter taxable income after permitted acquisition cost.</small></label>
-        <label>Unexplained income — 115BBE (₹)<input id="unexplainedIncome" class="money-input" inputmode="decimal" value="0" /><small>60% tax plus mandatory 25% surcharge on that tax.</small></label>
-        <label>Patent royalty — 115BBF (₹)<input id="patentIncome" class="money-input" inputmode="decimal" value="0" /><small>10% where statutory conditions are satisfied.</small></label>
-        <label>Carbon-credit transfer — 115BBG (₹)<input id="carbonCreditIncome" class="money-input" inputmode="decimal" value="0" /><small>10% rate.</small></label>
-        <label>Non-resident dividend — 115A (₹)<input id="nriDividendIncome" class="money-input" inputmode="decimal" value="0" /><small>20%; use a custom row for an IFSC/DTAA rate. Surcharge is capped at 15%.</small></label>
-        <label>Specified non-resident interest — 5% (₹)<input id="nriInterestIncome" class="money-input" inputmode="decimal" value="0" /><small>Eligible sections 115A/115AD interest only; verify the underlying instrument.</small></label>
-        <label>Non-resident royalty / FTS — 115A (₹)<input id="nriRoyaltyFtsIncome" class="money-input" inputmode="decimal" value="0" /><small>20% gross-basis rate where section 115A conditions apply and no PE attribution is required.</small></label>
-      </div>
-      <div class="custom-special-block">
-        <h3>Other statutory / DTAA special-rate rows</h3><p>Use separate rows when two incomes have different rates. Examples include section 115AC/115ACA/115E income, IFSC income, pass-through income and a beneficial treaty rate.</p>
-        <div class="calc-grid three details-grid">
-          <label>Other special income 1 (₹)<input id="otherSpecialIncome" class="money-input" inputmode="decimal" value="0" /></label>
-          <label>Tax rate 1 (%)<input id="otherSpecialRate" class="rate-input" inputmode="decimal" value="20" min="0" max="100" /></label>
-          <label>Surcharge treatment 1<select id="otherSpecialSurcharge"><option value="general">General individual/HUF rate</option><option value="cap15">Capped at 15%</option><option value="none">No surcharge</option></select></label>
-          <label>Other special income 2 (₹)<input id="otherSpecialIncome2" class="money-input" inputmode="decimal" value="0" /></label>
-          <label>Tax rate 2 (%)<input id="otherSpecialRate2" class="rate-input" inputmode="decimal" value="10" min="0" max="100" /></label>
-          <label>Surcharge treatment 2<select id="otherSpecialSurcharge2"><option value="general">General individual/HUF rate</option><option value="cap15">Capped at 15%</option><option value="none">No surcharge</option></select></label>
+    <details class="income-head-accordion" data-income-head="taxpayer">
+      <summary class="income-head-summary"><span class="income-head-number" aria-hidden="true">1</span><span class="income-head-copy"><strong>Taxpayer details</strong><small>Assessee type, residential status and age</small></span></summary>
+      <div class="income-head-body">
+        <div class="calc-grid three">
+          <label>Assessee type<select id="assesseeType"><option value="individual">Individual</option><option value="huf">HUF</option></select></label>
+          <label>Residential status<select id="residentialStatus"><option value="resident">Resident</option><option value="nonresident">Non-resident</option></select></label>
+          <label>Age on 31 March 2026<select id="taxpayerAge"><option value="below60">Below 60 years</option><option value="60to79">60 to 79 years</option><option value="80plus">80 years or above</option></select></label>
         </div>
       </div>
     </details>
 
-    <div class="calc-heading"><span>5</span><div><h2>AMT, reliefs and taxes paid</h2><p>Optional inputs convert gross liability into an estimated final payable or refund.</p></div></div>
-    <details class="calc-details"><summary>Advanced final-liability inputs</summary>
-      <div class="calc-grid two details-grid">
-        <label>Adjusted total income for AMT — old regime (₹)<input id="adjustedTotalIncome" class="money-input" inputmode="decimal" value="0" /><small>AMT at 18.5% is tested where applicable.</small></label>
-        <label>Available AMT credit (₹)<input id="amtCredit" class="money-input" inputmode="decimal" value="0" /><small>Applied only in the old regime and limited to regular tax exceeding current-year AMT.</small></label>
-        <label>Relief under section 89 (₹)<input id="relief89" class="money-input" inputmode="decimal" value="0" /></label>
-        <label>Foreign-tax relief — sections 90/90A/91 (₹)<input id="foreignTaxRelief" class="money-input" inputmode="decimal" value="0" /></label>
-        <label>Interest under sections 234A/234B/234C (₹)<input id="interest234" class="money-input" inputmode="decimal" value="0" /><small>Enter portal/utility-computed interest.</small></label>
-        <label>Fee under section 234F / other filing fee (₹)<input id="lateFee" class="money-input" inputmode="decimal" value="0" /></label>
-        <label>TDS (₹)<input id="tdsPaid" class="money-input" inputmode="decimal" value="0" /></label>
-        <label>TCS (₹)<input id="tcsPaid" class="money-input" inputmode="decimal" value="0" /></label>
-        <label>Advance tax (₹)<input id="advanceTaxPaid" class="money-input" inputmode="decimal" value="0" /></label>
-        <label>Self-assessment tax already paid (₹)<input id="selfAssessmentPaid" class="money-input" inputmode="decimal" value="0" /></label>
+    <details class="income-head-accordion" data-income-head="normal-rate">
+      <summary class="income-head-summary"><span class="income-head-number" aria-hidden="true">2</span><span class="income-head-copy"><strong>Normal-rate income</strong><small>Salary, house property, business, dividend and other income</small></span></summary>
+      <div class="income-head-body">
+        <div class="calc-grid two">
+          <label>Salary / taxable pension (₹)<input id="salaryIncome" class="money-input" inputmode="decimal" value="0" /><small>Standard deduction is applied automatically.</small></label>
+          <label>House-property income or loss (₹)<input id="houseIncome" class="money-input" inputmode="decimal" value="0" /><small>Enter after section 24; use minus for loss. Regime-wise set-off limits are applied.</small></label>
+          <label>Business / profession income (₹)<input id="businessIncome" class="money-input" inputmode="decimal" value="0" /></label>
+          <label>Dividend income (₹)<input id="dividendIncome" class="money-input" inputmode="decimal" value="0" /><small>Separated to apply the surcharge cap correctly.</small></label>
+          <label>Other normal-rate income (₹)<input id="otherIncome" class="money-input" inputmode="decimal" value="0" /><small>Interest, family pension and other slab-rate income.</small></label>
+          <label>Net agricultural income (₹)<input id="agriculturalIncome" class="money-input" inputmode="decimal" value="0" /><small>Used only for rate integration where applicable.</small></label>
+        </div>
+        <details class="calc-details"><summary>Chapter VI-A and regime deductions</summary><p>Deductions are restricted to eligible normal-rate income and do not reduce special-rate income.</p>
+          <div class="calc-grid two">
+            <label>Section 80C — old regime (₹)<input id="deduction80C" class="money-input" inputmode="decimal" value="0" /><small>Restricted to ₹1,50,000.</small></label>
+            <label>Section 80D — old regime (₹)<input id="deduction80D" class="money-input" inputmode="decimal" value="0" /></label>
+            <label>Section 80CCD(1B) NPS — old regime (₹)<input id="deductionNPS" class="money-input" inputmode="decimal" value="0" /><small>Restricted to ₹50,000.</small></label>
+            <label>Other old-regime deductions (₹)<input id="otherOldDeductions" class="money-input" inputmode="decimal" value="0" /></label>
+            <label>Deductions permitted in both/new regime (₹)<input id="commonDeductions" class="money-input" inputmode="decimal" value="0" /><small>For example, eligible employer NPS contribution; verify eligibility and limit.</small></label>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details class="income-head-accordion special-income-head" data-income-head="capital-gains">
+      <summary class="income-head-summary"><span class="income-head-number" aria-hidden="true">3</span><span class="income-head-copy"><strong>Capital gains at special rates</strong><small>STCG, LTCG, legacy property and DTAA capital gains</small></span></summary>
+      <div class="income-head-body">
+        <div class="calc-grid two">
+          <label>STCG under section 111A — 20% (₹)<input id="stcg111A" class="money-input" inputmode="decimal" value="0" /><small>STT-paid listed equity/equity-oriented fund/business trust.</small></label>
+          <label>FII/FPI STCG under section 115AD — 30% (₹)<input id="stcg115AD" class="money-input" inputmode="decimal" value="0" /><small>Specified securities where the section 111A/STT rate does not apply.</small></label>
+          <label>LTCG under section 112A — 12.5% (₹)<input id="ltcg112A" class="money-input" inputmode="decimal" value="0" /><small>Enter gain before the ₹1,25,000 annual threshold.</small></label>
+          <label>Other LTCG under section 112 — 12.5% (₹)<input id="ltcg112" class="money-input" inputmode="decimal" value="0" /><small>For transfers during FY 2025-26, subject to applicable conditions.</small></label>
+          <label>Legacy property LTCG without indexation (₹)<input id="propertyGainNoIndex" class="money-input" inputmode="decimal" value="0" /><small>Resident individual/HUF: property acquired before 23 July 2024.</small></label>
+          <label>Same legacy property LTCG with indexation (₹)<input id="propertyGainIndexed" class="money-input" inputmode="decimal" value="0" /><small>Used only to compare 20% indexed tax with 12.5% non-indexed tax.</small></label>
+          <label>Other/DTAA capital gain (₹)<input id="customCapitalGain" class="money-input" inputmode="decimal" value="0" /></label>
+          <label>Applicable other/DTAA CG rate (%)<input id="customCapitalRate" class="rate-input" inputmode="decimal" value="12.5" min="0" max="100" /></label>
+          <label>Other/DTAA CG surcharge treatment<select id="customCapitalSurcharge"><option value="cap15">Capped at 15%</option><option value="general">General individual/HUF rate</option><option value="none">No surcharge</option></select><small>Select the treatment applicable to the charging section or treaty position.</small></label>
+        </div>
+      </div>
+    </details>
+
+    <details class="income-head-accordion special-income-head" data-income-head="other-special">
+      <summary class="income-head-summary"><span class="income-head-number" aria-hidden="true">4</span><span class="income-head-copy"><strong>Other special-rate income</strong><small>Winnings, VDA, unexplained income, NRI and custom rates</small></span></summary>
+      <div class="income-head-body">
+        <div class="calc-grid two">
+          <label>Lottery, crossword, card games, horse races — 115BB (₹)<input id="lotteryIncome" class="money-input" inputmode="decimal" value="0" /><small>30% rate.</small></label>
+          <label>Net winnings from online games — 115BBJ (₹)<input id="onlineGamingIncome" class="money-input" inputmode="decimal" value="0" /><small>30% rate.</small></label>
+          <label>Virtual digital assets — 115BBH (₹)<input id="vdaIncome" class="money-input" inputmode="decimal" value="0" /><small>30% rate; enter taxable income after permitted acquisition cost.</small></label>
+          <label>Unexplained income — 115BBE (₹)<input id="unexplainedIncome" class="money-input" inputmode="decimal" value="0" /><small>60% tax plus mandatory 25% surcharge on that tax.</small></label>
+          <label>Patent royalty — 115BBF (₹)<input id="patentIncome" class="money-input" inputmode="decimal" value="0" /><small>10% where statutory conditions are satisfied.</small></label>
+          <label>Carbon-credit transfer — 115BBG (₹)<input id="carbonCreditIncome" class="money-input" inputmode="decimal" value="0" /><small>10% rate.</small></label>
+          <label>Non-resident dividend — 115A (₹)<input id="nriDividendIncome" class="money-input" inputmode="decimal" value="0" /><small>20%; use a custom row for an IFSC/DTAA rate. Surcharge is capped at 15%.</small></label>
+          <label>Specified non-resident interest — 5% (₹)<input id="nriInterestIncome" class="money-input" inputmode="decimal" value="0" /><small>Eligible sections 115A/115AD interest only; verify the underlying instrument.</small></label>
+          <label>Non-resident royalty / FTS — 115A (₹)<input id="nriRoyaltyFtsIncome" class="money-input" inputmode="decimal" value="0" /><small>20% gross-basis rate where section 115A conditions apply and no PE attribution is required.</small></label>
+        </div>
+        <div class="custom-special-block">
+          <h3>Other statutory / DTAA special-rate rows</h3><p>Use separate rows when two incomes have different rates. Examples include section 115AC/115ACA/115E income, IFSC income, pass-through income and a beneficial treaty rate.</p>
+          <div class="calc-grid three details-grid">
+            <label>Other special income 1 (₹)<input id="otherSpecialIncome" class="money-input" inputmode="decimal" value="0" /></label>
+            <label>Tax rate 1 (%)<input id="otherSpecialRate" class="rate-input" inputmode="decimal" value="20" min="0" max="100" /></label>
+            <label>Surcharge treatment 1<select id="otherSpecialSurcharge"><option value="general">General individual/HUF rate</option><option value="cap15">Capped at 15%</option><option value="none">No surcharge</option></select></label>
+            <label>Other special income 2 (₹)<input id="otherSpecialIncome2" class="money-input" inputmode="decimal" value="0" /></label>
+            <label>Tax rate 2 (%)<input id="otherSpecialRate2" class="rate-input" inputmode="decimal" value="10" min="0" max="100" /></label>
+            <label>Surcharge treatment 2<select id="otherSpecialSurcharge2"><option value="general">General individual/HUF rate</option><option value="cap15">Capped at 15%</option><option value="none">No surcharge</option></select></label>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="income-head-accordion" data-income-head="final-liability">
+      <summary class="income-head-summary"><span class="income-head-number" aria-hidden="true">5</span><span class="income-head-copy"><strong>AMT, reliefs and taxes paid</strong><small>AMT, tax reliefs, interest, fees, TDS and prepaid taxes</small></span></summary>
+      <div class="income-head-body">
+        <div class="calc-grid two">
+          <label>Adjusted total income for AMT — old regime (₹)<input id="adjustedTotalIncome" class="money-input" inputmode="decimal" value="0" /><small>AMT at 18.5% is tested where applicable.</small></label>
+          <label>Available AMT credit (₹)<input id="amtCredit" class="money-input" inputmode="decimal" value="0" /><small>Applied only in the old regime and limited to regular tax exceeding current-year AMT.</small></label>
+          <label>Relief under section 89 (₹)<input id="relief89" class="money-input" inputmode="decimal" value="0" /></label>
+          <label>Foreign-tax relief — sections 90/90A/91 (₹)<input id="foreignTaxRelief" class="money-input" inputmode="decimal" value="0" /></label>
+          <label>Interest under sections 234A/234B/234C (₹)<input id="interest234" class="money-input" inputmode="decimal" value="0" /><small>Enter portal/utility-computed interest.</small></label>
+          <label>Fee under section 234F / other filing fee (₹)<input id="lateFee" class="money-input" inputmode="decimal" value="0" /></label>
+          <label>TDS (₹)<input id="tdsPaid" class="money-input" inputmode="decimal" value="0" /></label>
+          <label>TCS (₹)<input id="tcsPaid" class="money-input" inputmode="decimal" value="0" /></label>
+          <label>Advance tax (₹)<input id="advanceTaxPaid" class="money-input" inputmode="decimal" value="0" /></label>
+          <label>Self-assessment tax already paid (₹)<input id="selfAssessmentPaid" class="money-input" inputmode="decimal" value="0" /></label>
+        </div>
       </div>
     </details>
 

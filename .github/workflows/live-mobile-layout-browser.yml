@@ -9,6 +9,7 @@ on:
     branches: [main]
     paths:
       - index.html
+      - calculator.html
       - about-ca-siddharth-bhatia.html
       - assets/styles.css
       - assets/profile-photo.css
@@ -16,6 +17,8 @@ on:
       - assets/clean-v2.css
       - assets/premium-motion-r26.css
       - assets/premium-motion-r26.js
+      - assets/income-head-accordions-r29.css
+      - assets/income-head-accordions-r29.js
       - assets/script.js
       - assets/profile-runtime-r14.js
       - assets/ca-siddharth-bhatia-final-r16.jpg
@@ -24,6 +27,8 @@ on:
       - test/home-contact-browser-r24.js
       - test/premium-motion-r26.js
       - test/premium-motion-browser-r26.js
+      - test/income-head-accordions-r29.js
+      - test/income-head-accordions-browser-r29.js
       - test/mobile-layout-browser.js
       - test/desktop-profile-browser-r16.js
       - .github/workflows/live-mobile-layout-browser.yml
@@ -48,6 +53,7 @@ jobs:
           node test/clean-site-r17.js
           node test/home-contact-r24.js
           node test/premium-motion-r26.js
+          node test/income-head-accordions-r29.js
       - name: Install Chromium test runtime
         run: |
           npm install --no-save playwright@1.52.0
@@ -58,7 +64,7 @@ jobs:
         run: |
           for attempt in $(seq 1 30); do
             echo "Live premium-motion check attempt ${attempt}/30"
-            if node test/mobile-layout-browser.js && node test/desktop-profile-browser-r16.js && node test/home-contact-browser-r24.js && node test/premium-motion-browser-r26.js; then
+            if node test/mobile-layout-browser.js && node test/desktop-profile-browser-r16.js && node test/home-contact-browser-r24.js && node test/premium-motion-browser-r26.js && node test/income-head-accordions-browser-r29.js; then
               exit 0
             fi
             sleep 20
