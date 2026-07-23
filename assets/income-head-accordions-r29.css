@@ -16,6 +16,10 @@
   box-shadow: 0 14px 34px rgba(15, 74, 116, .1);
 }
 
+.income-head-accordion:not([open]) > .income-head-body {
+  display: none;
+}
+
 .income-head-summary {
   position: relative;
   display: grid;
