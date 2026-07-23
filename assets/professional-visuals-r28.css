@@ -175,6 +175,51 @@
   }
 }
 
+@media (max-width: 640px) {
+  .clean-action-card.visual-action-card {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    grid-template-areas:
+      "visual title"
+      "visual copy"
+      "visual link";
+    column-gap: 16px;
+    row-gap: 5px;
+    align-items: start;
+    padding: 16px;
+  }
+
+  .visual-action-card .clean-action-visual {
+    grid-area: visual;
+    margin: 0;
+  }
+
+  .visual-action-card h3 {
+    grid-area: title;
+    margin: 1px 0 0;
+  }
+
+  .visual-action-card p {
+    grid-area: copy;
+    margin: 0;
+  }
+
+  .visual-action-card strong {
+    grid-area: link;
+    margin-top: 3px;
+  }
+
+  .visual-action-card .clean-action-visual .clean-icon {
+    left: 7px;
+    bottom: -13px;
+    width: 34px;
+    height: 34px;
+    border-width: 3px;
+    border-radius: 11px;
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 460px) {
   .visual-trust-label {
     left: 12px;

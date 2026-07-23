@@ -64,6 +64,8 @@ assert(css.includes('.professional-hero-visual'), 'Professional hero visual trea
 assert(css.includes('.visual-trust-label'), 'Context label treatment is missing');
 assert(css.includes('@media (hover: hover) and (pointer: fine)'), 'Hover animation is not limited to fine pointers');
 assert(css.includes('@media (max-width: 760px)'), 'Mobile visual layout safeguard is missing');
+assert(css.includes('@media (max-width: 640px)'), 'Compact phone card layout is missing');
+assert(css.includes('grid-template-areas:'), 'Phone cards do not use a height-efficient visual layout');
 assert(css.includes('@media (prefers-reduced-motion: reduce)'), 'Reduced-motion visual fallback is missing');
 assert(!css.includes('transition: all'), 'Visual stylesheet must not animate every CSS property');
 
