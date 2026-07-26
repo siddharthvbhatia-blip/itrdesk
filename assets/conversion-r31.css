@@ -150,6 +150,14 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.conversion-subsection {
+  margin-top: 42px;
+}
+
+.compact-heading {
+  margin-bottom: 20px;
+}
+
 .scope-panel {
   padding: 24px;
   border: 1px solid rgba(23, 99, 154, 0.18);
@@ -189,33 +197,106 @@
 }
 
 @media (min-width: 981px) {
+  .clean-site .clean-hero {
+    padding: 60px 0 !important;
+  }
+
   .clean-site .section {
-    padding: 58px 0 !important;
+    padding: 40px 0 !important;
   }
 
   .clean-site .enquiry-section {
-    padding: 52px 0 !important;
+    padding: 36px 0 !important;
+  }
+
+  .clean-site .section-heading {
+    margin-bottom: 22px;
+  }
+
+  .clean-site .case-choice-grid {
+    margin-top: 20px;
+  }
+
+  .clean-site .case-choice-card {
+    min-height: 205px;
+    padding: 20px;
+  }
+
+  .clean-site .case-choice-card .case-number {
+    margin-bottom: 12px;
+  }
+
+  .clean-site .case-choice-card p {
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+
+  .clean-site .included-panel {
+    margin-top: 20px;
+    padding: 22px;
+  }
+
+  #guides .clean-action-grid {
+    gap: 14px;
+  }
+
+  #guides .clean-action-card {
+    padding: 16px;
+  }
+
+  #guides .clean-action-visual {
+    min-height: 105px;
+    height: 105px;
   }
 
   #services .clean-service-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 14px;
+    gap: 12px;
   }
 
   #services .clean-service-card {
-    padding: 20px 16px;
+    padding: 17px 14px;
+  }
+
+  .conversion-subsection {
+    margin-top: 28px;
+  }
+
+  .compact-heading {
+    margin-bottom: 14px !important;
+  }
+
+  .clean-step-grid.four-step-grid {
+    gap: 12px;
+  }
+
+  .clean-step-grid.four-step-grid .clean-step {
+    padding: 16px 14px;
   }
 
   .clean-site .clean-faq {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
+    gap: 12px;
     align-items: start;
   }
 
   .clean-site .clean-faq details {
     margin: 0;
     height: 100%;
+    padding: 16px;
+  }
+
+  .clean-site .clean-enquiry-grid {
+    gap: 30px;
+  }
+
+  .clean-site .lead-form {
+    padding: 24px;
+  }
+
+  .clean-site .clean-form-grid {
+    gap: 12px;
   }
 }
 
@@ -319,6 +400,10 @@
 
   .included-panel {
     padding: 22px;
+  }
+
+  .conversion-subsection {
+    margin-top: 32px;
   }
 
   .clean-step-grid.four-step-grid {
