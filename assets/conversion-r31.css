@@ -1,0 +1,221 @@
+/* Conversion-focused professional enquiry experience — R31 */
+
+.clean-hero-copy .hero-text {
+  max-width: 720px;
+}
+
+.hero-proof-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-proof-list li {
+  border: 1px solid rgba(23, 99, 154, 0.2);
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  padding: 8px 13px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #164a70;
+}
+
+.case-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.case-choice-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 230px;
+  padding: 24px;
+  border: 1px solid rgba(23, 99, 154, 0.16);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(18, 67, 101, 0.08);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.case-choice-card:hover,
+.case-choice-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(23, 99, 154, 0.42);
+  box-shadow: 0 20px 46px rgba(18, 67, 101, 0.14);
+}
+
+.case-choice-card .case-number {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: #eaf5fc;
+  color: #17639a;
+  font-weight: 800;
+}
+
+.case-choice-card h3 {
+  margin: 0 0 9px;
+  font-size: 1.15rem;
+}
+
+.case-choice-card p {
+  margin: 0 0 20px;
+  color: #516575;
+  line-height: 1.6;
+}
+
+.case-choice-card strong {
+  margin-top: auto;
+  color: #17639a;
+}
+
+.included-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 28px;
+  align-items: start;
+  margin-top: 28px;
+  padding: 28px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #0f4f7c, #17639a);
+  color: #fff;
+  box-shadow: 0 18px 48px rgba(18, 67, 101, 0.18);
+}
+
+.included-panel h3 {
+  margin: 0 0 10px;
+  color: #fff;
+  font-size: 1.45rem;
+}
+
+.included-panel p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.84);
+  line-height: 1.65;
+}
+
+.included-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.included-grid span {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 11px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.included-grid span::before {
+  content: "✓";
+  flex: 0 0 auto;
+  font-weight: 900;
+}
+
+.resource-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.resource-links a {
+  padding: 9px 13px;
+  border: 1px solid rgba(23, 99, 154, 0.18);
+  border-radius: 999px;
+  background: #fff;
+  color: #17639a;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.clean-step-grid.four-step-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.scope-panel {
+  padding: 24px;
+  border: 1px solid rgba(23, 99, 154, 0.18);
+  border-radius: 18px;
+  background: #f5fbff;
+}
+
+.scope-panel h3 {
+  margin-top: 0;
+}
+
+.scope-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.scope-note {
+  margin-top: 12px;
+  color: #546a79;
+  font-size: 0.92rem;
+}
+
+.hp-field {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.legacy-checkout[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 980px) {
+  .case-choice-grid,
+  .clean-step-grid.four-step-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .included-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .case-choice-grid,
+  .clean-step-grid.four-step-grid,
+  .included-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .case-choice-card {
+    min-height: 0;
+  }
+
+  .included-panel {
+    padding: 22px;
+  }
+
+  .scope-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
