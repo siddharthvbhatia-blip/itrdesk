@@ -11,13 +11,13 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Capture test and browser-check sources
+      - name: Capture source and unit-test output
         run: |
           set +e
           {
@@ -32,9 +32,23 @@ jobs:
           npm test >> r31-test-output.txt 2>&1
           echo "TEST_EXIT=$?" >> r31-test-output.txt
           exit 0
+      - name: Capture contact browser failure
+        run: |
+          set +e
+          npm install --no-save playwright@1.52.0 >> r31-test-output.txt 2>&1
+          npx playwright install --with-deps chromium >> r31-test-output.txt 2>&1
+          python3 -m http.server 4173 >/tmp/itrdesk-http.log 2>&1 &
+          sleep 2
+          echo '=== CONTACT BROWSER OUTPUT ===' >> r31-test-output.txt
+          BASE_URL=http://127.0.0.1:4173 node test/home-contact-browser-r24.js >> r31-test-output.txt 2>&1
+          echo "CONTACT_EXIT=$?" >> r31-test-output.txt
+          exit 0
       - name: Upload diagnostic output
         uses: actions/upload-artifact@v4
         with:
           name: r31-test-output
-          path: r31-test-output.txt
+          path: |
+            r31-test-output.txt
+            test-results/home-contact-*.png
+            test-results/home-contact-*.json
           retention-days: 1
