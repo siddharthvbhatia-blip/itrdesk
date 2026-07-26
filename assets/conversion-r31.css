@@ -201,11 +201,48 @@
 
 @media (max-width: 640px) {
   .clean-site .clean-hero {
-    padding-block: 46px;
+    padding: 38px 0 !important;
   }
 
   .clean-site .section {
-    padding-block: 42px;
+    padding: 38px 0 !important;
+  }
+
+  .clean-site .enquiry-section {
+    padding: 30px 0 !important;
+  }
+
+  .clean-site .clean-hero-grid,
+  .clean-site .clean-enquiry-grid {
+    gap: 20px !important;
+  }
+
+  .clean-site .clean-enquiry-copy h2 {
+    margin-bottom: 8px;
+  }
+
+  .clean-site .clean-enquiry-copy p {
+    margin-bottom: 12px;
+  }
+
+  .clean-site .lead-form {
+    padding: 20px !important;
+  }
+
+  .clean-site .clean-form-grid {
+    gap: 12px !important;
+  }
+
+  .clean-site .lead-form label {
+    gap: 5px !important;
+  }
+
+  .clean-site .lead-form textarea {
+    min-height: 76px !important;
+  }
+
+  .clean-site .lead-form .consent {
+    margin-block: 14px !important;
   }
 
   .case-choice-grid,
