@@ -61,15 +61,22 @@ validate_page(
         "jsonPaymentStatus", "jsonDownloads"
     },
     {
-        "₹2,000", "₹2,500", "₹3,000", "JSON + computation (PDF + Word)",
-        "before final submission to the Income Tax portal"
+        "Advanced ITR Data Preparation Tool", "data-public-quote-only=\"true\"",
+        "Request scope and fee quote", "legacy-checkout\" hidden",
+        "before filing"
     }
 )
 
+advanced_content = (ROOT / "itr-preparation-json.html").read_text(encoding="utf-8")
+assert "checkout-disclosure" not in advanced_content, "Public JSON checkout disclosure must remain removed"
+assert "bundle-paywall" not in advanced_content, "Public JSON payment panel must remain removed"
+assert "adsbygoogle" not in advanced_content.lower(), "Third-party advertising code is not permitted on the professional page"
+
 for required_file in [
-    "assets/payment.js", "assets/itr-preparation.js", "assets/download-suite-r30.css"
+    "assets/payment.js", "assets/itr-preparation.js", "assets/download-suite-r30.css",
+    "assets/conversion-r31.css", "assets/conversion-r31.js"
 ]:
     assert (ROOT / required_file).exists(), f"Missing required asset: {required_file}"
 
-print("PASS paid computation and JSON bundle page structure")
-print("PASS pricing, review warning and local asset references")
+print("PASS paid computation page and private-scope advanced ITR page structure")
+print("PASS public JSON pricing removal, compatibility IDs and local asset references")
