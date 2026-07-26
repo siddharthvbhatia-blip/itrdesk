@@ -18,8 +18,9 @@ for (const colour of ['#17639a','#f47920','#50b848']) assert(favicon.includes(co
 assert(index.includes('rel="icon" href="assets/favicon-ca-r23.svg?v=20260721-r23"'), 'Homepage does not pin the CA favicon');
 assert(about.includes('rel="icon" href="assets/favicon-ca-r23.svg?v=20260721-r23"'), 'About page does not pin the CA favicon');
 assert(admin.includes('rel="icon" href="assets/favicon-ca-r23.svg?v=20260721-r24"'), 'Admin page does not pin the R24 CA favicon');
-assert(index.includes('Send your message directly from the website.'), 'Homepage does not explain direct website enquiries');
-assert(index.includes('private ITR Desk inbox'), 'Homepage does not confirm private inbox delivery');
+assert(index.includes('Get your ITR case reviewed.'), 'Homepage does not present the professional review enquiry');
+assert(index.includes('A reference number will confirm receipt.'), 'Homepage does not explain confirmed website enquiry receipt');
+assert(index.includes('WhatsApp is used only if every automatic delivery channel is temporarily unavailable.'), 'Homepage does not keep WhatsApp as the final fallback');
 assert(admin.includes('noindex, nofollow, noarchive'), 'Admin inbox is not excluded from indexing');
 assert(admin.includes('assets/admin-inbox-r24.js?v=20260721-r24'), 'Admin inbox does not load the R24 trusted-device client');
 assert(!admin.includes('type="password"') && !admin.includes('Inbox password'), 'Manual password form remains visible');
@@ -32,4 +33,4 @@ assert(phase.includes('.brand:not(.brand-with-ca-logo)::before'), 'Older pages d
 assert(phase.includes('ca-india-logo-r22.webp?v=20260721-r24'), 'Global CA-logo asset is not cache-busted');
 assert(privacy.includes('Google Drive archive') && privacy.includes('Private administrator inbox'), 'Privacy page does not describe the enquiry data flow');
 
-console.log('PASS global CA logo, direct enquiry copy, trusted-device inbox and privacy source checks');
+console.log('PASS global CA logo, conversion enquiry copy, trusted-device inbox and privacy source checks');
