@@ -209,7 +209,7 @@
   }
 
   function addDocumentScanners(){
-    document.querySelectorAll('[data-document-importer]').forEach((importer,index)=>{
+    document.querySelectorAll('[data-document-importer]').forEach(importer=>{
       if(importer.dataset.scannerReady==='true')return;
       importer.dataset.scannerReady='true';
       const control=importer.querySelector('.import-file-control');
@@ -324,7 +324,6 @@
       };
       form.addEventListener('input',update);
       form.addEventListener('change',update);
-      new MutationObserver(update).observe(form,{childList:true,subtree:true});
       update();
     };
     initialise();
