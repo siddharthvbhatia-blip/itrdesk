@@ -17,10 +17,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Capture test output
+      - name: Capture test and browser-check sources
         run: |
           set +e
-          npm run check > r31-test-output.txt 2>&1
+          {
+            echo '=== FILE LIST ==='
+            find .github/workflows test -type f -maxdepth 3 | sort
+            echo '=== WORKFLOW AND BROWSER REFERENCES ==='
+            grep -R -n -E 'home-desktop-r17|excessively tall|Verify concise desktop|desktop-r17|pageHeight' .github/workflows test || true
+            echo '=== CHECK OUTPUT ==='
+          } > r31-test-output.txt
+          npm run check >> r31-test-output.txt 2>&1
           echo "CHECK_EXIT=$?" >> r31-test-output.txt
           npm test >> r31-test-output.txt 2>&1
           echo "TEST_EXIT=$?" >> r31-test-output.txt
