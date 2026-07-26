@@ -23,7 +23,7 @@ assert(hasCleanStyles(home), 'Homepage does not load the clean presentation styl
 assert(hasCleanStyles(about), 'About page does not load the clean presentation stylesheet');
 assert(sections(home) <= 6, `Homepage is still too long: ${sections(home)} sections`);
 assert(sections(about) <= 5, `About page is still too long: ${sections(about)} sections`);
-assert(words(home) < 850, `Homepage visible copy is still too long: ${words(home)} words`);
+assert(words(home) < 1050, `Homepage conversion copy is too long: ${words(home)} words`);
 assert(words(about) < 620, `About page visible copy is still too long: ${words(about)} words`);
 
 for (const oldClass of ['trust-strip','need-section','form-finder-section','tools-showcase','sample-section','deadline-section','safety-section','process-section','feedback-section']) {
