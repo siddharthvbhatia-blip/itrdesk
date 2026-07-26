@@ -200,6 +200,14 @@
 }
 
 @media (max-width: 640px) {
+  .clean-site .clean-hero {
+    padding-block: 46px;
+  }
+
+  .clean-site .section {
+    padding-block: 42px;
+  }
+
   .case-choice-grid,
   #guides .clean-action-grid,
   #services .clean-service-grid {
