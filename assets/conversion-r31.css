@@ -198,105 +198,105 @@
 
 @media (min-width: 981px) {
   .clean-site .clean-hero {
-    padding: 60px 0 !important;
+    padding: 48px 0 !important;
   }
 
   .clean-site .section {
-    padding: 40px 0 !important;
+    padding: 30px 0 !important;
   }
 
   .clean-site .enquiry-section {
-    padding: 36px 0 !important;
+    padding: 28px 0 !important;
   }
 
   .clean-site .section-heading {
-    margin-bottom: 22px;
+    margin-bottom: 20px;
   }
 
   .clean-site .case-choice-grid {
-    margin-top: 20px;
+    margin-top: 18px;
   }
 
   .clean-site .case-choice-card {
-    min-height: 205px;
-    padding: 20px;
+    min-height: 190px;
+    padding: 18px;
   }
 
   .clean-site .case-choice-card .case-number {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .clean-site .case-choice-card p {
-    margin-bottom: 14px;
-    line-height: 1.45;
+    margin-bottom: 12px;
+    line-height: 1.4;
   }
 
   .clean-site .included-panel {
-    margin-top: 20px;
-    padding: 22px;
+    margin-top: 18px;
+    padding: 20px;
   }
 
   #guides .clean-action-grid {
-    gap: 14px;
+    gap: 12px;
   }
 
   #guides .clean-action-card {
-    padding: 16px;
+    padding: 14px;
   }
 
   #guides .clean-action-visual {
-    min-height: 105px;
-    height: 105px;
+    min-height: 70px;
+    height: 70px;
   }
 
   #services .clean-service-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 12px;
+    gap: 10px;
   }
 
   #services .clean-service-card {
-    padding: 17px 14px;
+    padding: 15px 12px;
   }
 
   .conversion-subsection {
-    margin-top: 28px;
+    margin-top: 24px;
   }
 
   .compact-heading {
-    margin-bottom: 14px !important;
+    margin-bottom: 12px !important;
   }
 
   .clean-step-grid.four-step-grid {
-    gap: 12px;
+    gap: 10px;
   }
 
   .clean-step-grid.four-step-grid .clean-step {
-    padding: 16px 14px;
+    padding: 14px 12px;
   }
 
   .clean-site .clean-faq {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 10px;
     align-items: start;
   }
 
   .clean-site .clean-faq details {
     margin: 0;
     height: 100%;
-    padding: 16px;
+    padding: 14px;
   }
 
   .clean-site .clean-enquiry-grid {
-    gap: 30px;
+    gap: 24px;
   }
 
   .clean-site .lead-form {
-    padding: 24px;
+    padding: 20px;
   }
 
   .clean-site .clean-form-grid {
-    gap: 12px;
+    gap: 10px;
   }
 }
 
