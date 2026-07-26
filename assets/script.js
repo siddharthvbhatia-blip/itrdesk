@@ -293,6 +293,13 @@
     link.dataset.professionalExperienceR34 = 'true';
     document.head.appendChild(link);
   }
+  if (!document.querySelector('link[data-professional-experience-r34-mobile]')) {
+    const mobile = document.createElement('link');
+    mobile.rel = 'stylesheet';
+    mobile.href = 'assets/professional-experience-r34-mobile.css?v=20260727-r34b';
+    mobile.dataset.professionalExperienceR34Mobile = 'true';
+    document.head.appendChild(mobile);
+  }
   if (!document.querySelector('script[data-professional-experience-r34]')) {
     const script = document.createElement('script');
     script.src = 'assets/professional-experience-r34.js?v=20260727-r34';
