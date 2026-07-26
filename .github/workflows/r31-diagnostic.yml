@@ -1,0 +1,33 @@
+name: R31 test diagnostics
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Capture test output
+        run: |
+          set +e
+          npm run check > r31-test-output.txt 2>&1
+          echo "CHECK_EXIT=$?" >> r31-test-output.txt
+          npm test >> r31-test-output.txt 2>&1
+          echo "TEST_EXIT=$?" >> r31-test-output.txt
+          exit 0
+      - name: Upload diagnostic output
+        uses: actions/upload-artifact@v4
+        with:
+          name: r31-test-output
+          path: r31-test-output.txt
+          retention-days: 1
