@@ -200,7 +200,10 @@
 }
 
 @media (max-width: 640px) {
-  .case-choice-grid {
+  .case-choice-grid,
+  #guides .clean-action-grid,
+  #services .clean-service-grid {
+    display: grid;
     grid-template-columns: none;
     grid-auto-flow: column;
     grid-auto-columns: minmax(270px, 84vw);
@@ -223,31 +226,23 @@
     margin-bottom: 14px;
   }
 
+  #guides .clean-action-card,
+  #services .clean-service-card {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  #services .clean-service-card {
+    min-height: 215px;
+    padding: 22px;
+  }
+
   .included-grid {
     grid-template-columns: 1fr;
   }
 
   .included-panel {
     padding: 22px;
-  }
-
-  #guides .clean-action-grid {
-    display: grid;
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(270px, 84vw);
-    gap: 12px;
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scroll-snap-type: inline mandatory;
-    padding: 4px 4px 18px;
-    margin-inline: -4px;
-    scrollbar-width: thin;
-  }
-
-  #guides .clean-action-card {
-    min-width: 0;
-    scroll-snap-align: start;
   }
 
   .clean-step-grid.four-step-grid {
