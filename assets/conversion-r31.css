@@ -200,18 +200,63 @@
 }
 
 @media (max-width: 640px) {
-  .case-choice-grid,
-  .clean-step-grid.four-step-grid,
+  .case-choice-grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(270px, 84vw);
+    gap: 12px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    padding: 4px 4px 18px;
+    margin-inline: -4px;
+    scrollbar-width: thin;
+  }
+
+  .case-choice-card {
+    min-height: 250px;
+    padding: 20px;
+    scroll-snap-align: start;
+  }
+
+  .case-choice-card .case-number {
+    margin-bottom: 14px;
+  }
+
   .included-grid {
     grid-template-columns: 1fr;
   }
 
-  .case-choice-card {
-    min-height: 0;
-  }
-
   .included-panel {
     padding: 22px;
+  }
+
+  #guides .clean-action-grid {
+    display: grid;
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(270px, 84vw);
+    gap: 12px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    padding: 4px 4px 18px;
+    margin-inline: -4px;
+    scrollbar-width: thin;
+  }
+
+  #guides .clean-action-card {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .clean-step-grid.four-step-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .clean-step-grid.four-step-grid .clean-step {
+    padding: 18px 14px;
   }
 
   .scope-actions .btn {
