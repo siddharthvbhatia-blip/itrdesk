@@ -163,6 +163,25 @@
     margin-top: 6px;
   }
 
+  #services .clean-step-grid.four-step-grid {
+    display: grid;
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(235px, 78vw);
+    gap: 11px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    padding: 3px 3px 12px;
+    margin-inline: -3px;
+  }
+
+  #services .clean-step-grid.four-step-grid .clean-step {
+    min-height: 164px;
+    padding: 16px 14px;
+    scroll-snap-align: start;
+  }
+
   .office-trust-section {
     padding: 12px 0 !important;
   }
