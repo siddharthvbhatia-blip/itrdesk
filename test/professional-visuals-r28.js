@@ -69,8 +69,13 @@ assert(css.includes('grid-template-areas:'), 'Phone cards do not use a height-ef
 assert(css.includes('@media (prefers-reduced-motion: reduce)'), 'Reduced-motion visual fallback is missing');
 assert(!css.includes('transition: all'), 'Visual stylesheet must not animate every CSS property');
 
+assert(css.includes('.clean-site #guides .clean-action-visual img'), 'Homepage full-image fit safeguard is missing');
+assert(css.includes('object-fit: contain'), 'Homepage illustrations can still be cropped');
+assert(css.includes('height: auto !important'), 'Desktop illustration frame still uses a forced short height');
+assert(css.includes('aspect-ratio: 4 / 3'), 'Homepage illustration frame does not preserve the source ratio');
+
 const reviewPage = read('itr-preparation-json.html');
 assert(reviewPage.includes('class="json-hero-side"'), 'ITR review visual is not grouped safely with the security card');
 assert(reviewPage.includes('assets/blue-white-r22.css?v=20260721-r22'), 'ITR review page does not use the matching blue-white visual system');
 
-console.log('PASS R28 original imagery, responsive placement, loading, accessibility and WebP optimisation checks');
+console.log('PASS R28/R32 imagery, complete image fit, responsive placement, loading, accessibility and WebP optimisation checks');
