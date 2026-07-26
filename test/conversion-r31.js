@@ -11,6 +11,7 @@ const home = read('index.html');
 const advanced = read('itr-preparation-json.html');
 const css = read('assets/conversion-r31.css');
 const js = read('assets/conversion-r31.js');
+const accordionCss = read('assets/json-accordion-r33.css');
 
 assert(home.includes('Professional ITR Filing and Tax Review in Indore'), 'Conversion-focused homepage headline is missing');
 assert(home.includes('Get my ITR case reviewed'), 'Primary ITR review CTA is missing');
@@ -40,6 +41,7 @@ assert(advanced.includes('Request scope and fee quote'), 'Private scope CTA is m
 assert(advanced.includes('legacy-checkout" hidden'), 'Legacy checkout must remain hidden for compatibility');
 assert(!advanced.includes('checkout-disclosure'), 'Public checkout disclosure should not remain visible');
 assert(!advanced.includes('bundle-paywall'), 'Public payment panel should not remain visible');
+assert((advanced.match(/class="json-panel/g) || []).length === 7, 'Advanced ITR form should retain all seven data sections');
 
 for (const source of [home, advanced]) {
   assert(!/adsbygoogle|pagead2\.googlesyndication|google_ad_client/i.test(source), 'Third-party advertising code must not be added to the professional website');
@@ -49,5 +51,25 @@ for (const source of [home, advanced]) {
 
 assert(css.includes('.case-choice-grid') && css.includes('.included-panel') && css.includes('.legacy-checkout[hidden]'), 'Conversion stylesheet lost required components');
 assert(js.includes('data-case-choice') && js.includes('stopImmediatePropagation'), 'Conversion script lost case selection or quote-only protection');
+assert(js.includes('setupJsonAccordions') && js.includes('setupJsonSidebarAccordions'), 'Advanced ITR accordion setup is missing');
+assert(js.includes('aria-expanded') && js.includes('aria-controls'), 'Accordion accessibility attributes are missing');
+assert(js.includes("event.target.closest('.json-panel')"), 'Invalid hidden fields will not automatically open their section');
+assert(js.includes('panels.forEach(item=>setPanelOpen(item,item===panel))'), 'Advanced form panels are not configured as a compact one-at-a-time accordion');
+assert(js.includes('assets/json-accordion-r33.css?v=20260726-r33'), 'Accordion stylesheet is not cache-versioned and loaded');
 
-console.log('PASS conversion-focused homepage, private quote flow and no-advertising safeguards');
+for (const requirement of [
+  '.json-panel.json-accordion-panel',
+  '.json-accordion-toggle',
+  '.json-accordion-icon',
+  '.json-accordion-content[hidden]',
+  '.json-sidebar-disclosure',
+  '@media (max-width: 760px)',
+  '@media (prefers-reduced-motion: reduce)'
+]) {
+  assert(accordionCss.includes(requirement), `Accordion stylesheet lost required rule: ${requirement}`);
+}
+
+assert(accordionCss.includes('transform: rotate(90deg)'), 'Triangle indicator does not rotate when a panel opens');
+assert(!accordionCss.includes('transition: all'), 'Accordion stylesheet must not animate every property');
+
+console.log('PASS conversion-focused homepage, compact advanced-tool accordions, private quote flow and no-advertising safeguards');
