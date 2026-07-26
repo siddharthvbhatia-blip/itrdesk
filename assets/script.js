@@ -283,3 +283,21 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyCaFavicon, {once:true});
   else applyCaFavicon();
 })();
+
+/* PROFESSIONAL EXPERIENCE LOADER — R34 */
+(() => {
+  if (!document.querySelector('link[data-professional-experience-r34]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'assets/professional-experience-r34.css?v=20260727-r34';
+    link.dataset.professionalExperienceR34 = 'true';
+    document.head.appendChild(link);
+  }
+  if (!document.querySelector('script[data-professional-experience-r34]')) {
+    const script = document.createElement('script');
+    script.src = 'assets/professional-experience-r34.js?v=20260727-r34';
+    script.async = false;
+    script.dataset.professionalExperienceR34 = 'true';
+    document.head.appendChild(script);
+  }
+})();
