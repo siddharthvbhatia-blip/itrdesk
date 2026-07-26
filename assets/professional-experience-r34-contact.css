@@ -1,14 +1,14 @@
 /* R34 first-screen office-contact safeguard */
 
 @media (max-width: 760px) {
-  .clean-hero-copy .hero-contact-panel {
+  html body.clean-site .clean-hero-copy .hero-contact-panel {
     display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 5px !important;
     margin: 8px 0 0 !important;
   }
 
-  .clean-hero-copy .hero-contact-item {
+  html body.clean-site .clean-hero-copy .hero-contact-item {
     min-height: 0 !important;
     display: grid !important;
     grid-template-columns: 28px minmax(0, 1fr) !important;
@@ -18,7 +18,7 @@
     border-radius: 10px !important;
   }
 
-  .clean-hero-copy .hero-contact-icon {
+  html body.clean-site .clean-hero-copy .hero-contact-icon {
     width: 27px !important;
     height: 27px !important;
     display: grid !important;
@@ -26,18 +26,18 @@
     font-size: 0.78rem !important;
   }
 
-  .clean-hero-copy .hero-contact-item > span:last-child {
+  html body.clean-site .clean-hero-copy .hero-contact-item > span:last-child {
     min-width: 0;
     display: grid;
     gap: 1px;
   }
 
-  .clean-hero-copy .hero-contact-item strong {
+  html body.clean-site .clean-hero-copy .hero-contact-item strong {
     font-size: 0.65rem !important;
     line-height: 1.15 !important;
   }
 
-  .clean-hero-copy .hero-contact-item small {
+  html body.clean-site .clean-hero-copy .hero-contact-item small {
     font-size: 0.61rem !important;
     line-height: 1.2 !important;
     white-space: normal !important;
