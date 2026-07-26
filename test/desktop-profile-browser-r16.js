@@ -13,7 +13,7 @@ fs.mkdirSync(outputDir, { recursive: true });
   const browser = await chromium.launch({ headless: true });
   try {
     const home = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-    await home.goto(`${base}/index.html?desktop-check=20260718-r17`, { waitUntil: 'networkidle' });
+    await home.goto(`${base}/index.html?desktop-check=20260726-r32`, { waitUntil: 'networkidle' });
     await home.waitForFunction((expected) => {
       const image = document.querySelector('.clean-profile-card img');
       return image && image.complete && image.naturalWidth >= 150 && image.currentSrc.includes(expected);
@@ -25,10 +25,23 @@ fs.mkdirSync(outputDir, { recursive: true });
       const profile = document.querySelector('.clean-profile-card');
       const image = profile.querySelector('img');
       const rect = (element) => { const value = element.getBoundingClientRect(); return { left:value.left,top:value.top,right:value.right,bottom:value.bottom,width:value.width,height:value.height }; };
+      const actionVisuals = [...document.querySelectorAll('#guides .clean-action-visual')].map((visual) => {
+        const visualImage = visual.querySelector('img');
+        return {
+          frame: rect(visual),
+          image: rect(visualImage),
+          objectFit: getComputedStyle(visualImage).objectFit,
+          objectPosition: getComputedStyle(visualImage).objectPosition,
+          complete: visualImage.complete,
+          naturalWidth: visualImage.naturalWidth,
+          naturalHeight: visualImage.naturalHeight
+        };
+      });
       return {
         heroCopy:rect(heroCopy),
         profile:rect(profile),
         image:{complete:image.complete,naturalWidth:image.naturalWidth,naturalHeight:image.naturalHeight,currentSrc:image.currentSrc,rect:rect(image),borderRadius:getComputedStyle(image).borderRadius},
+        actionVisuals,
         sectionCount:document.querySelectorAll('main > section').length,
         actionCards:document.querySelectorAll('.clean-action-card').length,
         serviceCards:document.querySelectorAll('.clean-service-card').length,
@@ -43,6 +56,15 @@ fs.mkdirSync(outputDir, { recursive: true });
     assert(homeReport.profile.left >= homeReport.heroCopy.right + 20, 'Desktop homepage profile card overlaps hero copy');
     assert(homeReport.sectionCount <= 6, `Desktop homepage has too many sections: ${homeReport.sectionCount}`);
     assert(homeReport.actionCards === 3 && homeReport.serviceCards === 6, 'Desktop homepage card counts are incorrect');
+    assert.equal(homeReport.actionVisuals.length, 3, `Expected three homepage illustrations, found ${homeReport.actionVisuals.length}`);
+    for (const [index, visual] of homeReport.actionVisuals.entries()) {
+      const ratio = visual.frame.width / visual.frame.height;
+      assert(visual.complete && visual.naturalWidth === 1200 && visual.naturalHeight === 900, `Homepage illustration ${index + 1} did not decode at its expected dimensions`);
+      assert.equal(visual.objectFit, 'contain', `Homepage illustration ${index + 1} can still be cropped: object-fit=${visual.objectFit}`);
+      assert(Math.abs(ratio - (4 / 3)) < 0.04, `Homepage illustration ${index + 1} lost its 4:3 frame: ${ratio}`);
+      assert(visual.frame.height > 180, `Homepage illustration ${index + 1} is still forced into a short strip: ${visual.frame.height}px`);
+      assert(Math.abs(visual.image.width - visual.frame.width) <= 2 && Math.abs(visual.image.height - visual.frame.height) <= 2, `Homepage illustration ${index + 1} does not fill its complete frame`);
+    }
     assert(homeReport.scrollWidth <= homeReport.innerWidth + 2, `Desktop homepage horizontal overflow: ${homeReport.scrollWidth} > ${homeReport.innerWidth}`);
     assert(homeReport.pageHeight < 4300, `Desktop homepage remains excessively tall: ${homeReport.pageHeight}px`);
 
@@ -86,7 +108,7 @@ fs.mkdirSync(outputDir, { recursive: true });
 
     const report = { base, home:homeReport, about:aboutReport };
     fs.writeFileSync(path.join(outputDir, 'desktop-clean-r17.json'), JSON.stringify(report, null, 2));
-    console.log('PASS concise desktop homepage and About portrait, separation and height checks', report);
+    console.log('PASS concise desktop homepage, full illustration fit and About portrait checks', report);
   } finally {
     await browser.close();
   }
