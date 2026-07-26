@@ -188,6 +188,37 @@
   display: none !important;
 }
 
+@media (min-width: 981px) {
+  .clean-site .section {
+    padding: 58px 0 !important;
+  }
+
+  .clean-site .enquiry-section {
+    padding: 52px 0 !important;
+  }
+
+  #services .clean-service-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  #services .clean-service-card {
+    padding: 20px 16px;
+  }
+
+  .clean-site .clean-faq {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+
+  .clean-site .clean-faq details {
+    margin: 0;
+    height: 100%;
+  }
+}
+
 @media (max-width: 980px) {
   .case-choice-grid,
   .clean-step-grid.four-step-grid {
