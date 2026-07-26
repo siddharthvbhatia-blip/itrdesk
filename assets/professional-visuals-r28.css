@@ -236,3 +236,26 @@
     transition: none !important;
   }
 }
+
+/* R32: the conversion stylesheet intentionally compacts the desktop cards.
+   Restore the illustration's native 4:3 frame and fit the complete artwork
+   inside it so no part of the image is cut off. */
+.clean-site #guides .clean-action-visual img {
+  object-fit: contain;
+  object-position: center;
+  background: #eef7fd;
+}
+
+@media (min-width: 981px) {
+  .clean-site #guides .clean-action-visual {
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .clean-site #guides .visual-action-card:hover .clean-action-visual img {
+    transform: none;
+  }
+}
