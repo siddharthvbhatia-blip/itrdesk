@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://siddharthvbhatia-blip.github.io/itrdesk/bluepeak-verity/sitemap.xml
