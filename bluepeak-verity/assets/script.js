@@ -34,10 +34,10 @@
 
   const nav = document.querySelector('.site-nav');
   const processSection = document.getElementById('process');
-
-  if (nav && !nav.querySelector('a[href="#pricing"]')) {
+  const hasPricingLink = nav && [...nav.querySelectorAll('a')].some(a => a.getAttribute('href')?.endsWith('#pricing'));
+  if (nav && !hasPricingLink) {
     const pricingLink = document.createElement('a');
-    pricingLink.href = '#pricing';
+    pricingLink.href = location.pathname.endsWith('about.html') ? 'index.html#pricing' : '#pricing';
     pricingLink.textContent = 'Pricing';
     const aboutLink = [...nav.querySelectorAll('a')].find(a => a.getAttribute('href') === 'about.html');
     nav.insertBefore(pricingLink, aboutLink || nav.lastElementChild);
@@ -49,51 +49,32 @@
     pricing.id = 'pricing';
     pricing.innerHTML = `
       <div class="container">
-        <div class="pricing-intro reveal">
-          <div>
-            <p class="eyebrow">Transparent starting points</p>
-            <h2>Commercially sensible pricing. Scope controlled before work begins.</h2>
-            <p>Indicative starting prices apply to clean, accessible records. Final fees depend on volume, entities, backlog, currencies, payroll, sales tax or VAT, source quality, turnaround and reviewer requirements.</p>
-          </div>
-          <div class="pricing-graphic" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="price-signal"><span>Finance operations</span><strong>Built to scale</strong><small>pilot → recurring cadence</small></div></div>
-        </div>
+        <div class="pricing-intro reveal"><div><p class="eyebrow">Transparent starting points</p><h2>Commercially sensible pricing. Scope controlled before work begins.</h2><p>Indicative starting prices apply to clean, accessible records. Final fees depend on volume, entities, backlog, currencies, payroll, sales tax or VAT, source quality, turnaround and reviewer requirements.</p></div><div class="pricing-graphic" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="price-signal"><span>Finance operations</span><strong>Built to scale</strong><small>pilot → recurring cadence</small></div></div></div>
         <div class="pricing-grid">
           <article class="pricing-card reveal"><span class="plan-label">PILOT</span><h3>Defined pilot assignment</h3><p class="price"><strong>US$249</strong><span> / £199 onwards</span></p><p>One entity and one defined accounting cycle or cleanup batch to establish workflow and review expectations.</p><ul><li>Scope and access review</li><li>Reconciliation or cleanup batch</li><li>Open-item and query log</li><li>Review-ready handoff</li></ul><a class="btn btn-secondary" href="#contact">Discuss pilot scope</a></article>
           <article class="pricing-card featured reveal"><span class="plan-label">RECURRING</span><div class="popular-tag">Most suitable for firms</div><h3>Monthly accounting support</h3><p class="price"><strong>US$499</strong><span> / £399 onwards</span></p><p>Recurring bookkeeping, reconciliations and close schedules for a clean, low-to-moderate-volume entity.</p><ul><li>Monthly transaction review</li><li>Bank and card reconciliations</li><li>Balance-sheet schedules</li><li>Consolidated reviewer queries</li></ul><a class="btn btn-primary" href="#contact">Request monthly quote</a></article>
           <article class="pricing-card reveal"><span class="plan-label">GROWTH</span><h3>Multi-process finance support</h3><p class="price"><strong>Custom</strong><span> monthly scope</span></p><p>For multiple entities, higher volumes, management reporting, AP/AR or structured offshore capacity.</p><ul><li>Dedicated delivery cadence</li><li>Reporting and variance schedules</li><li>AP, AR and ageing support</li><li>Firm-specific SOP alignment</li></ul><a class="btn btn-secondary" href="#contact">Build a custom scope</a></article>
-        </div>
-        <p class="pricing-note">Prices exclude regulated sign-off, attest work, legal advice, tax representation, software subscriptions and third-party charges. The quote may be revised after sample records are inspected.</p>
+        </div><p class="pricing-note">Prices exclude regulated sign-off, attest work, legal advice, tax representation, software subscriptions and third-party charges. The quote may be revised after sample records are inspected.</p>
       </div>`;
     processSection.parentNode.insertBefore(pricing, processSection);
   }
 
-  const footerBrand = document.querySelector('.footer-brand');
-  const footerLogo = footerBrand?.querySelector('img');
+  const footerLogo = document.querySelector('.footer-brand img');
   if (footerLogo && !footerLogo.closest('.footer-logo-shell')) {
-    const shell = document.createElement('span');
-    shell.className = 'footer-logo-shell';
-    footerLogo.parentNode.insertBefore(shell, footerLogo);
-    shell.appendChild(footerLogo);
+    const shell = document.createElement('span'); shell.className = 'footer-logo-shell';
+    footerLogo.parentNode.insertBefore(shell, footerLogo); shell.appendChild(footerLogo);
   }
 
   const navToggle = document.querySelector('.nav-toggle');
   if (navToggle && nav) {
-    navToggle.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      navToggle.setAttribute('aria-expanded', String(open));
-    });
-    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      nav.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
-    }));
+    navToggle.addEventListener('click', () => { const open = nav.classList.toggle('open'); navToggle.setAttribute('aria-expanded', String(open)); });
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); navToggle.setAttribute('aria-expanded', 'false'); }));
   }
 
-  const tabs = [...document.querySelectorAll('.tab-button')];
-  tabs.forEach(btn => btn.addEventListener('click', () => {
-    tabs.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-    btn.classList.add('active');
-    btn.setAttribute('aria-selected', 'true');
-    document.querySelectorAll('.audience-panel').forEach(p => p.hidden = p.id !== btn.dataset.target);
+  document.querySelectorAll('.tab-button').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-button').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+    btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
+    document.querySelectorAll('.audience-panel').forEach(panel => panel.hidden = panel.id !== btn.dataset.target);
   }));
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -119,83 +100,34 @@
   });
   if (serviceCards.length && !reducedMotion) {
     serviceTimer = window.setInterval(() => activateService(serviceIndex + 1), 2600);
-    const consolePanel = document.querySelector('.service-console');
-    consolePanel?.addEventListener('mouseenter', () => window.clearInterval(serviceTimer));
-    consolePanel?.addEventListener('mouseleave', () => {
-      window.clearInterval(serviceTimer);
-      serviceTimer = window.setInterval(() => activateService(serviceIndex + 1), 2600);
-    });
+    document.querySelector('.service-console')?.addEventListener('mouseenter', () => window.clearInterval(serviceTimer));
+    document.querySelector('.service-console')?.addEventListener('mouseleave', () => { window.clearInterval(serviceTimer); serviceTimer = window.setInterval(() => activateService(serviceIndex + 1), 2600); });
   }
 
-  const reveals = document.querySelectorAll('.reveal');
+  const revealElements = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && !reducedMotion) {
-    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
+    const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
     }), { threshold: .12, rootMargin: '0px 0px -40px' });
-    reveals.forEach((el, index) => {
-      el.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`;
-      observer.observe(el);
-    });
-  } else {
-    reveals.forEach(el => el.classList.add('visible'));
-  }
-
-  const counters = [...document.querySelectorAll('[data-count]')];
-  const runCounter = el => {
-    const target = Number(el.dataset.count || 0);
-    if (reducedMotion) { el.textContent = String(target); return; }
-    const duration = 1100;
-    const started = performance.now();
-    const tick = now => {
-      const progress = Math.min((now - started) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = String(Math.round(target * eased));
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
-  if ('IntersectionObserver' in window) {
-    const counterObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        runCounter(entry.target);
-        counterObserver.unobserve(entry.target);
-      }
-    }), { threshold: .7 });
-    counters.forEach(el => counterObserver.observe(el));
-  } else counters.forEach(runCounter);
+    revealElements.forEach((element, index) => { element.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`; revealObserver.observe(element); });
+  } else revealElements.forEach(element => element.classList.add('visible'));
 
   const form = document.getElementById('fit-form');
-  const message = document.getElementById('form-message');
-  if (!form) return;
-  const buildBrief = () => {
-    const data = new FormData(form);
-    return [
-      'BluePeak Verity — Engagement Enquiry', '',
-      `Name: ${data.get('name') || ''}`,
-      `Firm / Business: ${data.get('firm') || ''}`,
-      `Work email: ${data.get('email') || ''}`,
-      `Country / Time zone: ${data.get('country') || ''}`,
-      `Support required: ${data.get('service') || ''}`,
-      `Estimated monthly volume: ${data.get('volume') || ''}`, '',
-      'Brief:', data.get('brief') || ''
-    ].join('\n');
-  };
-  const validate = () => {
-    if (!form.reportValidity()) return false;
-    message.textContent = 'Your enquiry brief is ready. Please complete sending it in the app that opens.';
-    return true;
-  };
-  document.getElementById('email-brief')?.addEventListener('click', e => {
-    e.preventDefault(); if (!validate()) return;
-    const subject = encodeURIComponent('International accounting support enquiry');
-    const body = encodeURIComponent(buildBrief());
-    window.location.href = `mailto:siddharth.v.bhatia@gmail.com?subject=${subject}&body=${body}`;
-  });
-  document.getElementById('whatsapp-brief')?.addEventListener('click', e => {
-    e.preventDefault(); if (!validate()) return;
-    window.open(`https://wa.me/917879857126?text=${encodeURIComponent(buildBrief())}`, '_blank', 'noopener');
-  });
+  if (form) {
+    const message = document.getElementById('form-message');
+    const buildBrief = () => {
+      const data = new FormData(form);
+      return ['BluePeak Verity — Engagement Enquiry','',`Name: ${data.get('name') || ''}`,`Firm / Business: ${data.get('firm') || ''}`,`Work email: ${data.get('email') || ''}`,`Country / Time zone: ${data.get('country') || ''}`,`Support required: ${data.get('service') || ''}`,`Estimated monthly volume: ${data.get('volume') || ''}`,'','Brief:',data.get('brief') || ''].join('\n');
+    };
+    const validate = () => { if (!form.reportValidity()) return false; if (message) message.textContent = 'Your enquiry brief is ready. Please complete sending it in the app that opens.'; return true; };
+    document.getElementById('email-brief')?.addEventListener('click', event => { event.preventDefault(); if (!validate()) return; window.location.href = `mailto:siddharth.v.bhatia@gmail.com?subject=${encodeURIComponent('International accounting support enquiry')}&body=${encodeURIComponent(buildBrief())}`; });
+    document.getElementById('whatsapp-brief')?.addEventListener('click', event => { event.preventDefault(); if (!validate()) return; window.open(`https://wa.me/917879857126?text=${encodeURIComponent(buildBrief())}`, '_blank', 'noopener'); });
+  }
+
+  if (!document.querySelector('script[src$="targeted-update.js"]')) {
+    const targetedScript = document.createElement('script');
+    targetedScript.src = 'assets/targeted-update.js';
+    targetedScript.defer = true;
+    document.head.appendChild(targetedScript);
+  }
 })();
