@@ -1,18 +1,24 @@
 (() => {
-  const founderMarkup = (imagePath) => `
+  if (window.__bpvFinalUpdateApplied) return;
+  window.__bpvFinalUpdateApplied = true;
+
+  const tagline = 'Precision In Numbers - Excellence In Action';
+
+  const founderMarkup = `
     <section class="section founder-spotlight" id="founder-profile">
       <div class="container founder-spotlight-grid">
         <div class="founder-visual-wrap reveal">
           <div class="founder-trust-card"><span class="trust-icon">✓</span><div><strong>Trusted by</strong><span>US, UK &amp; global businesses</span></div></div>
           <div class="founder-portrait-shell">
             <div class="founder-dot-grid" aria-hidden="true"></div><span class="founder-node one" aria-hidden="true"></span><span class="founder-node two" aria-hidden="true"></span>
-            <div class="founder-portrait-stage"><div class="founder-portrait"><img src="${imagePath}" alt="CA Siddharth Bhatia"></div></div>
+            <div class="founder-portrait-stage"><div class="founder-portrait"><img src="assets/founder-enhanced.svg" alt="CA Siddharth Bhatia"></div></div>
             <span class="founder-profile-badge badge-top">International workflows</span><span class="founder-profile-badge badge-bottom">Accuracy-led delivery</span>
           </div>
         </div>
         <div class="founder-copy-wrap reveal">
-          <p class="eyebrow">Founder</p><h2>CA Siddharth Bhatia</h2>
-          <p class="founder-subline">Delivering reliable financial clarity through <em>professional judgement</em> <em>with structured execution.</em></p>
+          <p class="eyebrow">Founder</p>
+          <h2 class="founder-name-single">CA Siddharth Bhatia</h2>
+          <p class="founder-subline founder-subline-all-italic">Delivering reliable financial clarity through professional judgement with structured execution.</p>
           <div class="founder-pill-row"><span class="founder-pill">ICAI Member</span><span class="founder-pill">International Workflows</span><span class="founder-pill">CA-Led Delivery</span></div>
           <p>Indian Chartered Accountant providing remote accounting, bookkeeping, reconciliation and workpaper support for US, UK and global workflows.</p>
           <p>His professional background includes accounting, audit, tax/GST, financial reporting, lender-oriented documentation, working-paper preparation and corporate process exposure. The emphasis is on source tracing, structured schedules, concise query sheets and clear disclosure of unresolved matters.</p>
@@ -21,52 +27,109 @@
             <article class="founder-info-card experience"><strong>Experience Areas</strong><span>Accounting, audit, tax and reporting support</span></article>
             <article class="founder-info-card tools"><strong>Core Tools</strong><span>QBO, Xero, Excel, Power BI</span></article>
             <article class="founder-info-card base"><strong>Base</strong><span>Indore, Madhya Pradesh, India</span></article>
-            <div class="founder-value-strip"><span>Confidential &amp; secure</span><span>On-time delivery</span><span>Detail oriented</span><span>Long-term partnership</span><strong>Built on trust. Delivered with precision.</strong></div>
           </div>
         </div>
       </div>
     </section>`;
 
-  const servicesMarkup = `
-    <section class="services-snapshot" id="capabilities">
+  const globeMarkup = `
+    <section class="services-globe" id="capabilities">
       <div class="container">
-        <div class="section-heading center reveal"><p class="eyebrow">Services at a glance</p><h2>Integrated support across accounting and finance operations.</h2><p>A concise view of the service areas available to accounting firms and growing businesses.</p></div>
-        <div class="services-snapshot-grid">
-          <article class="services-snapshot-card reveal"><span class="services-snapshot-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h3M14 11h2M8 15h3M14 15h2"/></svg></span><h3>Accounting &amp; bookkeeping</h3><p>Transaction review, reconciliations, monthly books and supporting schedules.</p><span>Core accounting</span></article>
-          <article class="services-snapshot-card reveal"><span class="services-snapshot-icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 11h6M9 15h6M9 19h3"/></svg></span><h3>Taxation support</h3><p>Source-data organisation, schedules and workpapers for professional review.</p><span>Tax data</span></article>
-          <article class="services-snapshot-card reveal"><span class="services-snapshot-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16v12H4zM4 10h16M8 15h4"/><path d="M16 3v5M13.5 5.5 16 8l2.5-2.5"/></svg></span><h3>Accounts payable</h3><p>Vendor balances, bill processing, ageing and payment-support schedules.</p><span>AP operations</span></article>
-          <article class="services-snapshot-card reveal"><span class="services-snapshot-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16v12H4zM4 10h16M8 15h4"/><path d="M16 8V3M13.5 5.5 16 3l2.5 2.5"/></svg></span><h3>Accounts receivable</h3><p>Customer balances, invoicing support, ageing and collection visibility.</p><span>AR operations</span></article>
-          <article class="services-snapshot-card reveal"><span class="services-snapshot-icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><h3>Management reporting</h3><p>Financial statements, variance analysis and decision-support schedules.</p><span>Reporting</span></article>
-          <article class="services-snapshot-card reveal"><span class="services-snapshot-icon"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M7.1 7.2A7 7 0 0 1 19 10M16.9 16.8A7 7 0 0 1 5 14"/></svg></span><h3>Cleanup &amp; catch-up</h3><p>Backlog processing, duplicate review and reconciliation remediation.</p><span>Remediation</span></article>
+        <div class="section-heading center reveal">
+          <p class="eyebrow">Services at a glance</p>
+          <h2>Integrated support across accounting and finance operations.</h2>
+          <p>Click a service around the globe to see how BluePeak Verity can support your workflow.</p>
+        </div>
+        <div class="services-globe-shell reveal">
+          <div class="services-globe-stage" aria-label="Interactive globe of accounting services">
+            <div class="services-globe-orbit outer" aria-hidden="true"></div><div class="services-globe-orbit inner" aria-hidden="true"></div>
+            <div class="services-globe-core" aria-hidden="true"><div class="services-globe-name"><span>BluePeak Verity</span><strong>Global service network</strong><small>Accounting · Tax support · Finance operations</small></div></div>
+            <button type="button" class="service-globe-node active" data-service="accounting" style="--top:8%;--left:50%">Accounting &amp; bookkeeping</button>
+            <button type="button" class="service-globe-node" data-service="taxation" style="--top:27%;--left:84%">Taxation support</button>
+            <button type="button" class="service-globe-node" data-service="ap" style="--top:72%;--left:84%">Accounts payable</button>
+            <button type="button" class="service-globe-node" data-service="ar" style="--top:91%;--left:50%">Accounts receivable</button>
+            <button type="button" class="service-globe-node" data-service="reporting" style="--top:72%;--left:16%">Management reporting</button>
+            <button type="button" class="service-globe-node" data-service="cleanup" style="--top:27%;--left:16%">Cleanup &amp; catch-up</button>
+          </div>
+          <article class="service-globe-detail" aria-live="polite">
+            <span class="service-detail-label" id="service-detail-label">Core accounting</span>
+            <h3 id="service-detail-title">Accounting &amp; bookkeeping</h3>
+            <p id="service-detail-copy">Transaction review, reconciliations, monthly books and supporting schedules prepared for reviewer handoff.</p>
+            <ul id="service-detail-list"><li>Transaction review and coding</li><li>Monthly reconciliations and schedules</li><li>Review-ready handoff notes</li></ul>
+            <div class="service-detail-foot" id="service-detail-foot">Best suited to recurring monthly accounting support.</div>
+          </article>
         </div>
       </div>
     </section>`;
 
-  const home = document.querySelector('main#main .hero');
-  if (home) {
-    const oldCapabilities = document.getElementById('capabilities');
-    if (oldCapabilities && !oldCapabilities.classList.contains('services-snapshot')) oldCapabilities.outerHTML = servicesMarkup;
+  const serviceData = {
+    accounting:{label:'Core accounting',title:'Accounting & bookkeeping',copy:'Transaction review, reconciliations, monthly books and supporting schedules prepared for reviewer handoff.',items:['Transaction review and coding','Monthly reconciliations and schedules','Review-ready handoff notes'],foot:'Best suited to recurring monthly accounting support.'},
+    taxation:{label:'Tax data',title:'Taxation support',copy:'Source-data organisation, schedules and workpapers prepared to support review by the responsible licensed adviser.',items:['Source-data collation','Working papers and schedules','Clear review-support documentation'],foot:'Preparation support only; regulated representation remains with the responsible adviser.'},
+    ap:{label:'AP operations',title:'Accounts payable',copy:'Vendor balances, bill processing, ageing and payment-support schedules maintained within a controlled workflow.',items:['Vendor ledger support','Bills and ageing tracking','Payment-support schedules'],foot:'Useful for firms and growing businesses seeking stronger payables control.'},
+    ar:{label:'AR operations',title:'Accounts receivable',copy:'Customer balances, invoicing support, receivables ageing and collection visibility organised for timely follow-up.',items:['Invoice-support workflow','Debtor ageing visibility','Collection follow-up support'],foot:'Designed to improve working-capital visibility without obscuring review responsibility.'},
+    reporting:{label:'Management insight',title:'Management reporting',copy:'Financial statements, variance views and structured management schedules designed to support clearer decisions.',items:['Management reporting packs','Variance analysis support','Dashboards and financial schedules'],foot:'Suitable for managers, owners and accounting-firm reviewers.'},
+    cleanup:{label:'Remediation',title:'Cleanup & catch-up',copy:'Backlogs, duplicates, reconciliations and missing-record issues organised into a clear remediation workflow.',items:['Backlog processing','Cleanup journals for review','Missing-document trackers'],foot:'Helpful before moving an entity into a recurring monthly cadence.'}
+  };
+
+  const homeHero = document.querySelector('main#main .hero');
+  if (homeHero) {
+    const heroCopy = homeHero.querySelector('.hero-copy-v4,.hero-copy,.hero-grid>div:first-child');
+    if (heroCopy && !heroCopy.querySelector('.bpv-tagline-ribbon')) {
+      const ribbon = document.createElement('div');
+      ribbon.className = 'bpv-tagline-ribbon';
+      ribbon.innerHTML = `<strong>${tagline}</strong>`;
+      const kicker = heroCopy.querySelector('.hero-kicker,.eyebrow');
+      heroCopy.insertBefore(ribbon, kicker || heroCopy.firstChild);
+    }
+    homeHero.querySelector('.hero-assurance-v4')?.remove();
+
+    const capabilities = document.getElementById('capabilities');
+    if (capabilities && !capabilities.classList.contains('services-globe')) capabilities.outerHTML = globeMarkup;
 
     document.querySelectorAll('section').forEach(section => {
       const heading = section.querySelector('.control-grid .eyebrow');
       if (heading && heading.textContent.trim().toLowerCase() === 'confidential back-office model') section.remove();
     });
-
-    const oldFounder = [...document.querySelectorAll('section')].find(section => section.querySelector('.founder-grid'));
-    if (oldFounder && !document.getElementById('founder-profile')) oldFounder.outerHTML = founderMarkup('../assets/ca-siddharth-bhatia-final-r16.jpg');
   }
 
-  const aboutFounder = document.querySelector('main#main .founder-grid');
-  if (aboutFounder && !document.getElementById('founder-profile')) {
-    const section = aboutFounder.closest('section');
-    if (section) section.outerHTML = founderMarkup('../assets/ca-siddharth-bhatia-final-r16.jpg');
+  const existingFounder = document.getElementById('founder-profile');
+  if (existingFounder) existingFounder.outerHTML = founderMarkup;
+  else {
+    const legacyFounder = [...document.querySelectorAll('section')].find(section => section.querySelector('.founder-grid'));
+    if (legacyFounder) legacyFounder.outerHTML = founderMarkup;
   }
 
-  const revealTargets = document.querySelectorAll('.services-snapshot .reveal, .founder-spotlight .reveal');
+  document.querySelectorAll('.footer-brand').forEach(footerBrand => {
+    if (!footerBrand.querySelector('.footer-tagline')) {
+      const footerTagline = document.createElement('span');
+      footerTagline.className = 'footer-tagline';
+      footerTagline.textContent = tagline;
+      footerBrand.appendChild(footerTagline);
+    }
+  });
+
+  const nodes = [...document.querySelectorAll('.service-globe-node')];
+  const detailLabel = document.getElementById('service-detail-label');
+  const detailTitle = document.getElementById('service-detail-title');
+  const detailCopy = document.getElementById('service-detail-copy');
+  const detailList = document.getElementById('service-detail-list');
+  const detailFoot = document.getElementById('service-detail-foot');
+  nodes.forEach(node => node.addEventListener('click', () => {
+    const service = serviceData[node.dataset.service];
+    if (!service) return;
+    nodes.forEach(item => item.classList.toggle('active', item === node));
+    detailLabel.textContent = service.label;
+    detailTitle.textContent = service.title;
+    detailCopy.textContent = service.copy;
+    detailList.innerHTML = service.items.map(item => `<li>${item}</li>`).join('');
+    detailFoot.textContent = service.foot;
+  }));
+
+  const revealTargets = document.querySelectorAll('.services-globe .reveal,.founder-spotlight .reveal');
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
-    }), { threshold: .1, rootMargin: '0px 0px -30px' });
-    revealTargets.forEach((element, index) => { element.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`; observer.observe(element); });
+    }), {threshold:.1,rootMargin:'0px 0px -30px'});
+    revealTargets.forEach((element,index) => { element.style.transitionDelay = `${Math.min(index % 4,3) * 70}ms`; observer.observe(element); });
   } else revealTargets.forEach(element => element.classList.add('visible'));
 })();
