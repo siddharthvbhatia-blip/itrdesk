@@ -1,0 +1,37 @@
+/* Founder photo — direct original-image fallback */
+.founder-portrait-stage{
+  width:330px!important;
+  height:330px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+
+.founder-portrait-stage .founder-portrait{
+  width:248px!important;
+  height:248px!important;
+  margin:auto!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  background-image:url('/itrdesk/assets/ca-siddharth-bhatia-final-r16.jpg?v=20260806-photo-fix-2')!important;
+  background-repeat:no-repeat!important;
+  background-position:center center!important;
+  background-size:cover!important;
+  border:10px solid #fff!important;
+  box-shadow:0 18px 42px rgba(7,26,43,.16),0 0 0 3px rgba(40,111,229,.22)!important;
+}
+
+.founder-portrait-stage .founder-portrait img{
+  display:none!important;
+}
+
+@media(max-width:680px){
+  .founder-portrait-stage{
+    width:280px!important;
+    height:280px!important;
+  }
+  .founder-portrait-stage .founder-portrait{
+    width:214px!important;
+    height:214px!important;
+    border-width:8px!important;
+  }
+}
