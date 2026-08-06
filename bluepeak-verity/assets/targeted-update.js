@@ -19,7 +19,7 @@
           <p class="eyebrow">Founder</p>
           <h2 class="founder-name-single">CA Siddharth Bhatia</h2>
           <p class="founder-subline founder-subline-all-italic">Delivering reliable financial clarity through professional judgement with structured execution.</p>
-          <div class="founder-pill-row"><span class="founder-pill">ICAI Member</span><span class="founder-pill">International Workflows</span><span class="founder-pill">CA-Led Delivery</span></div>
+          <div class="founder-pill-row"><span class="founder-pill">ICAI Member</span><span class="founder-pill xero-certified">Xero L1 Certified</span><span class="founder-pill">International Workflows</span><span class="founder-pill">CA-Led Delivery</span></div>
           <p>Indian Chartered Accountant providing remote accounting, bookkeeping, reconciliation and workpaper support for US, UK and global workflows.</p>
           <p>His professional background includes accounting, audit, tax/GST, financial reporting, lender-oriented documentation, working-paper preparation and corporate process exposure. The emphasis is on source tracing, structured schedules, concise query sheets and clear disclosure of unresolved matters.</p>
           <div class="founder-card-grid">
@@ -27,6 +27,11 @@
             <article class="founder-info-card experience"><strong>Experience Areas</strong><span>Accounting, audit, tax and reporting support</span></article>
             <article class="founder-info-card tools"><strong>Core Tools</strong><span>QBO, Xero, Excel, Power BI</span></article>
             <article class="founder-info-card base"><strong>Base</strong><span>Indore, Madhya Pradesh, India</span></article>
+            <article class="founder-certification-card" id="professional-credentials" aria-label="Xero L1 Certified Associate credential earned by Siddharth Bhatia">
+              <div class="xero-cert-mark" aria-hidden="true"><span>xero</span><strong>L1</strong></div>
+              <div class="xero-cert-copy"><span class="cert-eyebrow">Professional certification</span><strong>Xero L1 Certified Associate</strong><span class="cert-meta">Credential earned 6 August 2026 · Score 93 · Completion ID 16789646</span></div>
+              <div class="xero-cert-status"><i>✓</i>Credential earned</div>
+            </article>
           </div>
         </div>
       </div>
