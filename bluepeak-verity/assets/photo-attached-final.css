@@ -1,0 +1,52 @@
+/* Final founder-photo correction — exact attached photograph */
+.founder-portrait-stage{
+  width:330px!important;
+  height:330px!important;
+  display:grid!important;
+  place-items:center!important;
+}
+
+.founder-portrait-stage .founder-portrait{
+  width:260px!important;
+  height:260px!important;
+  margin:auto!important;
+  padding:10px!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  background:#fff url("founder-original-attached.jpg?v=20260806-attached-final") center 22%/cover no-repeat!important;
+  border:1px solid rgba(22,139,125,.18)!important;
+  box-shadow:0 20px 48px rgba(7,26,43,.12),0 0 0 3px rgba(40,111,229,.18)!important;
+}
+
+.founder-portrait-stage .founder-portrait img{
+  display:block!important;
+  content:url("founder-original-attached.jpg?v=20260806-attached-final")!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center 22%!important;
+  border-radius:50%!important;
+  opacity:1!important;
+  visibility:visible!important;
+  filter:none!important;
+  transform:none!important;
+  image-rendering:auto!important;
+}
+
+.founder-portrait-stage .founder-portrait::before,
+.founder-portrait-stage .founder-portrait::after{
+  display:none!important;
+  content:none!important;
+}
+
+@media(max-width:680px){
+  .founder-portrait-stage{
+    width:280px!important;
+    height:280px!important;
+  }
+  .founder-portrait-stage .founder-portrait{
+    width:220px!important;
+    height:220px!important;
+    padding:8px!important;
+  }
+}
