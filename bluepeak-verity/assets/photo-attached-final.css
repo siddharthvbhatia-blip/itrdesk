@@ -1,4 +1,4 @@
-/* Founder photo — direct attached photograph, no nested SVG dependency */
+/* Founder photo — direct original photograph with absolute fallback URL */
 .founder-portrait-stage{
   width:330px!important;
   height:330px!important;
@@ -14,7 +14,7 @@
   border-radius:50%!important;
   overflow:hidden!important;
   background-color:#fff!important;
-  background-image:url("founder-original-attached.jpg?v=20260806-photo-visible-2")!important;
+  background-image:url("https://raw.githubusercontent.com/siddharthvbhatia-blip/itrdesk/main/bluepeak-verity/assets/founder-original-attached.jpg?v=20260806-visible-3")!important;
   background-position:center 22%!important;
   background-size:cover!important;
   background-repeat:no-repeat!important;
@@ -22,7 +22,6 @@
   box-shadow:0 20px 48px rgba(7,26,43,.12),0 0 0 3px rgba(40,111,229,.18)!important;
 }
 
-/* Hide the broken SVG image completely; the authentic photograph is rendered as the portrait background. */
 .founder-portrait-stage .founder-portrait img{
   display:none!important;
   width:0!important;
