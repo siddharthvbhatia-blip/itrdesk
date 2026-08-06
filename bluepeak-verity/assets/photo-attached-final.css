@@ -1,4 +1,4 @@
-/* Final founder-photo correction — exact attached photograph */
+/* Founder photo — direct attached photograph, no nested SVG dependency */
 .founder-portrait-stage{
   width:330px!important;
   height:330px!important;
@@ -13,24 +13,22 @@
   padding:10px!important;
   border-radius:50%!important;
   overflow:hidden!important;
-  background:#fff url("founder-original-attached.jpg?v=20260806-attached-final") center 22%/cover no-repeat!important;
+  background-color:#fff!important;
+  background-image:url("founder-original-attached.jpg?v=20260806-photo-visible-2")!important;
+  background-position:center 22%!important;
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
   border:1px solid rgba(22,139,125,.18)!important;
   box-shadow:0 20px 48px rgba(7,26,43,.12),0 0 0 3px rgba(40,111,229,.18)!important;
 }
 
+/* Hide the broken SVG image completely; the authentic photograph is rendered as the portrait background. */
 .founder-portrait-stage .founder-portrait img{
-  display:block!important;
-  content:url("founder-original-attached.jpg?v=20260806-attached-final")!important;
-  width:100%!important;
-  height:100%!important;
-  object-fit:cover!important;
-  object-position:center 22%!important;
-  border-radius:50%!important;
-  opacity:1!important;
-  visibility:visible!important;
-  filter:none!important;
-  transform:none!important;
-  image-rendering:auto!important;
+  display:none!important;
+  width:0!important;
+  height:0!important;
+  opacity:0!important;
+  visibility:hidden!important;
 }
 
 .founder-portrait-stage .founder-portrait::before,
