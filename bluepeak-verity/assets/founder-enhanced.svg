@@ -1,36 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img" aria-label="CA Siddharth Bhatia">
   <defs>
-    <radialGradient id="bg" cx="38%" cy="30%" r="78%">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.58" stop-color="#f1f5fb"/>
-      <stop offset="1" stop-color="#e7eff8"/>
-    </radialGradient>
-    <clipPath id="portraitClip"><circle cx="450" cy="450" r="420"/></clipPath>
-    <filter id="photoEnhance" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
-      <feColorMatrix type="saturate" values="1.04" result="sat"/>
-      <feComponentTransfer in="sat" result="contrast">
-        <feFuncR type="linear" slope="1.07" intercept="-0.035"/>
-        <feFuncG type="linear" slope="1.07" intercept="-0.035"/>
-        <feFuncB type="linear" slope="1.07" intercept="-0.035"/>
-      </feComponentTransfer>
-      <feConvolveMatrix in="contrast" order="3" kernelMatrix="0 -0.10 0 -0.10 1.40 -0.10 0 -0.10 0" preserveAlpha="true"/>
-    </filter>
-    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#071a2b" flood-opacity="0.18"/>
-    </filter>
+    <clipPath id="photoClip">
+      <circle cx="450" cy="450" r="176"/>
+    </clipPath>
     <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#5ea2ff"/>
-      <stop offset="0.55" stop-color="#286fe5"/>
+      <stop offset="0.52" stop-color="#286fe5"/>
       <stop offset="1" stop-color="#26b7a0"/>
     </linearGradient>
+    <radialGradient id="backdrop" cx="50%" cy="42%" r="62%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.98"/>
+      <stop offset="1" stop-color="#eef4fb" stop-opacity="0.95"/>
+    </radialGradient>
+    <filter id="softShadow" x="-35%" y="-35%" width="170%" height="170%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#071a2b" flood-opacity="0.16"/>
+    </filter>
   </defs>
-  <circle cx="450" cy="450" r="438" fill="#ffffff" filter="url(#shadow)"/>
-  <circle cx="450" cy="450" r="428" fill="url(#ring)"/>
-  <circle cx="450" cy="450" r="420" fill="url(#bg)"/>
-  <g clip-path="url(#portraitClip)">
-    <rect width="900" height="900" fill="url(#bg)"/>
-    <image href="../../assets/ca-siddharth-bhatia-final-r16.jpg" x="0" y="0" width="900" height="900" preserveAspectRatio="xMidYMid slice" filter="url(#photoEnhance)"/>
+
+  <circle cx="450" cy="450" r="205" fill="#ffffff" filter="url(#softShadow)"/>
+  <circle cx="450" cy="450" r="196" fill="url(#ring)"/>
+  <circle cx="450" cy="450" r="184" fill="url(#backdrop)"/>
+
+  <g clip-path="url(#photoClip)">
+    <image href="/itrdesk/assets/ca-siddharth-bhatia-final-r16.jpg"
+           x="274" y="274" width="352" height="352"
+           preserveAspectRatio="xMidYMid slice"/>
   </g>
-  <circle cx="450" cy="450" r="420" fill="none" stroke="#ffffff" stroke-width="18"/>
-  <circle cx="450" cy="450" r="438" fill="none" stroke="url(#ring)" stroke-width="5" opacity="0.7"/>
+
+  <circle cx="450" cy="450" r="176" fill="none" stroke="#ffffff" stroke-width="12"/>
+  <circle cx="450" cy="450" r="196" fill="none" stroke="url(#ring)" stroke-width="4" opacity="0.78"/>
 </svg>
