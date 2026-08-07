@@ -1,3 +1,5 @@
+@import url("photo-sharp.css?v=20260807-r1");
+
 /* International delivery network + credential ribbon */
 .bp-audience-visual{display:grid;gap:14px;align-content:start}
 .bp-global-network{position:relative;min-height:260px;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:radial-gradient(circle at 54% 46%,rgba(47,124,246,.08),transparent 34%),linear-gradient(145deg,#fafdff,#eef6fa);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
