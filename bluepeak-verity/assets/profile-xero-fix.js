@@ -2,20 +2,15 @@
   'use strict';
 
   const apply = () => {
+    /* Founder portrait is rendered by founder-photo-final.css. Keep the broken legacy <img> suppressed. */
     document.querySelectorAll('.founder-photo-frame img').forEach(img => {
-      img.src = 'assets/founder-original-attached.jpg?v=20260807-performance-r1';
-      img.loading = 'eager';
-      img.decoding = 'async';
-      img.style.setProperty('display','block','important');
-      img.style.setProperty('width','100%','important');
-      img.style.setProperty('height','100%','important');
-      img.style.setProperty('object-fit','cover','important');
-      img.style.setProperty('object-position','center 20%','important');
-      img.style.setProperty('opacity','1','important');
-      img.style.setProperty('visibility','visible','important');
-      img.style.setProperty('filter','none','important');
+      img.removeAttribute('src');
+      img.style.setProperty('display','none','important');
+      img.style.setProperty('visibility','hidden','important');
+      img.style.setProperty('opacity','0','important');
     });
 
+    /* Keep Xero presentation clean: no score, completion date, completion ID or validity language. */
     document.querySelectorAll('.credibility-grid small').forEach(el => {
       if (/credential earned/i.test(el.textContent || '')) el.textContent = 'Xero workflow credential';
     });
@@ -27,17 +22,14 @@
         if (card && /xero/i.test(card.textContent || '')) {
           const p = card.querySelector('.bp-credential-copy p');
           if (p) p.textContent = 'Xero L1 Certified Associate credential supporting Xero-oriented bookkeeping and reconciliation workflows.';
-        } else if (/score|completion|validity/i.test(t)) {
+        } else {
           el.remove();
         }
       }
     });
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', apply, { once:true });
-  } else {
-    apply();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply, { once:true });
+  else apply();
   window.addEventListener('load', apply, { once:true });
 })();
