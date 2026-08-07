@@ -3,7 +3,7 @@
 
   if (!document.querySelector('script[data-bp-graphics]')) {
     const graphicsScript = document.createElement('script');
-    graphicsScript.src = 'assets/graphics-upgrade.js?v=20260807-r3';
+    graphicsScript.src = 'assets/graphics-upgrade.js?v=20260807-r5';
     graphicsScript.defer = true;
     graphicsScript.dataset.bpGraphics = 'true';
     document.head.appendChild(graphicsScript);
