@@ -14,6 +14,22 @@
   addStylesheet('assets/graphics-upgrade.css?v=20260807-r4', 'bp-graphics');
   addStylesheet('assets/graphics-global.css?v=20260807-r1', 'bp-global');
 
+  const firstHeroProof = document.querySelector('.hero-proof span');
+  if (firstHeroProof && !firstHeroProof.querySelector('.bp-hero-ca-logo')) {
+    const caLogo = document.createElement('img');
+    caLogo.className = 'bp-hero-ca-logo';
+    caLogo.src = CA_LOGO;
+    caLogo.alt = 'CA India';
+    caLogo.width = 30;
+    caLogo.height = 22;
+    caLogo.decoding = 'async';
+    caLogo.style.cssText = 'width:30px;height:22px;object-fit:contain;background:#fff;border-radius:6px;padding:2px;margin-left:-15px;margin-right:7px;box-shadow:0 5px 14px rgba(0,0,0,.14)';
+    firstHeroProof.prepend(caLogo);
+    firstHeroProof.style.paddingLeft = '18px';
+    firstHeroProof.style.display = 'inline-flex';
+    firstHeroProof.style.alignItems = 'center';
+  }
+
   const heroStage = document.querySelector('[data-control-stage]');
   if (heroStage && !heroStage.querySelector('.bp-altitude-field')) {
     heroStage.insertAdjacentHTML('afterbegin', `
