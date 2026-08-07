@@ -1,5 +1,14 @@
 (() => {
   'use strict';
+
+  if (!document.querySelector('script[data-bp-graphics]')) {
+    const graphicsScript = document.createElement('script');
+    graphicsScript.src = 'assets/graphics-upgrade.js?v=20260807-r3';
+    graphicsScript.defer = true;
+    graphicsScript.dataset.bpGraphics = 'true';
+    document.head.appendChild(graphicsScript);
+  }
+
   const $ = (selector, context = document) => context.querySelector(selector);
   const $$ = (selector, context = document) => [...context.querySelectorAll(selector)];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
