@@ -1,133 +1,145 @@
 (() => {
-  const hero = document.querySelector('.hero');
-  if (hero && !hero.classList.contains('hero-v4')) {
-    hero.className = 'hero hero-v4';
-    hero.setAttribute('aria-labelledby', 'hero-title');
-    hero.innerHTML = `
-      <div class="hero-ambient" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div class="container hero-grid-v4">
-        <div class="hero-copy hero-copy-v4">
-          <p class="eyebrow hero-kicker"><span class="live-dot" aria-hidden="true"></span>US &amp; UK accounting support · delivered from India</p>
-          <h1 id="hero-title">Accounting and finance operations. <em>One disciplined delivery team.</em></h1>
-          <p class="hero-lead">BluePeak Verity supports accounting firms and growing businesses across bookkeeping, taxation workpapers, accounts payable, accounts receivable, reporting and cleanup—under defined scope and professional review.</p>
-          <div class="hero-actions"><a class="btn btn-primary" href="#contact">Discuss a pilot engagement <span aria-hidden="true">→</span></a><a class="btn btn-secondary" href="#capabilities">Explore capabilities</a></div>
-          <div class="hero-assurance-v4" aria-label="Core service groups"><div><strong>Accounting &amp; reporting</strong><span>Books, reconciliations and schedules</span></div><div><strong>Taxation support</strong><span>Source data and workpaper preparation</span></div><div><strong>AP &amp; AR operations</strong><span>Payables, receivables and ageing</span></div></div>
-        </div>
-        <div class="hero-services-visual" aria-label="Animated overview of BluePeak Verity services">
-          <div class="services-glow" aria-hidden="true"></div>
-          <div class="service-console">
-            <div class="service-console-head"><div><span class="panel-label">BluePeak Verity delivery desk</span><h2>Integrated accounting support</h2></div><span class="service-console-status"><i aria-hidden="true"></i> Service portfolio</span></div>
-            <div class="hero-service-grid">
-              <article class="hero-service-card active" style="--delay:.05s" data-hero-service data-focus-title="Accounting & bookkeeping" data-focus-copy="Monthly books, reconciliations and ledger review prepared for professional review."><span class="service-icon-box"><svg class="service-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h3M14 11h2M8 15h3M14 15h2"/></svg></span><h3>Accounting &amp; bookkeeping</h3><p>Transaction review, reconciliations and ledger schedules.</p><span class="service-tag">Core books</span></article>
-              <article class="hero-service-card" style="--delay:.12s" data-hero-service data-focus-title="Taxation support" data-focus-copy="Tax-source data, schedules and workpapers organised for the responsible licensed adviser."><span class="service-icon-box"><svg class="service-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4M9 11h6M9 15h6M9 19h3"/></svg></span><h3>Taxation support</h3><p>Source-data organisation and supporting workpapers.</p><span class="service-tag">Tax data</span></article>
-              <article class="hero-service-card" style="--delay:.19s" data-hero-service data-focus-title="Accounts payable" data-focus-copy="Vendor ledgers, bill processing, ageing and payment schedules kept visible and controlled."><span class="service-icon-box"><svg class="service-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v12H4zM4 10h16M8 15h4"/><path d="M16 3v5M13.5 5.5 16 8l2.5-2.5"/></svg></span><h3>Accounts payable</h3><p>Vendor balances, bills, ageing and payment support.</p><span class="service-tag">AP</span></article>
-              <article class="hero-service-card" style="--delay:.26s" data-hero-service data-focus-title="Accounts receivable" data-focus-copy="Customer ledgers, invoicing schedules, ageing and collection visibility for timely follow-up."><span class="service-icon-box"><svg class="service-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v12H4zM4 10h16M8 15h4"/><path d="M16 8V3M13.5 5.5 16 3l2.5 2.5"/></svg></span><h3>Accounts receivable</h3><p>Customer balances, invoicing and collection visibility.</p><span class="service-tag">AR</span></article>
-              <article class="hero-service-card" style="--delay:.33s" data-hero-service data-focus-title="Management reporting" data-focus-copy="P&L, balance-sheet, variance and management schedules designed for clearer decisions."><span class="service-icon-box"><svg class="service-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><h3>Management reporting</h3><p>Financial statements, variance analysis and schedules.</p><span class="service-tag">Insights</span></article>
-              <article class="hero-service-card" style="--delay:.40s" data-hero-service data-focus-title="Cleanup & catch-up" data-focus-copy="Backlogs, duplicates, misclassifications and unreconciled balances systematically resolved."><span class="service-icon-box"><svg class="service-icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M7.1 7.2A7 7 0 0 1 19 10M16.9 16.8A7 7 0 0 1 5 14"/></svg></span><h3>Cleanup &amp; catch-up</h3><p>Backlogs, duplicates and reconciliation corrections.</p><span class="service-tag">Remediation</span></article>
-            </div>
-            <div class="service-flow" aria-label="Delivery process"><div class="flow-label"><strong>Controlled delivery path</strong><span>From source records to reviewer handoff</span></div><div class="flow-track" aria-hidden="true"><i></i></div><div class="flow-steps"><span class="flow-step active"><b>01</b>Records</span><span class="flow-step"><b>02</b>Process</span><span class="flow-step"><b>03</b>Review</span><span class="flow-step"><b>04</b>Handoff</span></div></div>
-            <div class="service-focus" aria-live="polite"><span class="focus-icon" aria-hidden="true">↗</span><div><strong id="service-focus-title">Accounting &amp; bookkeeping</strong><span id="service-focus-copy">Monthly books, reconciliations and ledger review prepared for professional review.</span></div><em>Under your review framework</em></div>
-          </div>
-        </div>
-      </div>`;
-  }
+  'use strict';
+  const $ = (selector, context = document) => context.querySelector(selector);
+  const $$ = (selector, context = document) => [...context.querySelectorAll(selector)];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const nav = document.querySelector('.site-nav');
-  const processSection = document.getElementById('process');
-  const hasPricingLink = nav && [...nav.querySelectorAll('a')].some(a => a.getAttribute('href')?.endsWith('#pricing'));
-  if (nav && !hasPricingLink) {
-    const pricingLink = document.createElement('a');
-    pricingLink.href = location.pathname.endsWith('about.html') ? 'index.html#pricing' : '#pricing';
-    pricingLink.textContent = 'Pricing';
-    const aboutLink = [...nav.querySelectorAll('a')].find(a => a.getAttribute('href') === 'about.html');
-    nav.insertBefore(pricingLink, aboutLink || nav.lastElementChild);
-  }
-
-  if (processSection && !document.getElementById('pricing')) {
-    const pricing = document.createElement('section');
-    pricing.className = 'section pricing-section';
-    pricing.id = 'pricing';
-    pricing.innerHTML = `
-      <div class="container">
-        <div class="pricing-intro reveal"><div><p class="eyebrow">Transparent starting points</p><h2>Commercially sensible pricing. Scope controlled before work begins.</h2><p>Indicative starting prices apply to clean, accessible records. Final fees depend on volume, entities, backlog, currencies, payroll, sales tax or VAT, source quality, turnaround and reviewer requirements.</p></div><div class="pricing-graphic" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="price-signal"><span>Finance operations</span><strong>Built to scale</strong><small>pilot → recurring cadence</small></div></div></div>
-        <div class="pricing-grid">
-          <article class="pricing-card reveal"><span class="plan-label">PILOT</span><h3>Defined pilot assignment</h3><p class="price"><strong>US$249</strong><span> / £199 onwards</span></p><p>One entity and one defined accounting cycle or cleanup batch to establish workflow and review expectations.</p><ul><li>Scope and access review</li><li>Reconciliation or cleanup batch</li><li>Open-item and query log</li><li>Review-ready handoff</li></ul><a class="btn btn-secondary" href="#contact">Discuss pilot scope</a></article>
-          <article class="pricing-card featured reveal"><span class="plan-label">RECURRING</span><div class="popular-tag">Most suitable for firms</div><h3>Monthly accounting support</h3><p class="price"><strong>US$499</strong><span> / £399 onwards</span></p><p>Recurring bookkeeping, reconciliations and close schedules for a clean, low-to-moderate-volume entity.</p><ul><li>Monthly transaction review</li><li>Bank and card reconciliations</li><li>Balance-sheet schedules</li><li>Consolidated reviewer queries</li></ul><a class="btn btn-primary" href="#contact">Request monthly quote</a></article>
-          <article class="pricing-card reveal"><span class="plan-label">GROWTH</span><h3>Multi-process finance support</h3><p class="price"><strong>Custom</strong><span> monthly scope</span></p><p>For multiple entities, higher volumes, management reporting, AP/AR or structured offshore capacity.</p><ul><li>Dedicated delivery cadence</li><li>Reporting and variance schedules</li><li>AP, AR and ageing support</li><li>Firm-specific SOP alignment</li></ul><a class="btn btn-secondary" href="#contact">Build a custom scope</a></article>
-        </div><p class="pricing-note">Prices exclude regulated sign-off, attest work, legal advice, tax representation, software subscriptions and third-party charges. The quote may be revised after sample records are inspected.</p>
-      </div>`;
-    processSection.parentNode.insertBefore(pricing, processSection);
-  }
-
-  const footerLogo = document.querySelector('.footer-brand img');
-  if (footerLogo && !footerLogo.closest('.footer-logo-shell')) {
-    const shell = document.createElement('span'); shell.className = 'footer-logo-shell';
-    footerLogo.parentNode.insertBefore(shell, footerLogo); shell.appendChild(footerLogo);
-  }
-
-  const navToggle = document.querySelector('.nav-toggle');
-  if (navToggle && nav) {
-    navToggle.addEventListener('click', () => { const open = nav.classList.toggle('open'); navToggle.setAttribute('aria-expanded', String(open)); });
-    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); navToggle.setAttribute('aria-expanded', 'false'); }));
-  }
-
-  document.querySelectorAll('.tab-button').forEach(btn => btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-button').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-    btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
-    document.querySelectorAll('.audience-panel').forEach(panel => panel.hidden = panel.id !== btn.dataset.target);
-  }));
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const serviceCards = [...document.querySelectorAll('[data-hero-service]')];
-  const focusTitle = document.getElementById('service-focus-title');
-  const focusCopy = document.getElementById('service-focus-copy');
-  const flowSteps = [...document.querySelectorAll('.flow-step')];
-  let serviceIndex = 0;
-  let serviceTimer;
-  const activateService = index => {
-    if (!serviceCards.length) return;
-    serviceIndex = (index + serviceCards.length) % serviceCards.length;
-    serviceCards.forEach((card, i) => card.classList.toggle('active', i === serviceIndex));
-    const active = serviceCards[serviceIndex];
-    if (focusTitle) focusTitle.textContent = active.dataset.focusTitle || '';
-    if (focusCopy) focusCopy.textContent = active.dataset.focusCopy || '';
-    flowSteps.forEach((step, i) => step.classList.toggle('active', i === serviceIndex % flowSteps.length));
+  const header = $('[data-header]');
+  const progressBar = $('.site-progress span');
+  const updateScrollState = () => {
+    if (header) header.classList.toggle('scrolled', window.scrollY > 24);
+    if (progressBar) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = `${max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0}%`;
+    }
   };
-  serviceCards.forEach((card, index) => {
-    card.addEventListener('mouseenter', () => activateService(index));
-    card.addEventListener('focusin', () => activateService(index));
-    card.addEventListener('click', () => activateService(index));
-  });
-  if (serviceCards.length && !reducedMotion) {
-    serviceTimer = window.setInterval(() => activateService(serviceIndex + 1), 2600);
-    document.querySelector('.service-console')?.addEventListener('mouseenter', () => window.clearInterval(serviceTimer));
-    document.querySelector('.service-console')?.addEventListener('mouseleave', () => { window.clearInterval(serviceTimer); serviceTimer = window.setInterval(() => activateService(serviceIndex + 1), 2600); });
+  updateScrollState();
+  window.addEventListener('scroll', updateScrollState, { passive: true });
+
+  const navToggle = $('.nav-toggle');
+  const nav = $('#site-nav');
+  const setNav = open => {
+    if (!nav || !navToggle) return;
+    nav.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+    navToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    document.body.classList.toggle('nav-open', open);
+  };
+  navToggle?.addEventListener('click', () => setNav(!nav.classList.contains('open')));
+  $$('#site-nav a').forEach(link => link.addEventListener('click', () => setNav(false)));
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') setNav(false); });
+
+  const revealItems = $$('[data-reveal]');
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px' });
+    revealItems.forEach((item, index) => {
+      item.style.transitionDelay = `${Math.min(index % 4, 3) * 55}ms`;
+      observer.observe(item);
+    });
+  } else revealItems.forEach(item => item.classList.add('is-visible'));
+
+  const controlStage = $('[data-control-stage]');
+  const controlConsole = $('.control-console', controlStage || document);
+  if (controlStage && controlConsole && !reduceMotion && window.matchMedia('(pointer:fine)').matches) {
+    controlStage.addEventListener('pointermove', event => {
+      const rect = controlStage.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      controlConsole.style.transform = `rotateY(${x * 3.4}deg) rotateX(${y * -2.7}deg) translateZ(0)`;
+    });
+    controlStage.addEventListener('pointerleave', () => { controlConsole.style.transform = ''; });
   }
 
-  const revealElements = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && !reducedMotion) {
-    const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
-    }), { threshold: .12, rootMargin: '0px 0px -40px' });
-    revealElements.forEach((element, index) => { element.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`; revealObserver.observe(element); });
-  } else revealElements.forEach(element => element.classList.add('visible'));
+  const capabilityContent = {
+    books:{number:'01 / CONTROLLED RECURRING',title:'Bookkeeping & month-end support',copy:'Structured monthly processing and close support under your chart of accounts, review framework and agreed cut-off.',visual:'LEDGER',points:['Transaction review and coding','Month-end notes and schedules','Review-ready handoff pack'],boundary:'Prepared within the agreed accounting framework and reviewer responsibility.'},
+    recon:{number:'02 / RECONCILIATION CONTROL',title:'Bank & card reconciliations',copy:'Statement-to-ledger matching with reconciling differences isolated instead of buried inside the close.',visual:'MATCH',points:['Bank-feed and statement review','Reconciling-difference analysis','Open-item tracking'],boundary:'Unresolved items remain visible for reviewer or client follow-up.'},
+    cleanup:{number:'03 / REMEDIATION',title:'Catch-up & cleanup',copy:'Historical books reviewed for duplicated entries, misclassifications, missing evidence and unreconciled balances.',visual:'CLEAN',points:['Backlog processing','Cleanup journals for review','Missing-document tracker'],boundary:'Adjustments are prepared for appropriate review before final acceptance.'},
+    reporting:{number:'04 / REPORTING SUPPORT',title:'Financial reporting support',copy:'Supporting schedules and analytical checks designed to make management accounts easier to review and interpret.',visual:'REPORT',points:['P&L and balance-sheet review','Variance and trend checks','Management reporting packs'],boundary:'Reporting format and review responsibility are agreed before recurring delivery.'},
+    working:{number:'05 / WORKING CAPITAL',title:'AP, AR & ageing support',copy:'Operational schedules that improve visibility over vendor balances, customer balances, ageing and follow-up priorities.',visual:'AGEING',points:['Vendor and customer review','Ageing schedules','Exception and follow-up lists'],boundary:'Payment or collection authority remains subject to the client’s agreed controls.'},
+    workpapers:{number:'06 / PROFESSIONAL WORKPAPERS',title:'Audit & tax data support',copy:'Schedules, reconciliations and source-data packs prepared for consideration by the responsible licensed professional.',visual:'PACK',points:['Lead schedules and evidence indexes','Tax-organiser data support','Reviewer query preparation'],boundary:'No attest opinion, regulated representation or jurisdiction-specific sign-off is implied.'}
+  };
+  const capTabs = $$('.capability-tab');
+  const renderCapability = key => {
+    const data = capabilityContent[key];
+    if (!data || !$('#cap-number')) return;
+    $('#cap-number').textContent = data.number;
+    $('#cap-title').textContent = data.title;
+    $('#cap-copy').textContent = data.copy;
+    $('#cap-visual-label').textContent = data.visual;
+    $('#cap-points').innerHTML = data.points.map(point => `<li>${point}</li>`).join('');
+    $('#cap-boundary').textContent = data.boundary;
+    capTabs.forEach(tab => { const active = tab.dataset.cap === key; tab.classList.toggle('active', active); tab.setAttribute('aria-selected', String(active)); });
+  };
+  capTabs.forEach(tab => tab.addEventListener('click', () => renderCapability(tab.dataset.cap)));
 
-  const form = document.getElementById('fit-form');
+  const audienceContent = {
+    us:{kicker:'US accounting firms',title:'Extend preparation capacity without surrendering reviewer control.',copy:'Recurring bookkeeping, close support, cleanup and organised tax-source workpapers can sit behind your firm’s client relationship and review process.',proof:[['Workflow','QuickBooks Online-oriented'],['Close','Reconciliations & schedules'],['Queries','Consolidated for review'],['Boundary','No US CPA representation']]},
+    uk:{kicker:'UK accountancy practices',title:'Add Xero-oriented execution behind your practice workflow.',copy:'Bookkeeping, accounts schedules, reconciliation and VAT source-data support can follow your workpaper format and reviewer sign-off process.',proof:[['Workflow','Xero-oriented'],['Accounts','Ledgers & schedules'],['VAT support','Source-data preparation'],['Boundary','Practice retains statutory responsibility']]},
+    business:{kicker:'Growing businesses',title:'Build a stronger finance operating rhythm before hiring a full internal team.',copy:'Monthly reconciliation, reporting, working-capital visibility and organised records can support founders who have outgrown basic bookkeeping.',proof:[['Books','Monthly close routines'],['Reporting','Management visibility'],['Working capital','AP, AR & ageing'],['Handoff','Organised for local advisers']]}
+  };
+  const audienceTabs = $$('.audience-tab');
+  const renderAudience = key => {
+    const data = audienceContent[key];
+    if (!data || !$('#audience-kicker')) return;
+    $('#audience-kicker').textContent = data.kicker;
+    $('#audience-title').textContent = data.title;
+    $('#audience-copy').textContent = data.copy;
+    $('#audience-proof').innerHTML = data.proof.map(item => `<div><span>${item[0]}</span><strong>${item[1]}</strong></div>`).join('');
+    audienceTabs.forEach(tab => { const active = tab.dataset.audience === key; tab.classList.toggle('active', active); tab.setAttribute('aria-selected', String(active)); });
+  };
+  audienceTabs.forEach(tab => tab.addEventListener('click', () => renderAudience(tab.dataset.audience)));
+
+  const processCards = $$('.process-card');
+  if ('IntersectionObserver' in window && processCards.length) {
+    const processObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) processCards.forEach(card => card.classList.toggle('active', card === entry.target)); });
+    }, { threshold: 0.55 });
+    processCards.forEach(card => processObserver.observe(card));
+  }
+
+  const form = $('#pilot-form');
   if (form) {
-    const message = document.getElementById('form-message');
-    const buildBrief = () => {
-      const data = new FormData(form);
-      return ['BluePeak Verity — Engagement Enquiry','',`Name: ${data.get('name') || ''}`,`Firm / Business: ${data.get('firm') || ''}`,`Work email: ${data.get('email') || ''}`,`Country / Time zone: ${data.get('country') || ''}`,`Support required: ${data.get('service') || ''}`,`Estimated monthly volume: ${data.get('volume') || ''}`,'','Brief:',data.get('brief') || ''].join('\n');
+    const steps = $$('.form-step', form);
+    const progressSteps = $$('.form-progress span', form);
+    let currentStep = 1;
+    const showStep = next => {
+      currentStep = Math.max(1, Math.min(3, next));
+      steps.forEach(step => { const active = Number(step.dataset.formStep) === currentStep; step.hidden = !active; step.classList.toggle('active', active); });
+      progressSteps.forEach((step, index) => step.classList.toggle('active', index < currentStep));
     };
-    const validate = () => { if (!form.reportValidity()) return false; if (message) message.textContent = 'Your enquiry brief is ready. Please complete sending it in the app that opens.'; return true; };
-    document.getElementById('email-brief')?.addEventListener('click', event => { event.preventDefault(); if (!validate()) return; window.location.href = `mailto:siddharth.v.bhatia@gmail.com?subject=${encodeURIComponent('International accounting support enquiry')}&body=${encodeURIComponent(buildBrief())}`; });
-    document.getElementById('whatsapp-brief')?.addEventListener('click', event => { event.preventDefault(); if (!validate()) return; window.open(`https://wa.me/917879857126?text=${encodeURIComponent(buildBrief())}`, '_blank', 'noopener'); });
-  }
-
-  if (!document.querySelector('script[src$="targeted-update.js"]')) {
-    const targetedScript = document.createElement('script');
-    targetedScript.src = 'assets/targeted-update.js';
-    targetedScript.defer = true;
-    document.head.appendChild(targetedScript);
+    const validateStep = stepNumber => {
+      const step = $(`.form-step[data-form-step="${stepNumber}"]`, form);
+      if (!step) return true;
+      if (stepNumber === 1 && !$('input[name="organisation"]:checked', step)) { $('#form-message').textContent = 'Please select the type of organisation.'; return false; }
+      if (stepNumber === 2) {
+        if (!$$('input[name="support"]:checked', step).length) { $('#form-message').textContent = 'Please select at least one support area.'; return false; }
+        const platform = $('select[name="platform"]', step);
+        if (!platform.value) { $('#form-message').textContent = 'Please select the accounting platform.'; platform.focus(); return false; }
+      }
+      $('#form-message').textContent = '';
+      return true;
+    };
+    $$('.form-next', form).forEach(button => button.addEventListener('click', () => { if (validateStep(currentStep)) showStep(currentStep + 1); }));
+    $$('.form-back', form).forEach(button => button.addEventListener('click', () => showStep(currentStep - 1)));
+    const finalRequired = () => {
+      const required = $$('[required]', $('.form-step[data-form-step="3"]', form));
+      for (const field of required) { if (!field.checkValidity()) { field.reportValidity(); return false; } }
+      return true;
+    };
+    $('#prepare-enquiry')?.addEventListener('click', () => {
+      if (!validateStep(1) || !validateStep(2) || !finalRequired()) return;
+      const data = new FormData(form);
+      const brief = ['BluePeak Verity — Pilot Enquiry','',`Organisation: ${data.get('organisation') || ''}`,`Support required: ${data.getAll('support').join(', ')}`,`Platform: ${data.get('platform') || ''}`,`Approximate volume: ${data.get('volume') || ''}`,'',`Name: ${data.get('name') || ''}`,`Firm / Company: ${data.get('firm') || ''}`,`Work email: ${data.get('email') || ''}`,`Country / Time zone: ${data.get('country') || ''}`,`Preferred contact method: ${data.get('contact_method') || ''}`,'','Current challenge:',data.get('challenge') || ''].join('\n');
+      $('#form-message').textContent = 'Your structured enquiry is ready. Complete sending it in the communication app that opens.';
+      if (data.get('contact_method') === 'WhatsApp') window.open(`https://wa.me/917879857126?text=${encodeURIComponent(brief)}`, '_blank', 'noopener,noreferrer');
+      else window.location.href = `mailto:siddharth.v.bhatia@gmail.com?subject=${encodeURIComponent('BluePeak Verity — Pilot Enquiry')}&body=${encodeURIComponent(brief)}`;
+    });
   }
 })();
