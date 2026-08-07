@@ -1,6 +1,15 @@
 (() => {
   'use strict';
 
+  /* Load the final founder-photo layer after every earlier stylesheet so it wins the cascade. */
+  if (!document.querySelector('link[data-bp-founder-final]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'assets/founder-photo-final.css?v=20260807-founder-final-r1';
+    link.dataset.bpFounderFinal = 'true';
+    document.head.appendChild(link);
+  }
+
   const apply = () => {
     /* Founder portrait is rendered by founder-photo-final.css. Keep the broken legacy <img> suppressed. */
     document.querySelectorAll('.founder-photo-frame img').forEach(img => {
