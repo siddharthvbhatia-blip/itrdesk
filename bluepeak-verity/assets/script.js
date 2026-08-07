@@ -9,6 +9,15 @@
     document.head.appendChild(graphicsScript);
   }
 
+  /* Force-load the latest user corrections, including the embedded authentic founder portrait. */
+  if (!document.querySelector('link[data-bp-user-hotfix]')) {
+    const hotfix = document.createElement('link');
+    hotfix.rel = 'stylesheet';
+    hotfix.href = 'assets/user-corrections.css?v=20260807-founder-photo-r4';
+    hotfix.dataset.bpUserHotfix = 'true';
+    document.head.appendChild(hotfix);
+  }
+
   const $ = (selector, context = document) => context.querySelector(selector);
   const $$ = (selector, context = document) => [...context.querySelectorAll(selector)];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
