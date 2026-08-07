@@ -1,0 +1,28 @@
+/* International delivery network + credential ribbon */
+.bp-audience-visual{display:grid;gap:14px;align-content:start}
+.bp-global-network{position:relative;min-height:260px;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:radial-gradient(circle at 54% 46%,rgba(47,124,246,.08),transparent 34%),linear-gradient(145deg,#fafdff,#eef6fa);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.bp-global-network::before{content:"INTERNATIONAL DELIVERY NETWORK";position:absolute;left:18px;top:15px;z-index:3;color:#138f9c;font-size:8px;font-weight:900;letter-spacing:.15em}
+.bp-global-network svg{position:absolute;inset:30px 12px 10px;width:calc(100% - 24px);height:calc(100% - 40px)}
+.bp-globe-ring{fill:none;stroke:rgba(13,73,104,.11);stroke-width:1}
+.bp-globe-ring.dash{stroke-dasharray:4 7;animation:bpGlobeDash 18s linear infinite}
+.bp-route{fill:none;stroke:#2f7cf6;stroke-width:1.4;stroke-dasharray:5 8;opacity:.58;animation:bpRoute 9s linear infinite}
+.bp-route.uk{stroke:#21b7c8;animation-delay:-3s}
+.bp-route-pulse{fill:#4bdcf2;filter:drop-shadow(0 0 5px rgba(75,220,242,.7));animation:bpRoutePulse 3.8s ease-in-out infinite}
+.bp-network-node circle{fill:#fff;stroke:#1a93a2;stroke-width:1.3;filter:drop-shadow(0 6px 10px rgba(7,24,42,.12))}
+.bp-network-node.hub circle{fill:#092b47;stroke:#55dcea;stroke-width:1.7}
+.bp-network-node text{font-family:Inter,Arial,sans-serif;font-size:7px;font-weight:900;letter-spacing:.08em;fill:#294c62}
+.bp-network-node.hub text{fill:#fff}
+.bp-network-label{position:absolute;z-index:3;display:flex;align-items:center;gap:7px;padding:7px 9px;border:1px solid rgba(7,24,42,.09);border-radius:999px;background:rgba(255,255,255,.92);box-shadow:0 10px 24px rgba(7,24,42,.07);color:#294c62;font-size:8px;font-weight:850}
+.bp-network-label i{width:6px;height:6px;border-radius:50%;background:#45cfdc;box-shadow:0 0 0 5px rgba(69,207,220,.1)}
+.bp-network-label.us{left:8%;bottom:17%}.bp-network-label.uk{right:7%;top:24%}.bp-network-label.india{right:19%;bottom:12%;background:#092b47;color:#fff;border-color:rgba(75,220,242,.22)}
+
+.bp-cert-ribbon{display:flex;align-items:center;gap:16px;width:max-content;max-width:100%;margin-top:30px;padding:11px 15px 11px 10px;border:1px solid rgba(255,255,255,.13);border-radius:16px;background:rgba(255,255,255,.055);backdrop-filter:blur(12px);box-shadow:0 16px 36px rgba(0,0,0,.15)}
+.bp-cert-ribbon .bp-cert-logo{display:grid;place-items:center;width:64px;height:54px;border-radius:12px;background:#fff;overflow:hidden}.bp-cert-ribbon .bp-cert-logo img{width:58px;height:auto}
+.bp-cert-ribbon span,.bp-cert-ribbon strong{display:block}.bp-cert-ribbon span{color:#78dfea;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.13em}.bp-cert-ribbon strong{margin-top:3px;color:#f4f9fc;font-size:11px}.bp-cert-ribbon small{display:block;margin-top:2px;color:#8ba2b2;font-size:8px}
+
+@keyframes bpGlobeDash{to{stroke-dashoffset:-120}}
+@keyframes bpRoute{to{stroke-dashoffset:-130}}
+@keyframes bpRoutePulse{0%,100%{opacity:.35;transform:scale(.7);transform-origin:center}50%{opacity:1;transform:scale(1.2);transform-origin:center}}
+@media(max-width:900px){.bp-global-network{min-height:230px}.bp-audience-visual{width:100%}.bp-cert-ribbon{width:100%}}
+@media(max-width:640px){.bp-global-network{min-height:215px}.bp-network-label{font-size:7px}.bp-network-label.us{left:4%}.bp-network-label.uk{right:3%}.bp-network-label.india{right:9%}.bp-cert-ribbon{gap:10px;padding:9px 11px 9px 8px}.bp-cert-ribbon .bp-cert-logo{width:54px;height:47px}.bp-cert-ribbon .bp-cert-logo img{width:49px}.bp-cert-ribbon strong{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.bp-globe-ring.dash,.bp-route,.bp-route-pulse{animation:none!important}}
