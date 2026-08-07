@@ -5,117 +5,38 @@
   const XERO_LOGO = 'assets/xero-credential-badge.svg?v=20260807-local-1';
   const ICAI_INFO = 'https://www.icai.org/post/19553';
 
-  const addCss = (href, marker) => {
-    if (document.querySelector(`link[data-${marker}]`)) return;
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    link.dataset[marker] = 'true';
-    document.head.appendChild(link);
-  };
-  addCss('assets/graphics-upgrade.css?v=20260807-r4','bpGraphics');
-  addCss('assets/graphics-global.css?v=20260807-r1','bpGlobal');
-  addCss('assets/user-corrections.css?v=20260807-r3','bpUserCorrections');
+  const addCss=(href,marker)=>{if(document.querySelector(`link[data-${marker}]`))return;const l=document.createElement('link');l.rel='stylesheet';l.href=href;l.setAttribute(`data-${marker}`,'true');document.head.appendChild(l)};
+  addCss('assets/graphics-upgrade.css?v=20260807-r4','bp-graphics');
+  addCss('assets/graphics-global.css?v=20260807-r1','bp-global');
+  addCss('assets/user-corrections.css?v=20260807-r3','bp-user-corrections');
 
-  const nav = document.querySelector('#site-nav');
-  if (nav) {
-    const onHome = /(?:\/|index\.html)$/.test(location.pathname);
-    const addNav = (label, href, cls, before) => {
-      if ([...nav.querySelectorAll('a')].some(a => a.textContent.trim() === label)) return;
-      const a = document.createElement('a');
-      a.textContent = label;
-      a.href = href;
-      if (cls) a.className = cls;
-      nav.insertBefore(a, before || nav.querySelector('.nav-cta'));
-      a.addEventListener('click', () => {
-        nav.classList.remove('open');
-        document.querySelector('.nav-toggle')?.setAttribute('aria-expanded','false');
-        document.body.classList.remove('nav-open');
-      });
-    };
-    addNav('Pricing', onHome ? '#pricing' : 'index.html#pricing', 'pricing-nav-link', [...nav.querySelectorAll('a')].find(a => a.getAttribute('href') === 'about.html'));
-    addNav('Contact Us', onHome ? '#contact' : 'index.html#contact', 'contact-nav-link', nav.querySelector('.nav-cta'));
+  if(!document.querySelector('#bp-inline-fixes')){
+    const style=document.createElement('style');style.id='bp-inline-fixes';style.textContent=`
+      .bp-header-ca{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.055);color:#dce8f1;text-decoration:none;font-size:9px;font-weight:850;white-space:nowrap}.bp-header-ca img{width:42px;height:31px;object-fit:contain;border-radius:6px;background:#fff}.bp-header-ca:hover{background:rgba(255,255,255,.1);color:#fff}.bp-hero-ca-logo{width:30px!important;height:22px!important;object-fit:contain!important;border-radius:6px;background:#fff;padding:2px;margin-left:-13px;margin-right:7px}.bp-ca-mini img{width:50px;height:37px;object-fit:contain;border-radius:8px;background:#fff;padding:3px}.bp-founder-ca img,.bp-credential-logo img,.bp-cert-logo img,.ca-footer{object-fit:contain;background:#fff}.site-nav .contact-nav-link{color:#9cf0fa}.site-nav .contact-nav-link::after{background:linear-gradient(90deg,#50ddc6,#4bdcf2)!important}@media(max-width:1100px){.bp-header-ca{display:none}}`;
+    document.head.appendChild(style);
   }
 
-  const brand = document.querySelector('.nav-shell .brand');
-  if (brand && !document.querySelector('.bp-header-ca')) {
-    const badge = document.createElement('a');
-    badge.className = 'bp-header-ca';
-    badge.href = ICAI_INFO;
-    badge.target = '_blank';
-    badge.rel = 'noopener noreferrer';
-    badge.setAttribute('aria-label','CA India professional identity');
-    badge.innerHTML = `<img src="${CA_LOGO}" alt="CA India logo"><span>CA-led</span>`;
-    brand.insertAdjacentElement('afterend', badge);
-  }
+  const nav=document.querySelector('#site-nav');
+  if(nav){const onHome=/(?:\/|index\.html)$/.test(location.pathname);const add=(label,href,before)=>{if([...nav.querySelectorAll('a')].some(a=>a.textContent.trim()===label))return;const a=document.createElement('a');a.textContent=label;a.href=href;a.className=label==='Contact Us'?'contact-nav-link':'pricing-nav-link';nav.insertBefore(a,before||nav.querySelector('.nav-cta'));a.addEventListener('click',()=>{nav.classList.remove('open');document.querySelector('.nav-toggle')?.setAttribute('aria-expanded','false');document.body.classList.remove('nav-open')})};add('Pricing',onHome?'#pricing':'index.html#pricing',[...nav.querySelectorAll('a')].find(a=>a.getAttribute('href')==='about.html'));add('Contact Us',onHome?'#contact':'index.html#contact',nav.querySelector('.nav-cta'))}
 
-  const firstHeroProof = document.querySelector('.hero-proof span');
-  if (firstHeroProof && !firstHeroProof.querySelector('.bp-hero-ca-logo')) {
-    firstHeroProof.style.display='inline-flex'; firstHeroProof.style.alignItems='center';
-    const img=document.createElement('img'); img.className='bp-hero-ca-logo'; img.src=CA_LOGO; img.alt='CA India'; img.width=30; img.height=22;
-    firstHeroProof.prepend(img);
-  }
+  const brand=document.querySelector('.nav-shell .brand');if(brand&&!document.querySelector('.bp-header-ca')){const a=document.createElement('a');a.className='bp-header-ca';a.href=ICAI_INFO;a.target='_blank';a.rel='noopener noreferrer';a.innerHTML=`<img src="${CA_LOGO}" alt="CA India logo" width="42" height="31"><span>CA-led</span>`;brand.insertAdjacentElement('afterend',a)}
+  const hp=document.querySelector('.hero-proof span');if(hp&&!hp.querySelector('.bp-hero-ca-logo')){hp.style.display='inline-flex';hp.style.alignItems='center';const i=document.createElement('img');i.className='bp-hero-ca-logo';i.src=CA_LOGO;i.alt='CA India';hp.prepend(i)}
 
-  const heroStage=document.querySelector('[data-control-stage]');
-  if(heroStage && !heroStage.querySelector('.bp-control-beacon')){
-    heroStage.insertAdjacentHTML('afterbegin',`<div class="bp-altitude-field" aria-hidden="true"><svg viewBox="0 0 760 650" preserveAspectRatio="none"><path d="M16 510 C120 414 176 438 264 346 S440 220 548 276 678 244 748 120"/><path d="M4 566 C124 492 194 500 286 410 S454 300 570 332 690 308 756 206"/><path d="M34 620 C136 548 230 558 330 474 S500 372 602 398 704 382 770 300"/></svg></div><div class="bp-control-beacon bp-beacon-a"><i>01</i><div><strong>Source integrity</strong><small>Evidence linked</small></div></div><div class="bp-control-beacon bp-beacon-b"><i>02</i><div><strong>Exception control</strong><small>Queries isolated</small></div></div><div class="bp-control-beacon bp-beacon-c"><i>03</i><div><strong>Reviewer handoff</strong><small>Status visible</small></div></div>`);
-  }
+  const hero=document.querySelector('[data-control-stage]');if(hero&&!hero.querySelector('.bp-control-beacon'))hero.insertAdjacentHTML('afterbegin',`<div class="bp-altitude-field" aria-hidden="true"><svg viewBox="0 0 760 650" preserveAspectRatio="none"><path d="M16 510 C120 414 176 438 264 346 S440 220 548 276 678 244 748 120"/><path d="M4 566 C124 492 194 500 286 410 S454 300 570 332 690 308 756 206"/></svg></div><div class="bp-control-beacon bp-beacon-a"><i>01</i><div><strong>Source integrity</strong><small>Evidence linked</small></div></div><div class="bp-control-beacon bp-beacon-b"><i>02</i><div><strong>Exception control</strong><small>Queries isolated</small></div></div><div class="bp-control-beacon bp-beacon-c"><i>03</i><div><strong>Reviewer handoff</strong><small>Status visible</small></div></div>`);
 
-  const credibility=document.querySelector('.credibility-grid');
-  if(credibility){
-    const first=credibility.children[0];
-    if(first && !first.querySelector('.bp-ca-mini')){
-      const a=document.createElement('a'); a.className='bp-ca-mini'; a.href=ICAI_INFO; a.target='_blank'; a.rel='noopener noreferrer';
-      a.innerHTML=`<img src="${CA_LOGO}" alt="CA India logo">`; first.prepend(a);
-    }
-    const second=credibility.children[1];
-    if(second && !second.querySelector('.mini-cred-logo')){
-      const x=document.createElement('img'); x.className='mini-cred-logo'; x.src=XERO_LOGO; x.alt='Xero L1 Certified Associate'; second.prepend(x);
-    }
-  }
+  const cred=document.querySelector('.credibility-grid');if(cred){const first=cred.children[0];if(first&&!first.querySelector('.bp-ca-mini')){const a=document.createElement('a');a.className='bp-ca-mini';a.href=ICAI_INFO;a.target='_blank';a.rel='noopener noreferrer';a.innerHTML=`<img src="${CA_LOGO}" alt="CA India logo">`;first.prepend(a)}const second=cred.children[1];if(second&&!second.querySelector('.mini-cred-logo')){const x=document.createElement('img');x.className='mini-cred-logo';x.src=XERO_LOGO;x.alt='Xero L1 Certified Associate';second.prepend(x)}}
 
-  const audienceProof=document.querySelector('#audience-proof');
-  if(audienceProof && !document.querySelector('.bp-global-network')){
-    const visual=document.createElement('div'); visual.className='bp-audience-visual';
-    visual.innerHTML=`<div class="bp-global-network" aria-label="Illustrative delivery network"><svg viewBox="0 0 480 230" aria-hidden="true"><ellipse class="bp-globe-ring" cx="240" cy="116" rx="116" ry="92"/><ellipse class="bp-globe-ring dash" cx="240" cy="116" rx="58" ry="92"/><ellipse class="bp-globe-ring" cx="240" cy="116" rx="116" ry="39"/><path class="bp-globe-ring" d="M124 116H356M146 67C198 90 284 90 334 67M146 165C198 142 284 142 334 165"/><path class="bp-route" d="M194 131 C155 101 117 88 79 92"/><path class="bp-route uk" d="M198 127 C250 82 318 67 380 77"/><g class="bp-network-node hub" transform="translate(194 131)"><circle r="15"/><text text-anchor="middle" dy="2.6">IND</text></g><g class="bp-network-node" transform="translate(79 92)"><circle r="13"/><text text-anchor="middle" dy="2.4">US</text></g><g class="bp-network-node" transform="translate(380 77)"><circle r="13"/><text text-anchor="middle" dy="2.4">UK</text></g></svg><span class="bp-network-label us"><i></i>US accounting firms</span><span class="bp-network-label uk"><i></i>UK practices</span><span class="bp-network-label india"><i></i>India delivery hub</span></div>`;
-    audienceProof.parentNode.insertBefore(visual,audienceProof); visual.appendChild(audienceProof);
-  }
+  const proof=document.querySelector('#audience-proof');if(proof&&!document.querySelector('.bp-global-network')){const v=document.createElement('div');v.className='bp-audience-visual';v.innerHTML=`<div class="bp-global-network"><svg viewBox="0 0 480 230" aria-hidden="true"><ellipse class="bp-globe-ring" cx="240" cy="116" rx="116" ry="92"/><ellipse class="bp-globe-ring dash" cx="240" cy="116" rx="58" ry="92"/><ellipse class="bp-globe-ring" cx="240" cy="116" rx="116" ry="39"/><path class="bp-globe-ring" d="M124 116H356"/><path class="bp-route" d="M194 131 C155 101 117 88 79 92"/><path class="bp-route uk" d="M198 127 C250 82 318 67 380 77"/><g class="bp-network-node hub" transform="translate(194 131)"><circle r="15"/><text text-anchor="middle" dy="2.6">IND</text></g><g class="bp-network-node" transform="translate(79 92)"><circle r="13"/><text text-anchor="middle" dy="2.4">US</text></g><g class="bp-network-node" transform="translate(380 77)"><circle r="13"/><text text-anchor="middle" dy="2.4">UK</text></g></svg><span class="bp-network-label us"><i></i>US accounting firms</span><span class="bp-network-label uk"><i></i>UK practices</span><span class="bp-network-label india"><i></i>India delivery hub</span></div>`;proof.parentNode.insertBefore(v,proof);v.appendChild(proof)}
 
-  const quality=document.querySelector('.quality-visual');
-  if(quality && !quality.querySelector('.quality-flow-title')){
-    quality.insertAdjacentHTML('afterbegin','<div class="quality-flow-title">BluePeak control sequence</div>');
-    quality.insertAdjacentHTML('beforeend','<div class="quality-data-row"><div class="quality-data-card"><span>Source integrity</span><strong><i class="status-dot"></i>Traceable</strong><small>Evidence and basis remain linked to the workpaper.</small></div><div class="quality-data-card"><span>Exception visibility</span><strong>Open items isolated</strong><small>Unresolved matters stay visible for reviewer action.</small></div><div class="quality-data-card"><span>Reviewer status</span><strong>Handoff ready</strong><small>The next professional can follow the sequence quickly.</small></div></div>');
-  }
+  const q=document.querySelector('.quality-visual');if(q&&!q.querySelector('.quality-flow-title')){q.insertAdjacentHTML('afterbegin','<div class="quality-flow-title">BluePeak control sequence</div>');q.insertAdjacentHTML('beforeend','<div class="quality-data-row"><div class="quality-data-card"><span>Source integrity</span><strong><i class="status-dot"></i>Traceable</strong><small>Evidence and basis remain linked.</small></div><div class="quality-data-card"><span>Exception visibility</span><strong>Open items isolated</strong><small>Unresolved matters stay visible.</small></div><div class="quality-data-card"><span>Reviewer status</span><strong>Handoff ready</strong><small>The next professional can follow the sequence.</small></div></div>')}
 
-  const founderShell=document.querySelector('.founder-photo-shell');
-  if(founderShell && !founderShell.querySelector('.bp-founder-ca')){
-    const a=document.createElement('a'); a.className='bp-founder-ca'; a.href=ICAI_INFO; a.target='_blank'; a.rel='noopener noreferrer';
-    a.innerHTML=`<img src="${CA_LOGO}" alt="CA India logo"><div><span>Professional qualification</span><strong>Chartered Accountant · ICAI 438248</strong></div>`; founderShell.appendChild(a);
-  }
+  const fs=document.querySelector('.founder-photo-shell');if(fs&&!fs.querySelector('.bp-founder-ca')){const a=document.createElement('a');a.className='bp-founder-ca';a.href=ICAI_INFO;a.target='_blank';a.rel='noopener noreferrer';a.innerHTML=`<img src="${CA_LOGO}" alt="CA India logo"><div><span>Professional qualification</span><strong>Chartered Accountant · ICAI 438248</strong></div>`;fs.appendChild(a)}
 
-  const credentialShowcase=document.querySelector('.credential-section .credential-showcase');
-  if(credentialShowcase && !credentialShowcase.querySelector('.bp-credential-grid')){
-    credentialShowcase.innerHTML=`<div class="bp-credentials-head"><div><p class="eyebrow">Professional credentials</p><h2>Qualified judgement. Verified platform capability.</h2></div><p>BluePeak Verity is founder-led by an Indian Chartered Accountant and supported by a current Xero L1 credential. These credentials complement the operating controls shown throughout the website; they do not imply US CPA or UK chartered-accountancy status.</p></div><div class="bp-credential-grid"><article class="bp-credential-card"><a class="bp-credential-logo" href="${ICAI_INFO}" target="_blank" rel="noopener noreferrer"><img src="${CA_LOGO}" alt="CA India logo"></a><div class="bp-credential-copy"><small>Professional qualification</small><h3>Chartered Accountant · India</h3><p>CA Siddharth Bhatia · ICAI Membership No. 438248.</p><div class="bp-credential-meta"><span>ICAI member</span><span>Founder-led delivery</span><span>India-based</span></div><a class="bp-credential-link" href="about.html">View professional profile ↗</a></div></article><article class="bp-credential-card"><div class="bp-credential-logo xero"><img src="${XERO_LOGO}" alt="Xero L1 Certified Associate badge"></div><div class="bp-credential-copy"><small>Platform credential</small><h3>Xero L1 Certified Associate</h3><p>Earned by Siddharth Bhatia on 6 August 2026. Score 93 · Completion ID 16789646.</p><div class="bp-credential-meta"><span>Credential earned</span><span>Cloud accounting</span><span>Xero workflows</span></div><a class="bp-credential-link" href="xero-certified.html">View credential details ↗</a></div></article></div>`;
-  }
+  const cs=document.querySelector('.credential-section .credential-showcase');if(cs&&!cs.querySelector('.bp-credential-grid'))cs.innerHTML=`<div class="bp-credentials-head"><div><p class="eyebrow">Professional credentials</p><h2>Qualified judgement. Verified platform capability.</h2></div><p>BluePeak Verity is founder-led by an Indian Chartered Accountant and supported by a current Xero L1 credential.</p></div><div class="bp-credential-grid"><article class="bp-credential-card"><a class="bp-credential-logo" href="${ICAI_INFO}" target="_blank" rel="noopener noreferrer"><img src="${CA_LOGO}" alt="CA India logo"></a><div class="bp-credential-copy"><small>Professional qualification</small><h3>Chartered Accountant · India</h3><p>CA Siddharth Bhatia · ICAI Membership No. 438248.</p><div class="bp-credential-meta"><span>ICAI member</span><span>Founder-led delivery</span><span>India-based</span></div><a class="bp-credential-link" href="about.html">View professional profile ↗</a></div></article><article class="bp-credential-card"><div class="bp-credential-logo xero"><img src="${XERO_LOGO}" alt="Xero L1 Certified Associate badge"></div><div class="bp-credential-copy"><small>Platform credential</small><h3>Xero L1 Certified Associate</h3><p>Earned by Siddharth Bhatia on 6 August 2026. Score 93 · Completion ID 16789646.</p><a class="bp-credential-link" href="xero-certified.html">View credential details ↗</a></div></article></div>`;
 
-  const credentialHero=document.querySelector('.credential-page-hero .container');
-  if(credentialHero && !credentialHero.querySelector('.bp-cert-ribbon')){
-    credentialHero.insertAdjacentHTML('beforeend',`<a class="bp-cert-ribbon" href="${ICAI_INFO}" target="_blank" rel="noopener noreferrer"><span class="bp-cert-logo"><img src="${CA_LOGO}" alt="CA India logo"></span><span><span>Also professionally qualified</span><strong>Chartered Accountant · India</strong><small>ICAI Membership No. 438248</small></span></a>`);
-  }
+  const ch=document.querySelector('.credential-page-hero .container');if(ch&&!ch.querySelector('.bp-cert-ribbon'))ch.insertAdjacentHTML('beforeend',`<a class="bp-cert-ribbon" href="${ICAI_INFO}" target="_blank" rel="noopener noreferrer"><span class="bp-cert-logo"><img src="${CA_LOGO}" alt="CA India logo"></span><span><span>Also professionally qualified</span><strong>Chartered Accountant · India</strong><small>ICAI Membership No. 438248</small></span></a>`);
 
-  const pricing=[...document.querySelectorAll('.pricing-section .price-card')];
-  if(pricing.length>=2){
-    const p0=pricing[0].querySelector('.price'),p1=pricing[1].querySelector('.price');
-    if(p0)p0.innerHTML='<strong>US$149</strong><small>/ £119 onwards</small>';
-    if(p1)p1.innerHTML='<strong>US$349</strong><small>/ £279 onwards</small>';
-    if(!pricing[0].querySelector('.pricing-value-note')) pricing[0].insertAdjacentHTML('beforeend','<small class="pricing-value-note">A practical entry point before recurring support.</small>');
-    if(!pricing[1].querySelector('.pricing-value-note')) pricing[1].insertAdjacentHTML('beforeend','<small class="pricing-value-note">Designed for controlled monthly delivery.</small>');
-  }
+  const pc=[...document.querySelectorAll('.pricing-section .price-card')];if(pc.length>=2){const p0=pc[0].querySelector('.price'),p1=pc[1].querySelector('.price');if(p0)p0.innerHTML='<strong>US$149</strong><small>/ £119 onwards</small>';if(p1)p1.innerHTML='<strong>US$349</strong><small>/ £279 onwards</small>'}
 
-  const footerBrand=document.querySelector('.footer-brand');
-  if(footerBrand){
-    const logo=[...footerBrand.children].find(el=>el.tagName==='IMG');
-    if(logo && !footerBrand.querySelector('.bp-footer-logo-wrap')){const wrap=document.createElement('div');wrap.className='bp-footer-logo-wrap';footerBrand.insertBefore(wrap,logo);wrap.appendChild(logo);}
-    if(!footerBrand.querySelector('.bp-footer-credentials')) footerBrand.insertAdjacentHTML('beforeend',`<div class="bp-footer-credentials"><img class="xero-footer" src="${XERO_LOGO}" alt="Xero L1 Certified Associate"><img class="ca-footer" src="${CA_LOGO}" alt="CA India logo"><span>CA-led delivery · Xero L1 Certified Associate</span></div>`);
-  }
+  const fb=document.querySelector('.footer-brand');if(fb){const logo=[...fb.children].find(el=>el.tagName==='IMG');if(logo&&!fb.querySelector('.bp-footer-logo-wrap')){const w=document.createElement('div');w.className='bp-footer-logo-wrap';fb.insertBefore(w,logo);w.appendChild(logo)}if(!fb.querySelector('.bp-footer-credentials'))fb.insertAdjacentHTML('beforeend',`<div class="bp-footer-credentials"><img class="xero-footer" src="${XERO_LOGO}" alt="Xero L1 Certified Associate"><img class="ca-footer" src="${CA_LOGO}" alt="CA India logo"><span>CA-led delivery · Xero L1 Certified Associate</span></div>`)}
 })();
