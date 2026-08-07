@@ -1,0 +1,4 @@
+/* Authentic founder portrait: keep native photo visually crisp by avoiding unnecessary enlargement. */
+.founder-photo-frame{width:238px!important;max-width:238px!important}
+.founder-photo-frame img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 22%!important;filter:none!important;transform:none!important}
+@media(max-width:640px){.founder-photo-frame{width:198px!important;max-width:198px!important}}
