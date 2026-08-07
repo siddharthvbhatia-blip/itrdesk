@@ -9,13 +9,22 @@
     document.head.appendChild(graphicsScript);
   }
 
-  /* Force-load the latest user corrections, including the embedded authentic founder portrait. */
+  /* Force-load the latest user corrections. */
   if (!document.querySelector('link[data-bp-user-hotfix]')) {
     const hotfix = document.createElement('link');
     hotfix.rel = 'stylesheet';
     hotfix.href = 'assets/user-corrections.css?v=20260807-founder-photo-r4';
     hotfix.dataset.bpUserHotfix = 'true';
     document.head.appendChild(hotfix);
+  }
+
+  /* Final portrait + Xero cleanup layer. This deliberately runs after the older correction stack. */
+  if (!document.querySelector('script[data-bp-profile-xero-fix]')) {
+    const fixScript = document.createElement('script');
+    fixScript.src = 'assets/profile-xero-fix.js?v=20260807-founder-xero-r1';
+    fixScript.defer = true;
+    fixScript.dataset.bpProfileXeroFix = 'true';
+    document.head.appendChild(fixScript);
   }
 
   const $ = (selector, context = document) => context.querySelector(selector);
