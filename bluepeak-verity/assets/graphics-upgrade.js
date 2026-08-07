@@ -1,6 +1,7 @@
 (() => {
   'use strict';
-  const CA_LOGO = 'https://cmp.icai.org/wp-content/uploads/2025/10/CA-India-Logo-1024x762-250x185.png';
+  const CA_LOGO = 'assets/ca-india-mark.svg?v=20260807-local-1';
+  const XERO_LOGO = 'assets/xero-credential-badge.svg?v=20260807-local-1';
   const ICAI_LOGO_INFO = 'https://www.icai.org/post/19553';
 
   const addStylesheet = (href, marker) => {
@@ -13,6 +14,23 @@
   };
   addStylesheet('assets/graphics-upgrade.css?v=20260807-r4', 'bp-graphics');
   addStylesheet('assets/graphics-global.css?v=20260807-r1', 'bp-global');
+  addStylesheet('assets/user-corrections.css?v=20260807-r2', 'bp-user-corrections');
+
+  /* Add the requested Pricing navigation tab without disturbing the existing page architecture. */
+  const nav = document.querySelector('#site-nav');
+  if (nav && !nav.querySelector('a[href="#pricing"]')) {
+    const pricingLink = document.createElement('a');
+    pricingLink.href = '#pricing';
+    pricingLink.textContent = 'Pricing';
+    pricingLink.className = 'pricing-nav-link';
+    const aboutLink = [...nav.querySelectorAll('a')].find(link => link.getAttribute('href') === 'about.html');
+    nav.insertBefore(pricingLink, aboutLink || nav.querySelector('.nav-cta'));
+    pricingLink.addEventListener('click', () => {
+      nav.classList.remove('open');
+      document.querySelector('.nav-toggle')?.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    });
+  }
 
   const firstHeroProof = document.querySelector('.hero-proof span');
   if (firstHeroProof && !firstHeroProof.querySelector('.bp-hero-ca-logo')) {
@@ -58,6 +76,16 @@
     badge.innerHTML = `<img src="${CA_LOGO}" alt="CA India logo" width="50" height="37" loading="eager" decoding="async">`;
     caCredibility.prepend(badge);
   }
+  const xeroCredibility = credibility?.children?.[1];
+  if (xeroCredibility && !xeroCredibility.querySelector('.mini-cred-logo')) {
+    const xeroMini = document.createElement('img');
+    xeroMini.className = 'mini-cred-logo';
+    xeroMini.src = XERO_LOGO;
+    xeroMini.alt = 'Xero L1 Certified Associate';
+    xeroMini.width = 34;
+    xeroMini.height = 34;
+    xeroCredibility.appendChild(xeroMini);
+  }
 
   const audiencePanel = document.querySelector('.audience-panel');
   const audienceProof = document.querySelector('#audience-proof');
@@ -85,6 +113,18 @@
       </div>`;
     audienceProof.parentNode.insertBefore(visual, audienceProof);
     visual.appendChild(audienceProof);
+  }
+
+  /* Replace the visually empty quality-control area with a populated control-flow graphic. */
+  const qualityVisual = document.querySelector('.quality-visual');
+  if (qualityVisual && !qualityVisual.querySelector('.quality-flow-title')) {
+    qualityVisual.insertAdjacentHTML('afterbegin', '<div class="quality-flow-title">BluePeak control sequence</div>');
+    qualityVisual.insertAdjacentHTML('beforeend', `
+      <div class="quality-data-row">
+        <div class="quality-data-card"><span>Source integrity</span><strong><i class="status-dot"></i>Traceable</strong><small>Evidence and basis remain linked to the workpaper.</small></div>
+        <div class="quality-data-card"><span>Exception visibility</span><strong>Open items isolated</strong><small>Unresolved matters stay visible for reviewer action.</small></div>
+        <div class="quality-data-card"><span>Reviewer status</span><strong>Handoff ready</strong><small>The next professional can follow the sequence quickly.</small></div>
+      </div>`);
   }
 
   const founderShell = document.querySelector('.founder-photo-shell');
@@ -132,7 +172,7 @@
           </div>
         </article>
         <article class="bp-credential-card">
-          <div class="bp-credential-logo xero" aria-hidden="true"><div><span>xero</span><strong>L1</strong></div></div>
+          <div class="bp-credential-logo xero"><img src="${XERO_LOGO}" alt="Xero L1 Certified Associate badge" width="100" height="100"></div>
           <div class="bp-credential-copy">
             <small>Platform credential</small>
             <h3>Xero L1 Certified Associate</h3>
@@ -152,6 +192,41 @@
         <span class="bp-cert-logo"><img src="${CA_LOGO}" alt="CA India logo" width="60" height="44"></span>
         <span><span>Also professionally qualified</span><strong>Chartered Accountant · India</strong><small>ICAI Membership No. 438248</small></span>
       </a>`);
+  }
+
+  /* Keep the requested pricing commercially accessible while retaining an onwards / scoped model. */
+  const pricingCards = [...document.querySelectorAll('.pricing-section .price-card')];
+  if (pricingCards.length >= 2) {
+    const pilotPrice = pricingCards[0].querySelector('.price');
+    const recurringPrice = pricingCards[1].querySelector('.price');
+    if (pilotPrice) pilotPrice.innerHTML = '<strong>US$149</strong><small>/ £119 onwards</small>';
+    if (recurringPrice) recurringPrice.innerHTML = '<strong>US$349</strong><small>/ £279 onwards</small>';
+    const pilotCopy = pricingCards[0].querySelector('p:not(.price)');
+    const recurringCopy = pricingCards[1].querySelector('p:not(.price)');
+    if (pilotCopy) pilotCopy.textContent = 'One clearly defined accounting cycle, reconciliation batch or cleanup sample to test workflow quality, communication and review expectations.';
+    if (recurringCopy) recurringCopy.textContent = 'Recurring bookkeeping, reconciliations and close-support schedules for a clean or moderately complex monthly accounting workflow.';
+    pricingCards[0].insertAdjacentHTML('beforeend', '<small class="pricing-value-note">A practical entry point before committing to recurring support.</small>');
+    pricingCards[1].insertAdjacentHTML('beforeend', '<small class="pricing-value-note">Designed for controlled, repeatable monthly delivery.</small>');
+  }
+
+  /* Restore the real BluePeak logo in the footer and add restrained credential marks. */
+  const footerBrand = document.querySelector('.footer-brand');
+  if (footerBrand) {
+    const footerLogo = [...footerBrand.children].find(el => el.tagName === 'IMG');
+    if (footerLogo && !footerBrand.querySelector('.bp-footer-logo-wrap')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'bp-footer-logo-wrap';
+      footerBrand.insertBefore(wrap, footerLogo);
+      wrap.appendChild(footerLogo);
+    }
+    if (!footerBrand.querySelector('.bp-footer-credentials')) {
+      footerBrand.insertAdjacentHTML('beforeend', `
+        <div class="bp-footer-credentials">
+          <img class="xero-footer" src="${XERO_LOGO}" alt="Xero L1 Certified Associate">
+          <img class="ca-footer" src="${CA_LOGO}" alt="CA India logo">
+          <span>CA-led delivery · Xero L1 Certified Associate</span>
+        </div>`);
+    }
   }
 
   document.querySelectorAll('.tech-card').forEach((card, index) => {
