@@ -3,15 +3,16 @@
   const CA_LOGO = 'https://cmp.icai.org/wp-content/uploads/2025/10/CA-India-Logo-1024x762-250x185.png';
   const ICAI_LOGO_INFO = 'https://www.icai.org/post/19553';
 
-  const addStylesheet = () => {
-    if (document.querySelector('link[data-bp-graphics]')) return;
+  const addStylesheet = (href, marker) => {
+    if (document.querySelector(`link[data-${marker}]`)) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'assets/graphics-upgrade.css?v=20260807-r3';
-    link.dataset.bpGraphics = 'true';
+    link.href = href;
+    link.setAttribute(`data-${marker}`, 'true');
     document.head.appendChild(link);
   };
-  addStylesheet();
+  addStylesheet('assets/graphics-upgrade.css?v=20260807-r4', 'bp-graphics');
+  addStylesheet('assets/graphics-global.css?v=20260807-r1', 'bp-global');
 
   const heroStage = document.querySelector('[data-control-stage]');
   if (heroStage && !heroStage.querySelector('.bp-altitude-field')) {
@@ -42,10 +43,38 @@
     caCredibility.prepend(badge);
   }
 
+  const audiencePanel = document.querySelector('.audience-panel');
+  const audienceProof = document.querySelector('#audience-proof');
+  if (audiencePanel && audienceProof && !audiencePanel.querySelector('.bp-global-network')) {
+    const visual = document.createElement('div');
+    visual.className = 'bp-audience-visual';
+    visual.innerHTML = `
+      <div class="bp-global-network" aria-label="Illustrative delivery network connecting India with US and UK workflows">
+        <svg viewBox="0 0 480 230" role="img" aria-hidden="true">
+          <ellipse class="bp-globe-ring" cx="240" cy="116" rx="116" ry="92"/>
+          <ellipse class="bp-globe-ring dash" cx="240" cy="116" rx="58" ry="92"/>
+          <ellipse class="bp-globe-ring" cx="240" cy="116" rx="116" ry="39"/>
+          <path class="bp-globe-ring" d="M124 116H356M146 67C198 90 284 90 334 67M146 165C198 142 284 142 334 165"/>
+          <path class="bp-route" d="M194 131 C155 101 117 88 79 92"/>
+          <path class="bp-route uk" d="M198 127 C250 82 318 67 380 77"/>
+          <circle class="bp-route-pulse" cx="144" cy="107" r="3.5"/>
+          <circle class="bp-route-pulse" cx="306" cy="88" r="3.5" style="animation-delay:-1.7s"/>
+          <g class="bp-network-node hub" transform="translate(194 131)"><circle r="15"/><text text-anchor="middle" dy="2.6">IND</text></g>
+          <g class="bp-network-node" transform="translate(79 92)"><circle r="13"/><text text-anchor="middle" dy="2.4">US</text></g>
+          <g class="bp-network-node" transform="translate(380 77)"><circle r="13"/><text text-anchor="middle" dy="2.4">UK</text></g>
+        </svg>
+        <span class="bp-network-label us"><i></i>US accounting firms</span>
+        <span class="bp-network-label uk"><i></i>UK practices</span>
+        <span class="bp-network-label india"><i></i>India delivery hub</span>
+      </div>`;
+    audienceProof.parentNode.insertBefore(visual, audienceProof);
+    visual.appendChild(audienceProof);
+  }
+
   const founderShell = document.querySelector('.founder-photo-shell');
   const founderPhoto = founderShell?.querySelector('.founder-photo-frame img');
   if (founderPhoto) {
-    founderPhoto.src = 'assets/founder-original-attached.jpg?v=20260807-authentic-r3';
+    founderPhoto.src = 'assets/founder-original-attached.jpg?v=20260807-authentic-r4';
     founderPhoto.loading = 'eager';
     founderPhoto.decoding = 'async';
     founderPhoto.addEventListener('error', () => {
@@ -98,6 +127,15 @@
         </article>
       </div>
     `;
+  }
+
+  const credentialHero = document.querySelector('.credential-page-hero .container');
+  if (credentialHero && !credentialHero.querySelector('.bp-cert-ribbon')) {
+    credentialHero.insertAdjacentHTML('beforeend', `
+      <a class="bp-cert-ribbon" href="${ICAI_LOGO_INFO}" target="_blank" rel="noopener noreferrer">
+        <span class="bp-cert-logo"><img src="${CA_LOGO}" alt="CA India logo" width="60" height="44"></span>
+        <span><span>Also professionally qualified</span><strong>Chartered Accountant · India</strong><small>ICAI Membership No. 438248</small></span>
+      </a>`);
   }
 
   document.querySelectorAll('.tech-card').forEach((card, index) => {
